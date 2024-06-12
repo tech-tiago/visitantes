@@ -2,45 +2,43 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
 const Visitor = sequelize.define('Visitor', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
   nome: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   },
   documento: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   },
   data_entrada: {
     type: DataTypes.DATE,
-    allowNull: false,
+    allowNull: false
   },
   hora_entrada: {
-    type: DataTypes.TIME,
-    allowNull: false,
-  },
-  foto: {
-    type: DataTypes.TEXT('long'),
-    allowNull: false,
+    type: DataTypes.STRING,
+    allowNull: false
   },
   motivo: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   },
-  createdAt: {
+  status: {
+    type: DataTypes.ENUM('aberto', 'encerrado'),
+    allowNull: false,
+    defaultValue: 'aberto'
+  },
+  data_saida: {
     type: DataTypes.DATE,
-    allowNull: false,
-    field: 'createdAt',
+    allowNull: true
   },
-  updatedAt: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    field: 'updatedAt',
+  hora_saida: {
+    type: DataTypes.STRING,
+    allowNull: true
   },
+  foto: {
+    type: DataTypes.STRING, 
+    allowNull: true 
+  }
 });
 
 module.exports = Visitor;

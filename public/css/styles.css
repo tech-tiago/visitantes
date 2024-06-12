@@ -1,53 +1,7 @@
-body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
+.modal-content {
+  display: flex;
+  justify-content: space-between;
 }
-
-form {
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.form-group label {
-  display: block;
-  font-weight: bold;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 0.5rem;
-  font-size: 1rem;
-}
-
-.form-group button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.form-group button:hover {
-  background-color: #0056b3;
-}
-
-.grid-container {
-  margin-top: 50px;
-}
-
-button {
-  margin-top: 10px;
-}
-
-table {
-  width: 100%;
-}
-
-#canvas {
-  display: none;
+.image-preview, .webcam-preview {
+  margin-top: 20px;
 }

@@ -7,16 +7,13 @@ const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
-// Carregar variáveis de ambiente do arquivo .env
-require('dotenv').config();
-console.log('JWT_SECRET:', process.env.JWT_SECRET);
-
 // Middleware para analisar corpos de requisição JSON e URL codificados
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
 // Middleware para servir arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // Rota para o favicon.ico
 app.get('/favicon.ico', (req, res) => {
@@ -47,8 +44,6 @@ app.get('/visitas-em-aberto', (req, res) => {
 // Rotas da API
 app.use('/api/visitors', visitorRoutes);
 app.use('/api/auth', authRoutes);
-
-
 
 // Sincroniza com o banco de dados e inicia o servidor
 sequelize.sync().then(() => {

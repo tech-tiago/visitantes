@@ -1,38 +1,36 @@
 document.addEventListener('DOMContentLoaded', function() {
     var currentDate = new Date().toISOString().split('T')[0];
+
+    // Obter a hora no formato HH:mm
     var currentTime = new Date().toTimeString().split(' ')[0];
+    currentTime = currentTime.substring(0, 5); // Remover os segundos
 
     document.getElementById('dataEntrada').value = currentDate;
     document.getElementById('horaEntrada').value = currentTime;
 
     document.getElementById('capturePhoto').addEventListener('click', function() {
-        var modal = new Foundation.Reveal($('#photoModal'));
-        modal.open();
+        var photoModal = document.getElementById('photoModal');
+        photoModal.classList.add('is-active');
     });
 
+    var video = document.getElementById('video');
+    var canvas = document.getElementById('canvas');
+    var photoPreview = document.getElementById('photoPreview');
+    var context = canvas.getContext('2d');
 
-    
     document.getElementById('snap').addEventListener('click', function() {
-        var canvas = document.getElementById('canvas');
-        var video = document.getElementById('video');
-        var context = canvas.getContext('2d');
-    
-        if (video.srcObject && video.readyState === video.HAVE_ENOUGH_DATA) {
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        } else {
-            console.error('Não foi possível capturar a foto: fonte de vídeo não disponível.');
-        }
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
     });
 
     document.getElementById('savePhoto').addEventListener('click', function() {
-        var canvas = document.getElementById('canvas');
-        var dataURL = canvas.toDataURL('image/png');
-        var photoPreview = document.getElementById('photoPreview');
-        photoPreview.src = dataURL; 
-        photoPreview.style.display = 'block'; 
-        document.getElementById('fotoInput').value = dataURL; 
+        var dataURL = canvas.toDataURL('image/png'); // Alterado para image/jpeg
+        photoPreview.src = dataURL;
+        photoPreview.style.display = 'block';
+        document.getElementById('fotoInput').value = dataURL; // Armazenar a foto como base64 no input hidden
+
+        var photoModal = document.getElementById('photoModal');
+        photoModal.classList.remove('is-active');
     });
-    
 
     document.getElementById('visitorForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -60,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }).then(response => response.json())
           .then(data => {
               alert('Visitante registrado com sucesso!');
+              window.location.reload(); // Recarregar a página após o cadastro
           }).catch(error => {
               console.error('Erro:', error);
           });
@@ -69,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(function(stream) {
-                var video = document.getElementById('video');
                 video.srcObject = stream;
             })
             .catch(function(err) {
@@ -78,4 +76,12 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.error('getUserMedia is not supported on your browser!');
     }
+
+    // Fechar modal ao clicar no fundo ou no botão de fechar
+    document.querySelectorAll('.modal-background, .modal-close, #closeModal').forEach(function(element) {
+        element.addEventListener('click', function() {
+            var photoModal = document.getElementById('photoModal');
+            photoModal.classList.remove('is-active');
+        });
+    });
 });
