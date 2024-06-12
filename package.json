@@ -1,0 +1,21 @@
+{
+  "name": "sistema-gestao-visitantes",
+  "version": "1.0.0",
+  "description": "Sistema de Gestão de Visitantes",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.10.0",
+    "path": "^0.12.7",
+    "sequelize": "^6.37.3"
+  },
+  "author": "",
+  "license": "MIT"
+}
