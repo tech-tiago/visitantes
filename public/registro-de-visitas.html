@@ -4,65 +4,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Visitas</title>
-    <link rel="stylesheet" href="css/foundation.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bulma.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="./css/registro-de-visitas.css">
+
 </head>
 <body>
-<!-- Menu Superior -->
-<div class="top-bar">
-    <div class="top-bar-left">
-      <ul class="dropdown menu" data-dropdown-menu>
-        <li class="menu-text"></li>
-        <li><a href="/home.html">Home</a></li>
-        <li><a href="/register.html">Register</a></li>
-        <li><a href="/registro-de-visitas.html">Registro de Visitas</a></li>
-        <li><a href="/visitas-em-aberto.html">Visitas em Aberto</a></li>
-      </ul>
+    <!-- Menu Superior -->
+    <nav class="navbar is-link" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/home.html">
+                <i class="fas fa-clipboard-list"></i>
+                <span> Registro de Visitantes</span>
+            </a>
+            
+            <a class="navbar-item" href="/registro-de-visitas.html">
+                <i class="fa fa-history"></i>
+                <span> Histórico de Visitas</span>
+            </a>
+            <a class="navbar-item" href="/visitas-em-aberto.html">
+                <i class="fas fa-folder-open"></i>
+                <span> Visitas em Aberto</span>
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div id="navbarMenu" class="navbar-menu">
+            <div class="navbar-end">
+                <a class="navbar-item" href="/register.html">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Register</span>
+                </a>
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-light" id="logoutButton">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logoff</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+<div class="container mt-5">
+    <div class="box">
+        <h2 class="title">Registro de Visitas</h2>
+        <div class="table-container">
+            <table id="closedVisits" class="table is-striped is-hoverable is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Documento</th>
+                        <th>Data Entrada</th>
+                        <th>Hora Entrada</th>
+                        <th>Data Saída</th>
+                        <th>Hora Saída</th>
+                        <th>Motivo</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados populados via JS -->
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
+</div>
 
-
-    <div class="grid-container">
-        <h2>Registro de Visitas</h2>
-        <table id="closedVisits" class="display">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Documento</th>
-                    <th>Data Entrada</th>
-                    <th>Hora Entrada</th>
-                    <th>Data Saída</th>
-                    <th>Hora Saída</th>
-                    <th>Motivo</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Dados populados via JS -->
-            </tbody>
-        </table>
+<!-- Modal de visualização de visita -->
+<div id="viewModal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Detalhes da Visita</p>
+            <button class="delete" aria-label="close" id="closeModal" data-close></button>
+        </header>
+        <section class="modal-card-body">
+            <div class="columns">
+                <div class="column">
+                    <p><strong>Nome:</strong> <span id="viewNome"></span></p>
+                    <p><strong>Documento:</strong> <span id="viewDocumento"></span></p>
+                    <p><strong>Data Entrada:</strong> <span id="viewDataEntrada"></span></p>
+                    <p><strong>Hora Entrada:</strong> <span id="viewHoraEntrada"></span></p>
+                    <p><strong>Data Saída:</strong> <span id="viewDataSaida"></span></p>
+                    <p><strong>Hora Saída:</strong> <span id="viewHoraSaida"></span></p>
+                    <p><strong>Motivo:</strong> <span id="viewMotivo"></span></p>
+                </div>
+                <div class="column is-flex is-justify-content-center">
+                    <figure class="image">
+                        <img id="viewFoto" src="" alt="Foto do Visitante">
+                    </figure>
+                </div>
+            </div>
+        </section>
+        <footer class="modal-card-foot">
+            <button class="button is-info" data-close>Fechar</button>
+        </footer>
     </div>
+    <button class="modal-close is-large" aria-label="close" data-close></button>
+</div>
 
-    <!-- Modal de visualização de visita -->
-    <div id="viewModal" class="reveal" data-reveal>
-        <h2>Detalhes da Visita</h2>
-        <p><strong>Nome:</strong> <span id="viewNome"></span></p>
-        <p><strong>Documento:</strong> <span id="viewDocumento"></span></p>
-        <p><strong>Data Entrada:</strong> <span id="viewDataEntrada"></span></p>
-        <p><strong>Hora Entrada:</strong> <span id="viewHoraEntrada"></span></p>
-        <p><strong>Data Saída:</strong> <span id="viewDataSaida"></span></p>
-        <p><strong>Hora Saída:</strong> <span id="viewHoraSaida"></span></p>
-        <p><strong>Motivo:</strong> <span id="viewMotivo"></span></p>
-        <p><strong>Foto:</strong> <img id="viewFoto" src="" alt="Foto do Visitante"></p>
-        <button class="button" data-close>Fechar</button>
-    </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="js/foundation.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script src="js/registro-de-visitas.js"></script>
-    <script src="js/logoff.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.bulma.js"></script>
+<script src="js/registro-de-visitas.js"></script>
+<script src="js/logoff.js"></script>
+
 </body>
 </html>

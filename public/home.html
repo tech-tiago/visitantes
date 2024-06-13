@@ -104,66 +104,70 @@
                         </div>
                     </div>
                 </div>
-                <div class="field">
-                    <div class="control">
-                        <button type="button" id="capturePhoto" class="button is-link">
-                            <i class="fas fa-camera"></i>
-                            <span>Capturar Foto</span>
-                        </button>
+                <div class="columns is-vcentered">
+                    <div class="column is-half">
+                        <div class="field">
+                            <div class="control">
+                                <button type="button" id="capturePhoto" class="button is-link is-fullwidth">
+                                    <i class="fas fa-camera"></i>
+                                    <span>Capturar Foto</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <button type="submit" class="button is-primary is-fullwidth">
+                                    <i class="fas fa-check"></i>
+                                    <span>Registrar</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <div class="control">
-                        <button type="submit" class="button is-primary">
-                            <i class="fas fa-check"></i>
-                            <span>Registrar</span>
-                        </button>
+                    <div class="column is-half">
+                        <!-- Pré-visualização da foto -->
+                        <div class="field">
+                            <figure class="image is-128x128" id="photoContainer">
+                                <img id="photoPreview" src="" style="display: none;">
+                            </figure>
+                        </div>
                     </div>
-                </div>
-
-                <!-- Pré-visualização da foto -->
-                <div class="field">
-                    <figure class="image is-128x128 is-square" id="photoContainer">
-                        <img id="photoPreview" src="" style="display: none;">
-                    </figure>
                 </div>
             </form>
         </div>
     </div>
 
-<!-- Modal de captura de foto -->
-<div id="photoModal" class="modal">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <p class="modal-card-title">Capturar Foto</p>
-            <button class="delete" aria-label="close" id="closeModal"></button>
-        </header>
-        <section class="modal-card-body">
-            <div class="columns is-vcentered">
-                <div class="column is-half">
-                    <figure class="image webcam-preview">
-                        <video id="video" width="340" height="255" autoplay></video>
-                    </figure>
-                    <button id="snap" class="button is-link is-fullwidth mt-3">
-                        <i class="fas fa-camera"></i>
-                        <span>Capturar</span>
-                    </button>
+    <!-- Modal de captura de foto -->
+    <div id="photoModal" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Capturar Foto</p>
+                <button class="delete" aria-label="close" id="closeModal"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="columns is-vcentered">
+                    <div class="column is-half">
+                        <figure class="image webcam-preview">
+                            <video id="video" width="340" height="255" autoplay></video>
+                        </figure>
+                        <button id="snap" class="button is-link is-fullwidth mt-3">
+                            <i class="fas fa-camera"></i>
+                            <span>Capturar</span>
+                        </button>
+                    </div>
+                    <div class="column is-half">
+                        <figure class="image image-preview">
+                            <canvas id="canvas" width="288" height="160"></canvas>
+                        </figure>
+                        <button id="savePhoto" class="button is-primary is-fullwidth mt-3">
+                            <i class="fas fa-save"></i>
+                            <span>Salvar Foto</span>
+                        </button>
+                    </div>
                 </div>
-                <div class="column is-half">
-                    <figure class="image image-preview">
-                        <canvas id="canvas" width="340" height="255"></canvas>
-                    </figure>
-                    <button id="savePhoto" class="button is-primary is-fullwidth mt-3">
-                        <i class="fas fa-save"></i>
-                        <span>Salvar Foto</span>
-                    </button>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
     </div>
-</div>
-
 
     <!-- Input hidden para armazenar a foto como base64 -->
     <input type="hidden" id="fotoInput">
