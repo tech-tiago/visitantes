@@ -38,6 +38,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 .box {
+  margin-top: 30px;
   border: 1px solid #ddd;
   padding: 20px;
   border-radius: 10px;
