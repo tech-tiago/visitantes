@@ -1,36 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Visitantes</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 </head>
 <body>
     <!-- Menu Superior -->
-    <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-link" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" href="/home.html">
-                Home
+                <i class="fas fa-home"></i>
+                <span>Home</span>
             </a>
-            <a class="navbar-item" href="/register.html">
-                Register
-            </a>
+            
             <a class="navbar-item" href="/registro-de-visitas.html">
-                Registro de Visitas
+                <i class="fas fa-clipboard-list"></i>
+                <span>Registro de Visitas</span>
             </a>
             <a class="navbar-item" href="/visitas-em-aberto.html">
-                Visitas em Aberto
+                <i class="fas fa-folder-open"></i>
+                <span>Visitas em Aberto</span>
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
             </a>
         </div>
-        <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-light" id="logoutButton">
-                        Logoff
-                    </a>
+        <div id="navbarMenu" class="navbar-menu">
+            <div class="navbar-end">
+                <a class="navbar-item" href="/register.html">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Register</span>
+                </a>
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-light" id="logoutButton">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logoff</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -38,97 +52,119 @@
 
     <div class="container">
         <h2 class="title is-2">Registro de Visitantes</h2>
-        <form id="visitorForm">
-            <div class="field">
-                <label class="label">Nome completo</label>
-                <div class="control">
-                    <input class="input" type="text" id="nomeCompleto" required>
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">RG/CPF</label>
-                <div class="control">
-                    <input class="input" type="text" id="documento" required>
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Motivo da visita</label>
-                <div class="control">
-                    <input class="textarea" type="text" id="motivoVisita" required>
-                </div>
-            </div>
-            <div class="columns">
-                <div class="column">
-                    <div class="field">
-                        <label class="label">Data de entrada</label>
-                        <div class="control has-icons-left">
-                            <input class="input" type="date" id="dataEntrada" required>
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-calendar-alt"></i>
-                            </span>
-                        </div>
+        <div class="box">
+            <form id="visitorForm">
+                <div class="field">
+                    <label class="label">Nome completo</label>
+                    <div class="control has-icons-left">
+                        <input class="input" type="text" id="nomeCompleto" required>
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-user"></i>
+                        </span>
                     </div>
                 </div>
-                <div class="column">
-                    <div class="field">
-                        <label class="label">Hora de entrada</label>
-                        <div class="control has-icons-left">
-                            <input class="input" type="time" id="horaEntrada" required>
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-clock"></i>
-                            </span>
-                        </div>
+                <div class="field">
+                    <label class="label">RG/CPF</label>
+                    <div class="control has-icons-left">
+                        <input class="input" type="text" id="documento" required>
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-id-card"></i>
+                        </span>
                     </div>
                 </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <button type="button" id="capturePhoto" class="button is-link">Capturar Foto</button>
+                <div class="field">
+                    <label class="label">Motivo da visita</label>
+                    <div class="control has-icons-left">
+                        <input class="input" type="text" id="motivoVisita" required>
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-info-circle"></i>
+                        </span>
+                    </div>
                 </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <button type="submit" class="button is-primary">Registrar</button>
-                </div>
-            </div>
-
-            <!-- Pré-visualização da foto -->
-            <figure class="image is-128x128">
-                <img id="photoPreview" src="" style="display: none;">
-            </figure>
-        </form>
-    </div>
-
-    <!-- Modal de captura de foto -->
-    <div id="photoModal" class="modal">
-        <div class="modal-background"></div>
-        <div class="modal-content">
-            <div class="box">
-                <header class="modal-card-head">
-                    <p class="modal-card-title">Capturar Foto</p>
-                    <button class="delete" aria-label="close" id="closeModal"></button>
-                </header>
                 <div class="columns">
                     <div class="column">
-                        <figure class="image webcam-preview">
-                            <video id="video" width="340" height="255" autoplay></video>
-                        </figure>
-                        <button id="snap" class="button is-link is-fullwidth">
-                            <i class="fas fa-camera"></i> Capturar
-                        </button>
+                        <div class="field">
+                            <label class="label">Data de entrada</label>
+                            <div class="control has-icons-left">
+                                <input class="input" type="date" id="dataEntrada" required>
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <div class="column">
-                        <figure class="image image-preview">
-                            <canvas id="canvas" width="340" height="255"></canvas>
-                        </figure>
-                        <button id="savePhoto" class="button is-primary is-fullwidth">
-                            <i class="fas fa-save"></i> Salvar Foto
+                        <div class="field">
+                            <label class="label">Hora de entrada</label>
+                            <div class="control has-icons-left">
+                                <input class="input" type="time" id="horaEntrada" required>
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-clock"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button type="button" id="capturePhoto" class="button is-link">
+                            <i class="fas fa-camera"></i>
+                            <span>Capturar Foto</span>
                         </button>
                     </div>
                 </div>
-            </div>
+                <div class="field">
+                    <div class="control">
+                        <button type="submit" class="button is-primary">
+                            <i class="fas fa-check"></i>
+                            <span>Registrar</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pré-visualização da foto -->
+                <div class="field">
+                    <figure class="image is-128x128 is-square" id="photoContainer">
+                        <img id="photoPreview" src="" style="display: none;">
+                    </figure>
+                </div>
+            </form>
         </div>
     </div>
+
+<!-- Modal de captura de foto -->
+<div id="photoModal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Capturar Foto</p>
+            <button class="delete" aria-label="close" id="closeModal"></button>
+        </header>
+        <section class="modal-card-body">
+            <div class="columns is-vcentered">
+                <div class="column is-half">
+                    <figure class="image webcam-preview">
+                        <video id="video" width="340" height="255" autoplay></video>
+                    </figure>
+                    <button id="snap" class="button is-link is-fullwidth mt-3">
+                        <i class="fas fa-camera"></i>
+                        <span>Capturar</span>
+                    </button>
+                </div>
+                <div class="column is-half">
+                    <figure class="image image-preview">
+                        <canvas id="canvas" width="340" height="255"></canvas>
+                    </figure>
+                    <button id="savePhoto" class="button is-primary is-fullwidth mt-3">
+                        <i class="fas fa-save"></i>
+                        <span>Salvar Foto</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
 
     <!-- Input hidden para armazenar a foto como base64 -->
     <input type="hidden" id="fotoInput">

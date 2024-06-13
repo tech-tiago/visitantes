@@ -1,7 +1,0 @@
-.modal-content {
-  display: flex;
-  justify-content: space-between;
-}
-.image-preview, .webcam-preview {
-  margin-top: 20px;
-}

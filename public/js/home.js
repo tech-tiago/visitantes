@@ -8,28 +8,45 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('dataEntrada').value = currentDate;
     document.getElementById('horaEntrada').value = currentTime;
 
+    var photoModal = document.getElementById('photoModal');
+    var video = document.getElementById('video');
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var photoPreview = document.getElementById('photoPreview');
+    var modalPhoto = document.getElementById('modalPhoto');
+    var photoInput = document.getElementById('fotoInput');
+
     document.getElementById('capturePhoto').addEventListener('click', function() {
-        var photoModal = document.getElementById('photoModal');
         photoModal.classList.add('is-active');
     });
 
-    var video = document.getElementById('video');
-    var canvas = document.getElementById('canvas');
-    var photoPreview = document.getElementById('photoPreview');
-    var context = canvas.getContext('2d');
-
     document.getElementById('snap').addEventListener('click', function() {
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        var dataURL = canvas.toDataURL('image/png'); // Captura a imagem
+        modalPhoto.src = dataURL;
+        modalPhoto.style.display = 'block';
     });
 
     document.getElementById('savePhoto').addEventListener('click', function() {
-        var dataURL = canvas.toDataURL('image/png'); // Alterado para image/jpeg
+        var dataURL = canvas.toDataURL('image/png');
         photoPreview.src = dataURL;
         photoPreview.style.display = 'block';
-        document.getElementById('fotoInput').value = dataURL; // Armazenar a foto como base64 no input hidden
-
-        var photoModal = document.getElementById('photoModal');
+        photoInput.value = dataURL; // Armazenar a foto como base64 no input hidden
         photoModal.classList.remove('is-active');
+    });
+
+    document.getElementById('closeModal').addEventListener('click', function() {
+        photoModal.classList.remove('is-active');
+    });
+
+    // Evento para abrir dropdown de data ao clicar no input
+    document.getElementById('dataEntrada').addEventListener('focus', function() {
+        this.showPicker();
+    });
+
+    // Evento para abrir dropdown de hora ao clicar no input
+    document.getElementById('horaEntrada').addEventListener('focus', function() {
+        this.showPicker();
     });
 
     document.getElementById('visitorForm').addEventListener('submit', function(event) {
@@ -39,15 +56,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const motivo = document.getElementById('motivoVisita').value;
         const data_entrada = document.getElementById('dataEntrada').value;
         const hora_entrada = document.getElementById('horaEntrada').value;
-        const foto = document.getElementById('fotoInput').value; // Obtém a foto como base64 do input hidden
-        
+        const foto = photoInput.value; // Obtém a foto como base64 do input hidden
+
         // Recuperar o token do localStorage
         const token = localStorage.getItem('token');
         if (!token) {
             console.error('Token de autenticação não encontrado.');
             return;
         }
-    
+
         fetch('/api/visitors', {
             method: 'POST',
             headers: {
@@ -80,8 +97,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fechar modal ao clicar no fundo ou no botão de fechar
     document.querySelectorAll('.modal-background, .modal-close, #closeModal').forEach(function(element) {
         element.addEventListener('click', function() {
-            var photoModal = document.getElementById('photoModal');
             photoModal.classList.remove('is-active');
         });
+    });
+
+    // Toggle do menu em dispositivos móveis
+    document.querySelector('.navbar-burger').addEventListener('click', function() {
+        document.querySelector('.navbar-burger').classList.toggle('is-active');
+        document.querySelector('.navbar-menu').classList.toggle('is-active');
     });
 });
