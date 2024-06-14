@@ -11,10 +11,14 @@ const User = sequelize.define('User', {
   password: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  level: {
+    type: DataTypes.ENUM('normal', 'admin'),
+    allowNull: false,
+    defaultValue: 'normal'
   }
 });
 
-// Hook para hash da senha antes de salvar
 User.beforeCreate(async (user) => {
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);

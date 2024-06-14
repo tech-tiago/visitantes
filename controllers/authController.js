@@ -18,37 +18,31 @@ exports.register = async (req, res) => {
   }
 };
 
-
-
 exports.login = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    console.log(`Tentativa de login para o usuário: ${username}`);
+      const { username, password } = req.body;
 
-    const user = await User.findOne({ where: { username } });
-    console.log('Usuário encontrado:', user);
+      const user = await User.findOne({ where: { username } });
 
-    if (!user) {
-      console.log('Usuário não encontrado');
-      return res.status(401).json({ message: 'Credenciais inválidas' });
-    }
+      if (!user) {
+          return res.status(401).json({ message: 'Credenciais inválidas' });
+      }
 
-    // Log the plain password and hashed password for debugging
-    console.log('Senha fornecida (plain text):', JSON.stringify(password.trim()));
-    console.log('Senha armazenada (hashed):', user.password);
+      const isMatch = await bcrypt.compare(password, user.password);
 
-    const isMatch = await bcrypt.compare(password.trim(), user.password);
-    console.log('Comparação de senha:', isMatch);
+      if (!isMatch) {
+          return res.status(401).json({ message: 'Credenciais inválidas' });
+      }
 
-    if (!isMatch) {
-      console.log('Senha incorreta');
-      return res.status(401).json({ message: 'Credenciais inválidas' });
-    }
+      // Obtendo o nível do usuário
+      const level = user.level;
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+      // Retorna o token JWT e o nível do usuário
+      res.json({ token, level });
   } catch (error) {
-    console.error('Erro ao fazer login:', error);
-    res.status(500).json({ message: 'Erro ao fazer login' });
+      console.error('Erro ao fazer login:', error);
+      res.status(500).json({ message: 'Erro ao fazer login' });
   }
 };

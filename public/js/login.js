@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('loginForm').addEventListener('submit', function(event) {
         event.preventDefault();
         
-        const username = document.getElementById('username').value.trim(); // Remove espaços em branco
-        const password = document.getElementById('password').value.trim(); // Remove espaços em branco
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
 
         fetch('/api/auth/login', {
             method: 'POST',
@@ -18,11 +18,15 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         }).then(data => {
             console.log('Token de acesso:', data.token);
-            // Salvar o token no localStorage ou sessionStorage
-            localStorage.setItem('token', data.token); // Exemplo: salvando no localStorage
+            console.log('Nível do usuário:', data.level);
+
+            // Salvar o token no localStorage e o nível do usuário
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userLevel', data.level);
+
             alert('Login realizado com sucesso!');
             // Redirecionar para outra página ou fazer outra ação necessária
-            window.location.href = '/'; // Exemplo: redirecionando para a página de registro
+            window.location.href = '/'; // Redirecionar para a página principal
         }).catch(error => {
             console.error('Erro:', error);
             alert('Credenciais inválidas. Por favor, tente novamente.');

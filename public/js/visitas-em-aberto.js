@@ -1,5 +1,12 @@
 $(document).ready(function() {
     var table = $('#openVisits').DataTable({
+        paging: false,
+        ordering: false,
+        info: false,
+        pageLength: 50,
+        language: {
+            url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
+        },
         ajax: {
             url: '/api/visitors/open',
             headers: {
@@ -16,19 +23,23 @@ $(document).ready(function() {
             {
                 data: null,
                 className: 'dt-center',
-                defaultContent: '<button class="finalizar-btn button">Finalizar</button>'
+                defaultContent: '<button class="finalizar-btn button is-small is-primary"><i class="fa fa-check" aria-hidden="true"></i> Finalizar</button>'
             }
         ]
+    });
+
+        // Fechar modal ao clicar no fundo ou no botão de fechar
+        $('#finalizeModal [data-close], .modal-background').on('click', function() {
+        $('#finalizeModal').removeClass('is-active');
     });
 
     $('#openVisits').on('click', '.finalizar-btn', function() {
         var data = table.row($(this).parents('tr')).data();
         $('#dataSaida').val(new Date().toLocaleDateString());
         $('#horaSaida').val(new Date().toLocaleTimeString());
-        var modal = new Foundation.Reveal($('#finalizeModal'));
-        modal.open();
+        $('#finalizeModal').addClass('is-active');
 
-        $('#finalizeForm').on('submit', function(event) {
+        $('#finalizeForm').off('submit').on('submit', function(event) {
             event.preventDefault();
             const id = data.id;
             const data_saida = new Date().toISOString().split('T')[0];
@@ -45,9 +56,15 @@ $(document).ready(function() {
               .then(data => {
                   alert('Visita encerrada com sucesso!');
                   table.ajax.reload();
+                  $('#finalizeModal').removeClass('is-active');
               }).catch(error => {
                   console.error('Error:', error);
+                  alert('Erro ao encerrar a visita. Por favor, tente novamente.');
               });
         });
+    });
+
+    $(document).on('click', '[data-close]', function() {
+        $(this).closest('.modal').removeClass('is-active');
     });
 });
