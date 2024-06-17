@@ -4,7 +4,6 @@ const path = require('path');
 const sequelize = require('./config/db');
 const visitorRoutes = require('./routes/visitorRoutes');
 const authRoutes = require('./routes/authRoutes');
-const { isAdmin } = require('./middleware/authMiddleware');
 
 const app = express();
 
@@ -30,7 +29,7 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-app.get('/register', isAdmin, (req, res) => {
+app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'register.html'));
 });
 

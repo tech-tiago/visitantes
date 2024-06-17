@@ -3,6 +3,7 @@ const router = express.Router();
 const visitorController = require('../controllers/visitorController');
 const authenticateToken = require('../middleware/authMiddleware');
 
+
 router.post('/', authenticateToken, visitorController.createVisitor);
 router.get('/open', authenticateToken, visitorController.getOpenVisits);
 router.put('/close/:id', authenticateToken, visitorController.closeVisit);

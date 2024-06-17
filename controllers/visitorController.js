@@ -86,7 +86,7 @@ exports.getVisitorPhoto = async (req, res) => {
       return res.status(404).json({ message: 'Visitor photo not found' });
     }
 
-    res.set('Content-Type', 'image/jpeg');
+    res.set('Content-Type', 'image/png');
     res.send(visitor.foto);
   } catch (error) {
     res.status(500).json({ message: error.message });
