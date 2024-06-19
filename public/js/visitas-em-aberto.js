@@ -12,7 +12,14 @@ $(document).ready(function() {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token') // Assumindo que o token está armazenado no localStorage
             },
-            dataSrc: ''
+            dataSrc: function(json) {
+                // Formatar as datas e horas para o formato PT-BR
+                json.forEach(function(item) {
+                    item.data_entrada = formatDatePTBR(item.data_entrada);
+                    item.hora_entrada = formatTimeWithoutSeconds(item.hora_entrada);
+                });
+                return json;
+            }
         },
         columns: [
             { data: 'nome' },
@@ -28,22 +35,22 @@ $(document).ready(function() {
         ]
     });
 
-        // Fechar modal ao clicar no fundo ou no botão de fechar
-        $('#finalizeModal [data-close], .modal-background').on('click', function() {
+    // Fechar modal ao clicar no fundo ou no botão de fechar
+    $('#finalizeModal [data-close], .modal-background').on('click', function() {
         $('#finalizeModal').removeClass('is-active');
     });
 
     $('#openVisits').on('click', '.finalizar-btn', function() {
         var data = table.row($(this).parents('tr')).data();
-        $('#dataSaida').val(new Date().toLocaleDateString());
-        $('#horaSaida').val(new Date().toLocaleTimeString());
+        $('#dataSaida').val(new Date().toLocaleDateString('pt-BR'));
+        $('#horaSaida').val(new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }));
         $('#finalizeModal').addClass('is-active');
 
         $('#finalizeForm').off('submit').on('submit', function(event) {
             event.preventDefault();
             const id = data.id;
             const data_saida = new Date().toISOString().split('T')[0];
-            const hora_saida = new Date().toTimeString().split(' ')[0];
+            const hora_saida = new Date().toTimeString().split(':').slice(0, 2).join(':');
             
             fetch(`/api/visitors/close/${id}`, {
                 method: 'PUT',
@@ -68,3 +75,26 @@ $(document).ready(function() {
         $(this).closest('.modal').removeClass('is-active');
     });
 });
+
+function formatDatePTBR(dateStr) {
+    if (!dateStr) return '';
+
+    const date = new Date(dateStr);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Mês começa em 0
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+}
+
+function formatTimeWithoutSeconds(timeStr) {
+    if (!timeStr) return '';
+
+    // Supondo que o formato original seja HH:mm:ss
+    const timeParts = timeStr.split(':');
+    if (timeParts.length >= 2) {
+        return `${timeParts[0]}:${timeParts[1]}`;
+    }
+
+    return timeStr; // Se o formato não for esperado, retornar como está
+}
