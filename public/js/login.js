@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Salvar o token no localStorage e o nível do usuário
             localStorage.setItem('token', data.token);
+            localStorage.setItem('username', username); // Salvar o nome do usuário
             localStorage.setItem('userLevel', data.level);
 
             alert('Login realizado com sucesso!');

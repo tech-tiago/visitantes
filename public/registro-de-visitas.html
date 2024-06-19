@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Visitas</title>
+    <title>Histórico de Visitas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bulma.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -16,16 +16,15 @@
         <div class="navbar-brand">
             <a class="navbar-item" href="/home.html">
                 <i class="fas fa-clipboard-list"></i>
-                <span> Registro de Visitantes</span>
+                <span>Registro de Visitantes</span>
             </a>
-            
             <a class="navbar-item" href="/registro-de-visitas.html">
                 <i class="fa fa-history"></i>
-                <span> Histórico de Visitas</span>
+                <span>Histórico de Visitas</span>
             </a>
             <a class="navbar-item" href="/visitas-em-aberto.html">
                 <i class="fas fa-folder-open"></i>
-                <span> Visitas em Aberto</span>
+                <span>Visitas em Aberto</span>
             </a>
 
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
@@ -36,13 +35,15 @@
         </div>
         <div id="navbarMenu" class="navbar-menu">
             <div class="navbar-end">
-                <a class="navbar-item" href="/register.html" id="registerLink">
-                    <i class="fas fa-user-plus"></i>
-                    <span>Cadastro</span>
-                </a>
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <a class="button is-light" id="logoutButton">
+                <div class="navbar-item has-dropdown is-hoverable">                   
+                    <a class="navbar-link" id="loggedUserName">
+                        <span class="icon is-small">
+                            <i class="fas fa-user"></i>
+                        </span>     
+                        <!-- Nome do usuário logado será inserido aqui -->    
+                    </a>
+                    <div class="navbar-dropdown is-right">
+                        <a class="navbar-item" id="logoutButton">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Logoff</span>
                         </a>

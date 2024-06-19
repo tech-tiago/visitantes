@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Função para deslogar o usuário
     function logout() {
         localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        localStorage.removeItem('userLevel');
         window.location.href = '/login.html'; // Redireciona para a página de login
     }
 
@@ -34,6 +36,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Executa a verificação uma vez quando a página é carregada
     if (!isTokenValid()) {
         logout();
+    }
+
+    // Atualiza o nome do usuário no menu
+    const username = localStorage.getItem('username');
+    if (username) {
+        document.getElementById('loggedUserName').textContent = username;
     }
 
     // Lógica de logoff
