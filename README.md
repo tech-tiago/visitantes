@@ -1,18 +1,14 @@
-
-### README.md
-
-```markdown
-# Sistema de Gestão de Visitantes
+### Sistema de Gestão de Visitantes
 
 Um sistema abrangente de gestão de visitantes para registrar, rastrear e gerenciar entradas e saídas de visitantes. Construído usando Node.js, Express e MySQL, com um front-end responsivo.
 
-## Funcionalidades
-- Registro de visitantes com captura de foto usando uma webcam.
-- Gestão de registros de visitantes abertos e fechados.
-- Login seguro e registro para administradores.
-- Rotas protegidas usando JWT para autenticação.
+## 📋 Funcionalidades
+- 📝 Registro de visitantes com captura de foto usando uma webcam.
+- 📂 Gestão de registros de visitantes abertos e fechados.
+- 🔐 Login seguro e registro para administradores.
+- 🔒 Rotas protegidas usando JWT para autenticação.
 
-## Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 ### Frontend
 - HTML5
 - JavaScript
@@ -28,7 +24,7 @@ Um sistema abrangente de gestão de visitantes para registrar, rastrear e gerenc
 - bcrypt
 - JSON Web Token (JWT)
 
-## Instalação
+## 🏗️ Instalação
 
 ### Pré-requisitos
 - Node.js
@@ -68,7 +64,7 @@ Um sistema abrangente de gestão de visitantes para registrar, rastrear e gerenc
    node app.js
    ```
 
-## Esquema do Banco de Dados
+## 🗄️ Esquema do Banco de Dados
 
 ```sql
 CREATE DATABASE registro_visitas;
@@ -95,7 +91,7 @@ CREATE TABLE visitantes (
 );
 ```
 
-## Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 ```
 sistema-gestao-visitantes/
@@ -135,14 +131,14 @@ sistema-gestao-visitantes/
 └── README.md
 ```
 
-## Uso
+## 💻 Uso
 
 1. Abra `login.html` no seu navegador e faça login com suas credenciais.
 2. Registre visitantes usando `home.html`.
 3. Gerencie visitas abertas em `visitas-em-aberto.html`.
 4. Veja o histórico de visitas em `registro-de-visitas.html`.
 
-## Endpoints da API
+## 🛣️ Endpoints da API
 
 ### Autenticação
 
@@ -277,11 +273,11 @@ sistema-gestao-visitantes/
 
 - **GET** `/api/visitors/:id`
   - Obtém detalhes de uma visita específica.
-  - Headers: `Authorization: Bearer <seu_jwt_token>`
+  - Headers
+
+: `Authorization: Bearer <seu_jwt_token>`
   ```javascript
   exports.getVisitor = async (req, res) => {
-
-
     try {
       const visit = await Visitor.findByPk(req.params.id);
       if (visit) {
@@ -295,14 +291,13 @@ sistema-gestao-visitantes/
   };
   ```
 
-## Considerações de Segurança
+## 🛡️ Considerações de Segurança
 
 - Certifique-se de que o segredo JWT usado em `authController.js` seja armazenado de forma segura e não hard-coded em ambientes de produção.
 - Use HTTPS para garantir a segurança na transmissão de dados.
 - Implemente limitação de taxa e outras melhores práticas de segurança conforme necessário.
 
-## Licença
+## 📜 Licença
 
 Este projeto é licenciado sob a licença MIT.
-```
 
