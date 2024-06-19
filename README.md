@@ -109,21 +109,27 @@ sistema-gestao-visitantes/
 ├── models/
 │   ├── User.js
 │   └── Visitor.js
-├── routes/
-│   ├── authRoutes.js
-│   └── visitorRoutes.js
 ├── public/
 │   ├── css/
 │   │   └── styles.css
 │   ├── js/
+│   │   ├──util/
+│   │   │  └── levels.js 
 │   │   ├── login.js
 │   │   ├── home.js
 │   │   ├── visitas-em-aberto.js
 │   │   └── registro-de-visitas.js
+│   ├── uploads/
 │   ├── login.html
 │   ├── home.html
 │   ├── visitas-em-aberto.html
 │   └── registro-de-visitas.html
+├── routes/
+│   ├── authRoutes.js
+│   └── visitorRoutes.js
+├── utils/
+│   └── saveImage.js
+├── .env
 ├── app.js
 ├── package.json
 └── README.md
