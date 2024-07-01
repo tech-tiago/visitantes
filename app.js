@@ -22,23 +22,27 @@ app.get('/favicon.ico', (req, res) => {
 
 // Rotas para páginas HTML
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'home.html'));
+    res.sendFile(path.join(__dirname, 'public', 'views', 'home.html'));
 });
 
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+    res.sendFile(path.join(__dirname, 'public', 'views', 'login.html'));
 });
 
 app.get('/register', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'register.html'));
+    res.sendFile(path.join(__dirname, 'public', 'views', 'register.html'));
+});
+
+app.get('/edituser', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'views', 'editUser.html'));
 });
 
 app.get('/registro-de-visitas', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'registro-de-visitas.html'));
+    res.sendFile(path.join(__dirname, 'public', 'views', 'registro-de-visitas.html'));
 });
 
 app.get('/visitas-em-aberto', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'visitas-em-aberto.html'));
+    res.sendFile(path.join(__dirname, 'public', 'views', 'visitas-em-aberto.html'));
 });
 
 // Rotas da API

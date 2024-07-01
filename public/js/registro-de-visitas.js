@@ -34,12 +34,113 @@ $(document).ready(function() {
             {
                 data: null,
                 className: 'dt-center',
-                defaultContent: '<button class="ver-btn button is-small is-primary"><i class="fa fa-eye" aria-hidden="true"></i><span>Ver</span></button>'
+                width: '200px',
+                defaultContent: '<button class="ver-btn button is-small is-primary"><i class="fa fa-eye" aria-hidden="true"></i><span>Ver</span></button> ' +
+                                '<button class="edit-btn button is-small is-warning"><i class="fa fa-edit" aria-hidden="true"></i><span>Editar</span></button>'+
+                                '<button class="delete-btn button is-small is-danger"><i class="fa fa-trash" aria-hidden="true"></i><span>Deletar</span></button>'
             }
         ],
         responsive: true
     });
 
+
+    $('#closedVisits').on('click', '.delete-btn', function() {
+        var data = table.row($(this).parents('tr')).data();
+        if (confirm(`Tem certeza que deseja deletar o visitante ${data.nome}?`)) {
+            const visitorId = data.id;
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('Token de autenticação não encontrado.');
+                return;
+            }
+    
+            $.ajax({
+                type: 'DELETE',
+                url: `/api/visitors/${visitorId}`,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                success: function(response) {
+                    console.log('Visitante deletado com sucesso:', response);
+                    alert('Visitante deletado com sucesso!');
+                    table.ajax.reload(); // Recarrega a tabela
+                },
+                error: function(err) {
+                    console.error('Erro ao deletar visitante:', err);
+                    alert('Erro ao deletar visitante. Verifique o console para mais detalhes.');
+                }
+            });
+        }
+    });
+    
+
+
+    $('#closedVisits').on('click', '.edit-btn', function() {
+        var data = table.row($(this).parents('tr')).data();
+        
+        // Preencher os dados no modal
+        $('#editVisitorForm').data('visitor-id', data.id); // Armazena o ID do visitante no formulário
+        $('#editNomeCompleto').val(data.nome);
+        $('#editDocumento').val(data.documento);
+        $('#editMotivoVisita').val(data.motivo);
+        $('#editDataEntrada').val(data.data_entrada.split('/').reverse().join('-'));
+        $('#editHoraEntrada').val(data.hora_entrada);
+        $('#editDataSaida').val(data.data_saida.split('/').reverse().join('-'));
+        $('#editHoraSaida').val(data.hora_saida);
+    
+        var modal = document.getElementById('editModal');
+        modal.classList.add('is-active');
+    });
+    
+    // Fechar modal ao clicar no fundo ou no botão de fechar
+    $('#editModal [data-close], .modal-background').on('click', function() {
+        $('#editModal').removeClass('is-active');
+    });
+    
+    // Evento de clique no botão salvar
+    $('#saveEditVisitor').on('click', function(event) {
+        event.preventDefault();
+    
+        // Recuperar o ID do visitante e outros dados do formulário
+        const visitorId = $('#editVisitorForm').data('visitor-id');
+        const nome = $('#editNomeCompleto').val();
+        const documento = $('#editDocumento').val();
+        const motivo = $('#editMotivoVisita').val();
+        const data_entrada = $('#editDataEntrada').val();
+        const hora_entrada = $('#editHoraEntrada').val();
+        const data_saida = $('#editDataSaida').val();
+        const hora_saida = $('#editHoraSaida').val();
+    
+        // Recuperar o token do localStorage
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('Token de autenticação não encontrado.');
+            return;
+        }
+    
+        // Enviar a requisição PUT para a API
+        $.ajax({
+            type: 'PUT',
+            url: `/api/visitors/${visitorId}`,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            data: JSON.stringify({ nome, documento, data_entrada, hora_entrada, motivo, data_saida, hora_saida }),
+            success: function(response) {
+                console.log('Visitante atualizado com sucesso:', response);
+                alert('Visitante atualizado com sucesso!');
+                table.ajax.reload(); // Recarrega a tabela
+                $('#editModal').removeClass('is-active'); // Fecha o modal
+            },
+            error: function(err) {
+                console.error('Erro ao atualizar visitante:', err);
+                alert('Erro ao atualizar visitante. Verifique o console para mais detalhes.');
+            }
+        });
+    });
+    
+    // Modal para visualizar
     $('#closedVisits').on('click', '.ver-btn', function() {
         var data = table.row($(this).parents('tr')).data();
         console.log(data.foto); // Adicionado para debug
@@ -125,7 +226,7 @@ $(document).ready(function() {
     // Logout button action
     $('#logoutButton').on('click', function() {
         localStorage.removeItem('token');
-        window.location.href = '/login.html'; // Redirecionar para a página de login
+        window.location.href = '/login'; // Redirecionar para a página de login
     });
 
     // Modal close button action
@@ -137,7 +238,8 @@ $(document).ready(function() {
 
 function formatDatePTBR(dateStr) {
     if (!dateStr) return '';
-
+    
+    //const date = new Date(dateStr + 'T00:00:00');
     const date = new Date(dateStr);
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Mês começa em 0

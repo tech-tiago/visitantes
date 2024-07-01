@@ -19,11 +19,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }).then(data => {
             console.log('Token de acesso:', data.token);
             console.log('Nível do usuário:', data.level);
+            console.log('Nome do usuário:', data.nome);
+            console.log('Foto do usuário:', data.foto);
 
             // Salvar o token no localStorage e o nível do usuário
             localStorage.setItem('token', data.token);
-            localStorage.setItem('username', username); // Salvar o nome do usuário
+            localStorage.setItem('username', username); // Salvar o nome de usuário
             localStorage.setItem('userLevel', data.level);
+            localStorage.setItem('nome', data.nome); // Salvar o nome
+            localStorage.setItem('foto', data.foto); // Salvar a foto
 
             alert('Login realizado com sucesso!');
             // Redirecionar para outra página ou fazer outra ação necessária

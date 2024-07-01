@@ -1,5 +1,63 @@
+const path = require('path');
+const fs = require('fs');
 const saveImage = require('../utils/saveImage');
 const Visitor = require('../models/Visitor');
+
+exports.updateVisitor = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nome, documento, data_entrada, hora_entrada, motivo, data_saida, hora_saida } = req.body;
+
+        const visitor = await Visitor.findByPk(id);
+        if (!visitor) {
+            return res.status(404).json({ message: 'Visitor not found' });
+        }
+
+        visitor.nome = nome;
+        visitor.documento = documento;
+        visitor.data_entrada = data_entrada;
+        visitor.hora_entrada = hora_entrada;
+        visitor.motivo = motivo;
+        visitor.data_saida = data_saida;
+        visitor.hora_saida = hora_saida;
+
+        await visitor.save();
+
+        res.status(200).json(visitor);
+    } catch (error) {
+        console.error('Erro ao atualizar visitante:', error);
+        res.status(500).json({ message: 'Erro ao atualizar visitante', error: error.message });
+    }
+};
+
+
+exports.deleteVisitor = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const visitor = await Visitor.findByPk(id);
+      if (!visitor) {
+          return res.status(404).json({ message: 'Visitor not found' });
+      }
+
+      // Deletar a imagem associada
+      if (visitor.foto) {
+          const filePath = path.join(__dirname, '..', 'uploads', path.basename(visitor.foto));
+          fs.unlink(filePath, (err) => {
+              if (err) {
+                  console.error('Erro ao deletar a imagem:', err);
+              }
+          });
+      }
+
+      await visitor.destroy();
+
+      res.status(200).json({ message: 'Visitor deleted successfully' });
+  } catch (error) {
+      console.error('Erro ao deletar visitante:', error);
+      res.status(500).json({ message: 'Erro ao deletar visitante', error: error.message });
+  }
+};
+
 
 exports.createVisitor = async (req, res) => {
     try {

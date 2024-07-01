@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
 const bcrypt = require('bcryptjs');
+const sequelize = require('../config/db');
 
 const User = sequelize.define('User', {
   username: {
@@ -12,41 +12,32 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  nome: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  foto: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   level: {
-    type: DataTypes.ENUM('normal', 'admin'),
+    type: DataTypes.STRING,
     allowNull: false,
     defaultValue: 'normal'
   }
-});
-
-// Função para criar um usuário padrão se ele não existir
-const createDefaultUser = async () => {
-  const defaultUser = {
-    username: 'root',
-    password: '$2a$10$pds2eBrdYwVD3U2adqx2wO2VQa0pIMfvbzasTJKJXUfxu6t/DgU9O',
-    level: 'admin'
-  };
-
-  try {
-    const user = await User.findOne({ where: { username: defaultUser.username } });
-    if (!user) {
-      await User.create(defaultUser);
-      console.log('Usuário padrão criado com sucesso.');
-    } else {
-      console.log('Usuário padrão já existe.');
+}, {
+  hooks: {
+    beforeCreate: async (user) => {
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(user.password, salt);
+    },
+    beforeUpdate: async (user) => {
+      if (user.changed('password')) {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
+      }
     }
-  } catch (error) {
-    console.error('Erro ao criar o usuário padrão:', error);
   }
-};
-
-// Chame a função para criar o usuário padrão após a sincronização do modelo
-sequelize.sync()
-  .then(() => {
-    createDefaultUser();
-  })
-  .catch(error => {
-    console.error('Erro ao sincronizar o banco de dados:', error);
-  });
+});
 
 module.exports = User;

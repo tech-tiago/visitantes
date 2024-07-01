@@ -21,9 +21,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Função para deslogar o usuário
     function logout() {
         localStorage.removeItem('token');
+        localStorage.removeItem('nome');
         localStorage.removeItem('username');
+        localStorage.removeItem('foto');
         localStorage.removeItem('userLevel');
-        window.location.href = '/login.html'; // Redireciona para a página de login
+        window.location.href = '/login'; // Redireciona para a página de login
     }
 
     // Verifica o token a cada 5 minutos
@@ -38,10 +40,18 @@ document.addEventListener('DOMContentLoaded', function() {
         logout();
     }
 
-    // Atualiza o nome do usuário no menu
-    const username = localStorage.getItem('username');
-    if (username) {
-        document.getElementById('loggedUserName').textContent = username;
+    // Atualiza o nome e a imagem do usuário no menu
+    const nome = localStorage.getItem('nome');
+    const foto = localStorage.getItem('foto');
+    
+    console.log('Nome:', nome);
+    console.log('Foto:', foto);
+
+    if (nome) {
+        document.getElementById('loggedName').textContent = nome;
+    }
+    if (foto) {
+        document.getElementById('userImage').src = `../images/${foto}`;
     }
 
     // Lógica de logoff

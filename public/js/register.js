@@ -1,15 +1,25 @@
 $(document).ready(function() {
+    $('#foto').change(function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#imagePreview').attr('src', e.target.result).show();
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
     $('#registerForm').submit(function(event) {
         event.preventDefault();
-        var username = $('#username').val();
-        var password = $('#password').val();
-        var level = $('#level').val();
-        
+        const formData = new FormData(this);
+
         $.ajax({
             url: '/api/auth/register',
             method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ username: username, password: password, level: level }),
+            processData: false,
+            contentType: false,
+            data: formData,
             success: function(response) {
                 alert('Usuário registrado com sucesso!');
             },
