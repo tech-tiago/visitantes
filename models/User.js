@@ -55,22 +55,12 @@ const createDefaultAdminUser = async () => {
     if (!adminUser) {
       // Se o usuário admin não existir, cria-o
       await User.create(defaultAdmin);
-      console.log('Default admin user created');
+      console.log('Usuário administrador padrão criado');
     } else {
-      // Se o usuário admin existir, verifica se a senha precisa ser atualizada (por exemplo, se a senha padrão foi alterada)
-      const isPasswordCorrect = await bcrypt.compare(defaultAdmin.password, adminUser.password);
-      if (!isPasswordCorrect) {
-        // Atualiza a senha se for diferente
-        const salt = await bcrypt.genSalt(10);
-        adminUser.password = await bcrypt.hash(defaultAdmin.password, salt);
-        await adminUser.save();
-        console.log('Default admin user password updated');
-      } else {
-        console.log('Default admin user already exists');
-      }
+      console.log('Usuário já existe no banco de dados');
     }
   } catch (error) {
-    console.error('Error creating or updating default admin user:', error);
+    console.error('Erro ao criar ou atualizar o usuário administrador padrão:', error);
   }
 };
 
@@ -79,7 +69,7 @@ const createDefaultAdminUser = async () => {
     await sequelize.sync();
     await createDefaultAdminUser();
   } catch (error) {
-    console.error('Error syncing the database and creating default admin user:', error);
+    console.error('Erro ao sincronizar o banco de dados e criar o usuário administrador padrão:', error);
   }
 })();
 

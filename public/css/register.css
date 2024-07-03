@@ -1,13 +1,5 @@
-/* Estilos personalizados */
-.navbar-item i {
-    margin-right: 5px;
-  }
-  
-.button i {
-    margin-right: 5px;
-  }
-  
-/* Estilização personalizada para o modal */
+
+  /* Estilização personalizada para o modal */
 .modal-card {
     max-width: 800px;
     width: 100%;
@@ -24,8 +16,9 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-@media screen and (max-width: 768px) {
-    .modal-card {
-        max-width: 100%;
-    }
+.image-preview {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
 }

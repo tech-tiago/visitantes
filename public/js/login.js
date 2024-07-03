@@ -29,12 +29,10 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('nome', data.nome); // Salvar o nome
             localStorage.setItem('foto', data.foto); // Salvar a foto
 
-            alert('Login realizado com sucesso!');
-            // Redirecionar para outra página ou fazer outra ação necessária
             window.location.href = '/'; // Redirecionar para a página principal
         }).catch(error => {
             console.error('Erro:', error);
-            alert('Credenciais inválidas. Por favor, tente novamente.');
+            showAlert('Credenciais inválidas. Por favor, tente novamente.', 'danger');
         });
     });
 });

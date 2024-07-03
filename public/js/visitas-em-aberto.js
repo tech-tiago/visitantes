@@ -61,12 +61,12 @@ $(document).ready(function() {
                 body: JSON.stringify({ data_saida, hora_saida })
             }).then(response => response.json())
               .then(data => {
-                  alert('Visita encerrada com sucesso!');
+                showAlert('Visita encerrada com sucesso!', 'success');
                   table.ajax.reload();
                   $('#finalizeModal').removeClass('is-active');
               }).catch(error => {
                   console.error('Error:', error);
-                  alert('Erro ao encerrar a visita. Por favor, tente novamente.');
+                  showAlert('Erro ao encerrar a visita. Por favor, tente novamente.', 'danger');
               });
         });
     });
@@ -74,7 +74,20 @@ $(document).ready(function() {
     $(document).on('click', '[data-close]', function() {
         $(this).closest('.modal').removeClass('is-active');
     });
-});
+    });
+
+    // Toggle navbar menu
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+        if ($navbarBurgers.length > 0) {
+            $navbarBurgers.forEach(el => {
+                el.addEventListener('click', () => {
+                    const target = el.dataset.target;
+                    const $target = document.getElementById(target);
+                    el.classList.toggle('is-active');
+                    $target.classList.toggle('is-active');
+             });
+        });
+    }
 
 function formatDatePTBR(dateStr) {
     if (!dateStr) return '';

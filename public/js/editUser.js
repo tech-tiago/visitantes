@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchUserInfo() {
-        fetch('/api/auth/user', {
+        fetch('/api/auth/user-info', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -21,12 +21,14 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('username').value = data.username;
             document.getElementById('nome').value = data.nome;
             if (data.foto) {
-                document.getElementById('currentFoto').src = `../images/${data.foto}`;
+                const photoUrl = `../images/${data.foto}`;
+                document.getElementById('currentFoto').src = photoUrl;
+                document.getElementById('userImage').src = photoUrl;
             }
-            document.getElementById('loggedUserName').textContent = data.nome;
+            document.getElementById('loggedName').textContent = data.nome;
         }).catch(error => {
             console.error('Erro:', error);
-            alert('Erro ao carregar informações do usuário');
+            showAlert('Erro ao carregar informações do usuário', 'danger');
         });
     }
 
@@ -47,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('foto', fotoFile);
         }
 
-        fetch('/api/auth/update', {
+        fetch('/api/auth/update-user', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -59,11 +61,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             return response.json();
         }).then(data => {
-            alert('Usuário atualizado com sucesso!');
+            showAlert('Usuário atualizado com sucesso!', 'success');
             fetchUserInfo();
         }).catch(error => {
             console.error('Erro:', error);
-            alert('Erro ao atualizar usuário');
+            showAlert('Erro ao atualizar usuário', 'danger');
         });
     });
 
@@ -73,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById('currentFoto').src = e.target.result;
+                document.getElementById('userImage').src = e.target.result;
             };
             reader.readAsDataURL(file);
         }

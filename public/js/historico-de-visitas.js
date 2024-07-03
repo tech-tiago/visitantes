@@ -44,35 +44,56 @@ $(document).ready(function() {
     });
 
 
-    $('#closedVisits').on('click', '.delete-btn', function() {
-        var data = table.row($(this).parents('tr')).data();
-        if (confirm(`Tem certeza que deseja deletar o visitante ${data.nome}?`)) {
-            const visitorId = data.id;
-            const token = localStorage.getItem('token');
-            if (!token) {
-                console.error('Token de autenticação não encontrado.');
-                return;
+// Abrir modal de confirmação ao clicar no botão de deletar
+$('#closedVisits').on('click', '.delete-btn', function() {
+    var data = table.row($(this).parents('tr')).data();
+    $('#visitorNameToDelete').text(data.nome); // Define o nome do visitante no modal
+
+    // Mostrar modal
+    $('#confirmDeleteModal').addClass('is-active');
+
+    // Ação ao clicar em confirmar
+    $('#confirmDeleteButton').on('click', function() {
+        const visitorId = data.id;
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('Token de autenticação não encontrado.');
+            return;
+        }
+
+        $.ajax({
+            type: 'DELETE',
+            url: `/api/visitors/${visitorId}`,
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            success: function(response) {
+                console.log('Visitante deletado com sucesso:', response);
+                showAlert('Visitante deletado com sucesso!', 'success');
+                table.ajax.reload(); // Recarrega a tabela
+                $('#confirmDeleteModal').removeClass('is-active'); // Fecha o modal
+            },
+            error: function(err) {
+                console.error('Erro ao deletar visitante:', err);
+                showAlert('Erro ao deletar visitante. Verifique o console para mais detalhes.', 'danger');
+                $('#confirmDeleteModal').removeClass('is-active'); // Fecha o modal
             }
-    
-            $.ajax({
-                type: 'DELETE',
-                url: `/api/visitors/${visitorId}`,
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-                success: function(response) {
-                    console.log('Visitante deletado com sucesso:', response);
-                    alert('Visitante deletado com sucesso!');
-                    table.ajax.reload(); // Recarrega a tabela
-                },
-                error: function(err) {
-                    console.error('Erro ao deletar visitante:', err);
-                    alert('Erro ao deletar visitante. Verifique o console para mais detalhes.');
-                }
-            });
+        });
+    });
+
+    // Fechar modal ao clicar no fundo ou no botão de fechar
+    $('#confirmDeleteModal').on('click', function(event) {
+        if ($(event.target).hasClass('modal-background') || $(event.target).hasClass('delete')) {
+            $('#confirmDeleteModal').removeClass('is-active');
         }
     });
-    
+
+    // Fechar modal ao clicar em cancelar
+    $('#cancelDeleteButton').on('click', function() {
+        $('#confirmDeleteModal').removeClass('is-active');
+    });
+});
+
 
 
     $('#closedVisits').on('click', '.edit-btn', function() {
@@ -129,13 +150,13 @@ $(document).ready(function() {
             data: JSON.stringify({ nome, documento, data_entrada, hora_entrada, motivo, data_saida, hora_saida }),
             success: function(response) {
                 console.log('Visitante atualizado com sucesso:', response);
-                alert('Visitante atualizado com sucesso!');
+                showAlert('Visitante atualizado com sucesso!', 'success');
                 table.ajax.reload(); // Recarrega a tabela
                 $('#editModal').removeClass('is-active'); // Fecha o modal
             },
             error: function(err) {
                 console.error('Erro ao atualizar visitante:', err);
-                alert('Erro ao atualizar visitante. Verifique o console para mais detalhes.');
+                showAlert('Erro ao atualizar visitante. Verifique o console para mais detalhes.', 'danger');
             }
         });
     });
@@ -200,12 +221,12 @@ $(document).ready(function() {
             data: JSON.stringify({ nome, documento, data_entrada, hora_entrada, foto, motivo }),
             success: function(response) {
                 console.log('Visitante registrado com sucesso:', response);
-                alert('Visitante registrado com sucesso!');
+                showAlert('Visitante registrado com sucesso!', 'success');
                 // Pode redirecionar ou realizar outra ação necessária
             },
             error: function(err) {
                 console.error('Erro ao registrar visitante:', err);
-                alert('Erro ao registrar visitante. Verifique o console para mais detalhes.');
+                showAlert('Erro ao registrar visitante. Verifique o console para mais detalhes.', 'danger');
             }
         });
     });

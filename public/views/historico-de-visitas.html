@@ -58,6 +58,7 @@
 
 <div class="container mt-5">
     <div class="box">
+        <div id="alert-container"></div>
         <h2 class="title">Histórico de Visitas</h2>
         <div class="table-container">
             <table id="closedVisits" class="table is-striped is-hoverable is-fullwidth">
@@ -78,6 +79,24 @@
                 </tbody>
             </table>
         </div>
+    </div>
+</div>
+
+<!-- Confirm Delete Modal -->
+<div id="confirmDeleteModal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Confirmação de Exclusão</p>
+            <button class="delete" aria-label="close" id="closeDeleteModal" data-close></button>
+        </header>
+        <section class="modal-card-body">
+            <p>Tem certeza que deseja deletar o visitante <span id="visitorNameToDelete"></span>?</p>
+        </section>
+        <footer class="modal-card-foot">
+            <button id="confirmDeleteButton" class="button is-danger">Confirmar</button>
+            <button class="button" id="cancelDeleteButton" data-close>Cancelar</button>
+        </footer>
     </div>
 </div>
 
@@ -190,6 +209,6 @@
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bulma.js"></script>
 <script src="../js/historico-de-visitas.js"></script>
 <script src="../js/logoff.js"></script>
-
+<script src="../js/util/alert.js"></script>
 </body>
 </html>

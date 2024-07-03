@@ -3,16 +3,14 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const authenticateToken = require('../middleware/authMiddleware');
 
-// Rota para registrar um novo usuário
+
+// Rotas de autenticação
 router.post('/register', authController.register);
-
-// Rota para fazer login
 router.post('/login', authController.login);
+router.get('/user-info', authenticateToken, authController.getUserInfo);
+router.put('/update-user', authenticateToken, authController.updateUser); // Certifique-se de que esta linha está correta
 
-// Rota para obter informações do usuário logado
-router.get('/user', authenticateToken, authController.getUserInfo);
-
-// Rota para atualizar informações do usuário logado
-router.post('/update', authenticateToken, authController.updateUser);
+// Rota para obter a lista de usuários
+router.get('/users', authenticateToken, authController.getUsers);
 
 module.exports = router;

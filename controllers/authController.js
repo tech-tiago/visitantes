@@ -25,11 +25,9 @@ exports.register = async (req, res) => {
     try {
       const { username, password, nome } = req.body;
       const foto = req.file ? req.file.filename : null;
-      console.log('Senha original:', password);
 
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = await User.create({ username, password: hashedPassword, nome, foto });
-      console.log('Usuário registrado:', user);
 
       res.status(201).json({ message: 'Usuário registrado com sucesso!' });
     } catch (error) {
@@ -58,7 +56,6 @@ exports.login = async (req, res) => {
 
     res.json({ token, level: user.level, nome: user.nome, foto: user.foto });
   } catch (error) {
-    console.error('Erro ao fazer login:', error);
     res.status(500).json({ message: 'Erro ao fazer login' });
   }
 };
@@ -106,4 +103,15 @@ exports.updateUser = async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   });
+};
+
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: ['id', 'nome', 'username', 'level', 'foto']
+    });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };

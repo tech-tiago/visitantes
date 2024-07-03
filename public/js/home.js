@@ -39,16 +39,6 @@ document.addEventListener('DOMContentLoaded', function() {
         photoModal.classList.remove('is-active');
     });
 
-    // Evento para abrir dropdown de data ao clicar no input
-    document.getElementById('dataEntrada').addEventListener('focus', function() {
-        this.showPicker();
-    });
-
-    // Evento para abrir dropdown de hora ao clicar no input
-    document.getElementById('horaEntrada').addEventListener('focus', function() {
-        this.showPicker();
-    });
-
     document.getElementById('visitorForm').addEventListener('submit', function(event) {
         event.preventDefault();
         const nome = document.getElementById('nomeCompleto').value;
@@ -61,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Recuperar o token do localStorage
         const token = localStorage.getItem('token');
         if (!token) {
-            console.error('Token de autenticação não encontrado.');
+            showAlert('Token de autenticação não encontrado.', 'danger');
             return;
         }
 
@@ -74,10 +64,11 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify({ nome, documento, data_entrada, hora_entrada, foto, motivo })
         }).then(response => response.json())
           .then(data => {
-              alert('Visitante registrado com sucesso!');
+              showAlert('Visitante registrado com sucesso!', 'success');
               window.location.reload(); // Recarregar a página após o cadastro
           }).catch(error => {
               console.error('Erro:', error);
+              showAlert('Ocorreu um erro ao registrar o visitante.', 'danger');
           });
     });
 
@@ -89,9 +80,11 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(function(err) {
                 console.log("Ocorreu um erro ao acessar a câmera: " + err);
+                showAlert('Ocorreu um erro ao acessar a câmera.', 'danger');
             });
     } else {
         console.error('getUserMedia is not supported on your browser!');
+        showAlert('Seu navegador não suporta acesso à câmera.', 'danger');
     }
 
     // Fechar modal ao clicar no fundo ou no botão de fechar
@@ -106,4 +99,5 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('.navbar-burger').classList.toggle('is-active');
         document.querySelector('.navbar-menu').classList.toggle('is-active');
     });
+
 });

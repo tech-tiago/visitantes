@@ -1,21 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuário</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bulma.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../css/register.css">
     <link rel="stylesheet" href="../css/menu.css">
-    <style>
-        .image-preview {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-    </style>
 </head>
 <body>
 
@@ -62,62 +55,97 @@
         </div>
     </nav>
 
-<div class="container mt-5">
-    <div class="box">
-        <h1 class="title">Registro de Usuário</h1>
-        <form id="registerForm" enctype="multipart/form-data">
-          <div class="field">
-            <label class="label" for="nome">Nome Completo</label>
-            <div class="control">
-                <input class="input" type="text" id="nome" name="nome" required>
+    <div class="container mt-5">
+        <div class="box">
+            <div id="alert-container"></div>
+            <h1 class="title">Usuários Registrados</h1>
+            <div class="buttons">
+                <button class="button is-primary" id="addUserBtn">Adicionar Usuário</button>
+            </div>
+            <div class="table-container">
+                <table id="userTable" class="table is-striped is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Username</th>
+                            <th>Nível</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dados populados via JS -->
+                    </tbody>
+                </table>
             </div>
         </div>
-            <div class="field">
-                <label class="label" for="username">Nome de Usuário</label>
-                <div class="control">
-                    <input class="input" type="text" id="username" name="username" required>
-                </div>
-            </div>
-            <div class="field">
-                <label class="label" for="password">Senha</label>
-                <div class="control">
-                    <input class="input" type="password" id="password" name="password" required>
-                </div>
-            </div>
-            <div class="field">
-                <label class="label" for="foto">Foto</label>
-                <div class="control">
-                    <input class="input" type="file" id="foto" name="foto" accept="image/*">
-                </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <img id="imagePreview" class="image-preview" src="" alt="Preview da imagem" style="display: none;">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Nível de Usuário</label>
-                <div class="control">
-                    <div class="select">
-                        <select id="level" name="level" required>
-                            <option value="">Selecione o nível</option>
-                            <option value="normal">Normal</option>
-                            <option value="admin">Administrador</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <button class="button is-primary" type="submit">Registrar</button>
-                </div>
-            </div>
-        </form>
     </div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="../js/register.js"></script>
-<script src="../js/logoff.js"></script>
+    <!-- Modal de cadastro de usuário -->
+    <div id="userModal" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Registrar Usuário</p>
+                <button class="delete" aria-label="close" data-close></button>
+            </header>
+            <section class="modal-card-body">
+                <form id="userForm" enctype="multipart/form-data">
+                    <div class="field">
+                        <label class="label" for="nome">Nome Completo</label>
+                        <div class="control">
+                            <input class="input" type="text" id="nome" name="nome" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="username">Nome de Usuário</label>
+                        <div class="control">
+                            <input class="input" type="text" id="username" name="username" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="password">Senha</label>
+                        <div class="control">
+                            <input class="input" type="password" id="password" name="password" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="foto">Foto</label>
+                        <div class="control">
+                            <input class="input" type="file" id="foto" name="foto" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <img id="imagePreview" class="image-preview" src="" alt="Preview da imagem" style="display: none;">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Nível de Usuário</label>
+                        <div class="control">
+                            <div class="select">
+                                <select id="level" name="level" required>
+                                    <option value="">Selecione o nível</option>
+                                    <option value="normal">Normal</option>
+                                    <option value="admin">Administrador</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-primary" type="submit">Registrar</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bulma.js"></script>
+    <script src="../js/register.js"></script>
+    <script src="../js/logoff.js"></script>
+    <script src="../js/util/alert.js"></script>
 </body>
 </html>
