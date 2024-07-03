@@ -37,8 +37,8 @@ app.get('/edituser', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'editUser.html'));
 });
 
-app.get('/registro-de-visitas', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'views', 'registro-de-visitas.html'));
+app.get('/historico-de-visitas', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'views', 'historico-de-visitas.html'));
 });
 
 app.get('/visitas-em-aberto', (req, res) => {

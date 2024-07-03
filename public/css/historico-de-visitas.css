@@ -17,6 +17,10 @@
     padding: 2rem;
 }
 
+.button {
+    margin-right: 3px; 
+}
+
 #viewFoto {
     max-width: 100%;
     height: auto;

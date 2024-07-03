@@ -34,8 +34,8 @@ $(document).ready(function() {
             {
                 data: null,
                 className: 'dt-center',
-                width: '200px',
-                defaultContent: '<button class="ver-btn button is-small is-primary"><i class="fa fa-eye" aria-hidden="true"></i><span>Ver</span></button> ' +
+                width: '250px',
+                defaultContent: '<button class="ver-btn button is-small is-primary"><i class="fa fa-eye" aria-hidden="true"></i><span>Ver</span></button>' +
                                 '<button class="edit-btn button is-small is-warning"><i class="fa fa-edit" aria-hidden="true"></i><span>Editar</span></button>'+
                                 '<button class="delete-btn button is-small is-danger"><i class="fa fa-trash" aria-hidden="true"></i><span>Deletar</span></button>'
             }
