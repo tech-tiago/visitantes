@@ -17,7 +17,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // Rota para o favicon.ico
 app.get('/favicon.ico', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'favicon.ico'));
+    res.sendFile(path.join(__dirname, 'public', 'views', 'favicon.ico'));
 });
 
 // Rotas para páginas HTML
