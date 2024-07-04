@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchUserInfo() {
-        fetch('/api/auth/user-info', {
+        fetch('/api/auth/user', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.foto) {
                 const photoUrl = `../images/${data.foto}`;
                 document.getElementById('currentFoto').src = photoUrl;
-                document.getElementById('userImage').src = photoUrl;
             }
             document.getElementById('loggedName').textContent = data.nome;
         }).catch(error => {
@@ -49,8 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('foto', fotoFile);
         }
 
-        fetch('/api/auth/update-user', {
-            method: 'POST',
+        fetch('/api/auth/update', {
+            method: 'PUT', // Use PUT ou POST conforme necessário
             headers: {
                 'Authorization': `Bearer ${token}`
             },
@@ -62,7 +61,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         }).then(data => {
             showAlert('Usuário atualizado com sucesso!', 'success');
-            fetchUserInfo();
+            // Como não há tabela DataTables visível no HTML fornecido, removi a chamada para 'table.ajax.reload();'
+            $('#editUserModal').removeClass('is-active'); // Exemplo de remoção de modal ativo, ajuste conforme necessário
         }).catch(error => {
             console.error('Erro:', error);
             showAlert('Erro ao atualizar usuário', 'danger');
@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById('currentFoto').src = e.target.result;
-                document.getElementById('userImage').src = e.target.result;
             };
             reader.readAsDataURL(file);
         }

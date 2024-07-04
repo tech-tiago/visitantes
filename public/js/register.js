@@ -67,15 +67,16 @@ $(document).ready(function() {
         $('#level').val(data.level);
         $('#imagePreview').attr('src', '/images/' + data.foto).show();
         $('#userModal').addClass('is-active');
-
+    
+        // Remover o manipulador de eventos de submit existente
         $('#userForm').off('submit').on('submit', function(event) {
             event.preventDefault();
             const formData = new FormData(this);
             formData.append('id', data.id); // Adicionar ID do usuário ao formulário
-
+    
             const token = localStorage.getItem('token'); // Obter o token do localStorage
-
-            fetch('/api/auth/update-user', {
+    
+            fetch('/api/auth/update', {
                 method: 'PUT', // Use PUT ou POST conforme necessário
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -96,6 +97,7 @@ $(document).ready(function() {
             });
         });
     });
+    
 
     $('#addUserBtn').click(function() {
         $('#userForm')[0].reset();

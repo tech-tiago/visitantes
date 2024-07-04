@@ -11,48 +11,57 @@
 </head>
 <body>
 
-<nav class="navbar is-link" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a class="navbar-item" href="/">
-            <i class="fas fa-clipboard-list"></i>
-            <span>Registro de Visitantes</span>
-        </a>
-        <a class="navbar-item" href="/historico-de-visitas">
-            <i class="fa fa-history"></i>
-            <span>Histórico de Visitas</span>
-        </a>
-        <a class="navbar-item" href="/visitas-em-aberto">
-            <i class="fas fa-folder-open"></i>
-            <span>Visitas em Aberto</span>
-        </a>
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
-
-    <div id="navbarMenu" class="navbar-menu">
-        <div class="navbar-end">
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link user-info" id="loggedUserName">
-                    <img id="userImage" src="" alt="User Image" style="border-radius: 50%; width: 32px; height: 32px;">
-                    <span id="loggedName"></span>
-                </a>
-                <div class="navbar-dropdown is-right">
-                    <a class="navbar-item" href="editUser">
-                        <i class="fas fa-cog"></i>
-                        <span>Configurações</span>
+    <nav class="navbar is-link" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Registro de Visitantes</span>
+            </a>
+            <a class="navbar-item" href="/historico-de-visitas">
+                <i class="fa fa-history"></i>
+                <span>Histórico de Visitas</span>
+            </a>
+            <a class="navbar-item" href="/visitas-em-aberto">
+                <i class="fas fa-folder-open"></i>
+                <span>Visitas em Aberto</span>
+            </a>
+            <a class="navbar-item" href="/caixa-de-entrada"> 
+                <i class="fas fa-inbox"></i> 
+                <span>Caixa de Entrada</span>
+            </a>
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+      
+        <div id="navbarMenu" class="navbar-menu">
+            <div class="navbar-end">
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link user-info" id="loggedUserName">
+                        <img id="userImage" src="" alt="User Image" style="border-radius: 50%; width: 32px; height: 32px;">
+                        <span id="loggedName"></span>
                     </a>
-                    <a class="navbar-item" id="logoutButton">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logoff</span>
-                    </a>
+                    <div class="navbar-dropdown is-right">
+                        <a class="navbar-item" href="editUser">
+                            <i class="fas fa-cog"></i>
+                            <span>Configurações</span>
+                        </a>
+                        <a class="navbar-item" href="/register">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Cadastrar Usuário</span>
+                        </a>
+                        <a class="navbar-item" id="logoutButton">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logoff</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
+    
 
 <div class="container mt-5">
     <div class="box">

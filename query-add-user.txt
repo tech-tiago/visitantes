@@ -1,0 +1,2 @@
+INSERT INTO users (nome, username, password, foto, level)
+VALUES ('Admin', 'admin', '$2a$10$i/5HWdXnWt2OB9MwPJWUDuNkCKEGuJIWSvXsew98XjhFxdaVHv4Pi', 'avatar-admin.png', 'admin');
