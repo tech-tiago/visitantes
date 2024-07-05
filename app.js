@@ -4,6 +4,7 @@ const path = require('path');
 const sequelize = require('./config/db');
 const visitorRoutes = require('./routes/visitorRoutes');
 const authRoutes = require('./routes/authRoutes');
+const biometricRoutes = require('./routes/biometricRoutes'); // Adicione isto
 
 const app = express();
 
@@ -48,13 +49,13 @@ app.get('/visitas-em-aberto', (req, res) => {
 // Rotas da API
 app.use('/api/visitors', visitorRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api', biometricRoutes); // Adicione isto
 
 // Sincroniza com o banco de dados e inicia o servidor
 sequelize.sync().then(() => {
     app.listen(3000, () => {
-        console.log('Server is running on port 3000');
+        console.log('Server running on port 3000');
     });
 }).catch(err => {
     console.error('Unable to connect to the database:', err);
 });
-

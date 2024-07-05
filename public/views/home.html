@@ -149,6 +149,34 @@
         </div>
     </div>
 
+    
+        <!-- Botão para abrir o modal de cadastro biométrico -->
+        <button id="registerBiometric" class="button is-primary">Registrar Impressão Digital</button>
+
+        <!-- Modal para registrar biometria -->
+        <div id="biometricModal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <div class="box">
+                    <h2 class="title">Registrar Impressão Digital</h2>
+                    <p>Selecione o dedo para registrar:</p>
+                    <div class="buttons">
+                        <button class="button finger-btn" data-finger="left-thumb">Polegar Esquerdo</button>
+                        <button class="button finger-btn" data-finger="left-index">Indicador Esquerdo</button>
+                        <button class="button finger-btn" data-finger="left-middle">Médio Esquerdo</button>
+                        <button class="button finger-btn" data-finger="left-ring">Anelar Esquerdo</button>
+                        <button class="button finger-btn" data-finger="left-little">Mindinho Esquerdo</button>
+                        <button class="button finger-btn" data-finger="right-thumb">Polegar Direito</button>
+                        <button class="button finger-btn" data-finger="right-index">Indicador Direito</button>
+                        <button class="button finger-btn" data-finger="right-middle">Médio Direito</button>
+                        <button class="button finger-btn" data-finger="right-ring">Anelar Direito</button>
+                        <button class="button finger-btn" data-finger="right-little">Mindinho Direito</button>
+                    </div>
+                </div>
+            </div>
+            <button class="modal-close is-large" aria-label="close"></button>
+        </div>
+
     <!-- Modal de captura de foto -->
     <div id="photoModal" class="modal">
         <div class="modal-background"></div>
@@ -189,5 +217,6 @@
     <script src="../js/home.js"></script>
     <script src="../js/logoff.js"></script>
     <script src="../js/util/alert.js"></script>
+    <script src="../js/biometria.js"></script>
 </body>
 </html>
