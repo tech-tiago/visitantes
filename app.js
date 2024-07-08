@@ -46,6 +46,10 @@ app.get('/visitas-em-aberto', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'visitas-em-aberto.html'));
 });
 
+app.get('/caixa-de-entrada', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'views', 'caixa-de-entrada.html'));
+});
+
 // Rotas da API
 app.use('/api/visitors', visitorRoutes);
 app.use('/api/auth', authRoutes);

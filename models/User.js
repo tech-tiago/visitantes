@@ -24,11 +24,11 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: 'normal'
-  },
-  fingerprint: {
-    type: DataTypes.TEXT,
-    allowNull: true
   }
+  // fingerprint: {
+  //   type: DataTypes.TEXT,
+  //   allowNull: true
+  // }
 }, {
   hooks: {
     beforeCreate: async (user) => {
