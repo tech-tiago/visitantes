@@ -16,18 +16,30 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+// Middleware para verificar se o usuário é admin
+exports.isAdmin = (req, res, next) => {
+  if (req.user.level !== 'admin') {
+    return res.status(403).json({ message: 'Acesso negado' });
+  }
+  next();
+};
+
 exports.register = async (req, res) => {
+  if (req.user.level !== 'admin') {
+    return res.status(403).json({ message: 'Acesso negado' });
+  }
+
   upload.single('foto')(req, res, async (err) => {
     if (err) {
       return res.status(500).json({ message: err.message });
     }
 
     try {
-      const { username, password, nome } = req.body;
+      const { username, password, nome, level } = req.body;
       const foto = req.file ? req.file.filename : null;
 
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await User.create({ username, password: hashedPassword, nome, foto });
+      const user = await User.create({ username, password: hashedPassword, nome, foto, level });
 
       res.status(201).json({ message: 'Usuário registrado com sucesso!' });
     } catch (error) {
@@ -52,7 +64,7 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Credenciais inválidas' });
     }
 
-    const token = jwt.sign({ id: user.id, level: user.level}, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user.id, level: user.level }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.json({ token, level: user.level, nome: user.nome, foto: user.foto });
   } catch (error) {
@@ -80,28 +92,63 @@ exports.getUserInfo = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
+  if (req.user.level !== 'admin') {
+    return res.status(403).json({ message: 'Acesso negado' });
+  }
+
   upload.single('foto')(req, res, async (err) => {
     if (err) {
       return res.status(500).json({ message: err.message });
     }
 
     try {
-      const { username, nome, password } = req.body;
-      const foto = req.file ? req.file.filename : req.user.foto;
+      const { id, username, nome, password, level } = req.body;
+      const foto = req.file ? req.file.filename : null;
 
-      const updatedFields = { username, nome, foto };
+      const updatedFields = { username, nome, foto, level };
 
       if (password) {
         const hashedPassword = await bcrypt.hash(password, 10);
         updatedFields.password = hashedPassword;
       }
 
-      await User.update(updatedFields, { where: { id: req.user.id } });
+      await User.update(updatedFields, { where: { id } });
 
       res.json({ message: 'Usuário atualizado com sucesso!' });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
+  });
+};
+
+exports.updateUserLog = async (req, res) => {
+  // Verificar se o usuário logado está atualizando seu próprio perfil
+  if (req.user.id !== parseInt(req.body.id)) {
+      return res.status(403).json({ message: 'Acesso negado' });
+  }
+
+  upload.single('foto')(req, res, async (err) => {
+      if (err) {
+          return res.status(500).json({ message: err.message });
+      }
+
+      try {
+          const { id, username, nome, password } = req.body; // Remova 'level'
+          const foto = req.file ? req.file.filename : null;
+
+          const updatedFields = { username, nome, foto };
+
+          if (password) {
+              const hashedPassword = await bcrypt.hash(password, 10);
+              updatedFields.password = hashedPassword;
+          }
+
+          await User.update(updatedFields, { where: { id } });
+
+          res.json({ message: 'Usuário atualizado com sucesso!' });
+      } catch (error) {
+          res.status(500).json({ message: error.message });
+      }
   });
 };
 

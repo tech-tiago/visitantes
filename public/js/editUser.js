@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }).then(data => {
             document.getElementById('username').value = data.username;
             document.getElementById('nome').value = data.nome;
+            document.getElementById('userId').value = data.id; // Adicione o campo 'id' ao formulário
             if (data.foto) {
                 const photoUrl = `../images/${data.foto}`;
                 document.getElementById('currentFoto').src = photoUrl;
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
 
         const formData = new FormData();
+        formData.append('id', document.getElementById('userId').value.trim()); // Adicione o campo 'id'
         formData.append('username', document.getElementById('username').value.trim());
         formData.append('nome', document.getElementById('nome').value.trim());
         const password = document.getElementById('password').value.trim();
@@ -48,8 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('foto', fotoFile);
         }
 
-        fetch('/api/auth/update', {
-            method: 'PUT', // Use PUT ou POST conforme necessário
+        fetch('/api/auth/update-profile', {
+            method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`
             },
