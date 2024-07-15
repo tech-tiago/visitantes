@@ -25,10 +25,6 @@ const User = sequelize.define('User', {
     allowNull: false,
     defaultValue: 'normal'
   }
-  // fingerprint: {
-  //   type: DataTypes.TEXT,
-  //   allowNull: true
-  // }
 }, {
   hooks: {
     beforeCreate: async (user) => {
@@ -43,5 +39,30 @@ const User = sequelize.define('User', {
     }
   }
 });
+
+// Função de inicialização
+User.initialize = async () => {
+  const adminUser = await User.findOne({ where: { username: 'admin' } });
+  if (!adminUser) {
+    await User.create({
+      nome: 'Admin',
+      username: 'admin',
+      password: '123',
+      foto: 'avatar-admin.png',
+      level: 'admin'
+    });
+  }
+
+  const suporteUser = await User.findOne({ where: { username: 'suporte' } });
+  if (!suporteUser) {
+    await User.create({
+      nome: 'Suporte Técnico',
+      username: 'suporte',
+      password: '123',
+      foto: 'avatar-admin.png',
+      level: 'normal'
+    });
+  }
+};
 
 module.exports = User;

@@ -49,26 +49,24 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  const { username, password } = req.body;
+
   try {
-    const { username, password } = req.body;
+      const user = await User.findOne({ where: { username } });
+      if (!user) {
+          return res.status(400).json({ message: 'Usuário não encontrado.' });
+      }
 
-    const user = await User.findOne({ where: { username } });
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+          return res.status(400).json({ message: 'Senha incorreta.' });
+      }
 
-    if (!user) {
-      return res.status(401).json({ message: 'Credenciais inválidas' });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(401).json({ message: 'Credenciais inválidas' });
-    }
-
-    const token = jwt.sign({ id: user.id, level: user.level }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    res.json({ token, level: user.level, nome: user.nome, foto: user.foto });
-  } catch (error) {
-    res.status(500).json({ message: 'Erro ao fazer login' });
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      return res.json({ token, level: user.level, nome: user.nome, foto: user.foto });
+  } catch (err) {
+      console.error('Erro ao fazer login:', err);
+      return res.status(500).json({ message: 'Erro no servidor. Por favor, tente novamente mais tarde.' });
   }
 };
 
@@ -122,18 +120,13 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.updateUserLog = async (req, res) => {
-  // Verificar se o usuário logado está atualizando seu próprio perfil
-  if (req.user.id !== parseInt(req.body.id)) {
-      return res.status(403).json({ message: 'Acesso negado' });
-  }
-
   upload.single('foto')(req, res, async (err) => {
       if (err) {
           return res.status(500).json({ message: err.message });
       }
-
+      
       try {
-          const { id, username, nome, password } = req.body; // Remova 'level'
+          const { id, username, nome, password } = req.body;
           const foto = req.file ? req.file.filename : null;
 
           const updatedFields = { username, nome, foto };

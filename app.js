@@ -2,10 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const sequelize = require('./config/db');
+const User = require('./models/User');
 const visitorRoutes = require('./routes/visitorRoutes');
 const authRoutes = require('./routes/authRoutes');
-const authenticateToken = require('./middleware/authMiddleware');
-const verifyAdmin = require('./middleware/verifyAdmin');
+
 
 const app = express();
 
@@ -27,11 +27,16 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'home.html'));
 });
 
+// Rotas para páginas HTML
+app.get('/home', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'views', 'home.html'));
+});
+
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'login.html'));
 });
 
-app.get('/register', authenticateToken, verifyAdmin, (req, res) => {
+app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'register.html'));
 });
 
@@ -56,10 +61,17 @@ app.use('/api/visitors', visitorRoutes);
 app.use('/api/auth', authRoutes);
 
 // Sincroniza com o banco de dados e inicia o servidor
-sequelize.sync().then(() => {
-    app.listen(3000, () => {
-        console.log('Server running on port 3000');
-    });
-}).catch(err => {
-    console.error('Unable to connect to the database:', err);
-});
+sequelize.sync().then(async () => {
+    try {
+      // Chame a função de inicialização aqui
+      await User.initialize();
+      // Inicie o servidor
+      app.listen(3000, () => {
+        console.log('Servidor rodando na porta 3000');
+      });
+    } catch (err) {
+      console.error('Erro durante a inicialização:', err);
+    }
+  }).catch(err => {
+    console.error('Erro ao sincronizar o banco de dados:', err);
+  })

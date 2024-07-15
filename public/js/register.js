@@ -1,15 +1,11 @@
 $(document).ready(function() {
     const token = localStorage.getItem('token');
-    const userLevel = localStorage.getItem('userLevel'); // Assumindo que o nível de usuário está armazenado no localStorage
-    console.log('Token obtido:', token); // Adicione este log
-
-    if (!token || userLevel !== 'admin') {
-        // Redireciona para a página de login ou outra página apropriada
-        window.location.href = '/login';
-        return;
+    const userLevel = localStorage.getItem('userLevel');
+    
+    if (userLevel !== 'admin') {
+        location.href = document.referrer;
     }
 
-    // Resto do código permanece o mesmo
     var table = $('#userTable').DataTable({
         paging: false,
         ordering: false,
@@ -75,21 +71,19 @@ $(document).ready(function() {
 
     $('#userTable').on('click', '.edit-btn', function() {
         var data = table.row($(this).parents('tr')).data();
-        // Preencher o formulário com os dados do usuário para edição
         $('#nome').val(data.nome);
         $('#username').val(data.username);
         $('#level').val(data.level);
         $('#imagePreview').attr('src', '/images/' + data.foto).show();
         $('#userModal').addClass('is-active');
 
-        // Remover o manipulador de eventos de submit existente
         $('#userForm').off('submit').on('submit', function(event) {
             event.preventDefault();
             const formData = new FormData(this);
-            formData.append('id', data.id); // Adicionar ID do usuário ao formulário
+            formData.append('id', data.id);
 
             fetch('/api/auth/update', {
-                method: 'PUT', // Use PUT ou POST conforme necessário
+                method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },
