@@ -24,9 +24,9 @@
                 <i class="fas fa-folder-open"></i>
                 <span>Visitas em Aberto</span>
             </a>
-            <a class="navbar-item" href="/caixa-de-entrada"> 
+            <a class="navbar-item" href="/mensagens"> 
                 <i class="fas fa-inbox"></i> 
-                <span>Caixa de Entrada</span>
+                <span>Mensagens</span>
             </a>
             <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
                 <span aria-hidden="true"></span>
@@ -47,7 +47,7 @@
                             <i class="fas fa-cog"></i>
                             <span>Configurações</span>
                         </a>
-                        <a class="navbar-item" href="/register">
+                        <a class="navbar-item" id="registerMenuItem" href="/register">
                             <i class="fas fa-user-plus"></i>
                             <span>Cadastrar Usuário</span>
                         </a>
@@ -149,34 +149,6 @@
         </div>
     </div>
 
-    
-        <!-- Botão para abrir o modal de cadastro biométrico -->
-        <!-- <button id="registerBiometric" class="button is-primary">Registrar Impressão Digital</button> -->
-
-        <!-- Modal para registrar biometria -->
-        <!-- <div id="biometricModal" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h2 class="title">Registrar Impressão Digital</h2>
-                    <p>Selecione o dedo para registrar:</p>
-                    <div class="buttons">
-                        <button class="button finger-btn" data-finger="left-thumb">Polegar Esquerdo</button>
-                        <button class="button finger-btn" data-finger="left-index">Indicador Esquerdo</button>
-                        <button class="button finger-btn" data-finger="left-middle">Médio Esquerdo</button>
-                        <button class="button finger-btn" data-finger="left-ring">Anelar Esquerdo</button>
-                        <button class="button finger-btn" data-finger="left-little">Mindinho Esquerdo</button>
-                        <button class="button finger-btn" data-finger="right-thumb">Polegar Direito</button>
-                        <button class="button finger-btn" data-finger="right-index">Indicador Direito</button>
-                        <button class="button finger-btn" data-finger="right-middle">Médio Direito</button>
-                        <button class="button finger-btn" data-finger="right-ring">Anelar Direito</button>
-                        <button class="button finger-btn" data-finger="right-little">Mindinho Direito</button>
-                    </div>
-                </div>
-            </div>
-            <button class="modal-close is-large" aria-label="close"></button>
-        </div> -->
-
     <!-- Modal de captura de foto -->
     <div id="photoModal" class="modal">
         <div class="modal-background"></div>
@@ -210,13 +182,12 @@
         </div>
     </div>
 
-    <!-- Input hidden para armazenar a foto como base64 -->
     <input type="hidden" id="fotoInput">
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="../js/home.js"></script>
     <script src="../js/logoff.js"></script>
     <script src="../js/util/alert.js"></script>
-    <script src="../js/biometria.js"></script>
+    <script src="../js/util/hideMenu.js"></script>
 </body>
 </html>

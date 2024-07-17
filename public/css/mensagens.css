@@ -1,0 +1,104 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+}
+
+.navbar {
+    background-color: #00796b;
+}
+
+.navbar-item {
+    color: white;
+}
+
+.navbar-item:hover {
+    background-color: #004d40;
+    color: white;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info span {
+    margin-left: 8px;
+}
+
+.inbox-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.sidebar .menu-list a {
+    display: flex;
+    align-items: center;
+    color: #333;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    transition: background-color 0.2s;
+}
+
+.sidebar .menu-list a:hover {
+    background-color: #e0f2f1;
+}
+
+.sidebar .menu-list a.is-active {
+    background-color: #b2dfdb;
+    font-weight: bold;
+}
+
+.sidebar .menu-list a i {
+    margin-right: 10px;
+}
+
+.button.is-primary {
+    background-color: #00796b;
+    border-color: transparent;
+    color: white;
+}
+
+.button.is-primary:hover {
+    background-color: #004d40;
+    border-color: transparent;
+}
+
+.message-list, .message-content {
+    padding: 20px;
+}
+
+.message-list {
+    background-color: #f9f9f9;
+    border-right: 1px solid #e0e0e0;
+}
+
+.message-content {
+    background-color: #fff;
+}
+
+.modal-card-head, .modal-card-foot {
+    background-color: #00796b;
+    color: white;
+}
+
+.modal-card-title {
+    color: white;
+}
+
+.modal-card-foot .button {
+    margin-right: 10px;
+}
+
+.modal-card-foot .button.is-success {
+    background-color: #00796b;
+    border-color: transparent;
+}
+
+.modal-card-foot .button.is-success:hover {
+    background-color: #004d40;
+    border-color: transparent;
+}

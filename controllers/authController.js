@@ -79,6 +79,7 @@ exports.getUserInfo = async (req, res) => {
     }
 
     res.json({
+      id: user.id, // Inclua o ID do usuário
       username: user.username,
       nome: user.nome,
       foto: user.foto,
@@ -101,7 +102,14 @@ exports.updateUser = async (req, res) => {
 
     try {
       const { id, username, nome, password, level } = req.body;
-      const foto = req.file ? req.file.filename : null;
+      const user = await User.findByPk(id); // Obter o usuário atual do banco de dados
+
+      if (!user) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+      }
+
+      // Verificar se há uma nova foto
+      const foto = req.file ? req.file.filename : user.foto;
 
       const updatedFields = { username, nome, foto, level };
 
@@ -121,29 +129,37 @@ exports.updateUser = async (req, res) => {
 
 exports.updateUserLog = async (req, res) => {
   upload.single('foto')(req, res, async (err) => {
-      if (err) {
-          return res.status(500).json({ message: err.message });
+    if (err) {
+      return res.status(500).json({ message: err.message });
+    }
+
+    try {
+      const { id, username, nome, password } = req.body;
+      const user = await User.findByPk(id); // Obter o usuário atual do banco de dados
+
+      if (!user) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
       }
-      
-      try {
-          const { id, username, nome, password } = req.body;
-          const foto = req.file ? req.file.filename : null;
 
-          const updatedFields = { username, nome, foto };
+      // Verificar se há uma nova foto
+      const foto = req.file ? req.file.filename : user.foto;
 
-          if (password) {
-              const hashedPassword = await bcrypt.hash(password, 10);
-              updatedFields.password = hashedPassword;
-          }
+      const updatedFields = { username, nome, foto };
 
-          await User.update(updatedFields, { where: { id } });
-
-          res.json({ message: 'Usuário atualizado com sucesso!' });
-      } catch (error) {
-          res.status(500).json({ message: error.message });
+      if (password) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        updatedFields.password = hashedPassword;
       }
+
+      await User.update(updatedFields, { where: { id } });
+
+      res.json({ message: 'Usuário atualizado com sucesso!' });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   });
 };
+
 
 exports.getUsers = async (req, res) => {
   try {

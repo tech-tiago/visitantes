@@ -52,8 +52,8 @@ app.get('/visitas-em-aberto', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'visitas-em-aberto.html'));
 });
 
-app.get('/caixa-de-entrada', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'views', 'caixa-de-entrada.html'));
+app.get('/mensagens', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'views', 'mensagens.html'));
 });
 
 // Rotas da API

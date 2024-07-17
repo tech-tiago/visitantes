@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('token');
 
     function fetchUserInfo() {
         fetch('/api/auth/user', {
@@ -14,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }).then(data => {
             document.getElementById('username').value = data.username;
             document.getElementById('nome').value = data.nome;
+            document.getElementById('userId').value = data.id; // Definindo o ID do usuário
             if (data.foto) {
                 const photoUrl = `../images/${data.foto}`;
                 document.getElementById('currentFoto').src = photoUrl;
@@ -31,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
 
         const formData = new FormData();
+        formData.append('id', document.getElementById('userId').value); // Incluindo o ID do usuário
         formData.append('username', document.getElementById('username').value.trim());
         formData.append('nome', document.getElementById('nome').value.trim());
         const password = document.getElementById('password').value.trim();
@@ -43,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         fetch('/api/auth/update-profile', {
-            method: 'PUT', // Use PUT ou POST conforme necessário
+            method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`
             },
@@ -55,8 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         }).then(data => {
             showAlert('Usuário atualizado com sucesso!', 'success');
-            // Como não há tabela DataTables visível no HTML fornecido, removi a chamada para 'table.ajax.reload();'
-            $('#editUserModal').removeClass('is-active'); // Exemplo de remoção de modal ativo, ajuste conforme necessário
+            $('#editUserModal').removeClass('is-active');
         }).catch(error => {
             console.error('Erro:', error);
             showAlert('Erro ao atualizar usuário', 'danger');
