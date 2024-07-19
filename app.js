@@ -3,8 +3,10 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const sequelize = require('./config/db');
 const User = require('./models/User');
+const messageRoutes = require('./routes/messagesRoutes');
 const visitorRoutes = require('./routes/visitorRoutes');
 const authRoutes = require('./routes/authRoutes');
+require('./models/associations');
 
 
 const app = express();
@@ -57,6 +59,7 @@ app.get('/mensagens', (req, res) => {
 });
 
 // Rotas da API
+app.use('/api/messages', messageRoutes);
 app.use('/api/visitors', visitorRoutes);
 app.use('/api/auth', authRoutes);
 

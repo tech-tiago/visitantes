@@ -1,6 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const bcrypt = require('bcryptjs');
 const sequelize = require('../config/db');
+const Message = require('./Message');
 
 const User = sequelize.define('User', {
   username: {
@@ -59,7 +60,7 @@ User.initialize = async () => {
       nome: 'Suporte Técnico',
       username: 'suporte',
       password: '123',
-      foto: 'avatar-admin.png',
+      foto: 'avatar-suporte.png',
       level: 'normal'
     });
   }

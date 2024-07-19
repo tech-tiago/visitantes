@@ -1,104 +1,135 @@
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+html, body {
+    overflow: hidden;
 }
 
-.navbar {
-    background-color: #00796b;
-}
-
-.navbar-item {
-    color: white;
-}
-
-.navbar-item:hover {
-    background-color: #004d40;
-    color: white;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-}
-
-.user-info span {
-    margin-left: 8px;
+.container {
+    height: 100vh;
+    overflow: hidden;
 }
 
 .inbox-container {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    padding: 20px;
-}
-
-.sidebar .menu-list a {
     display: flex;
-    align-items: center;
-    color: #333;
-    padding: 10px 15px;
-    border-radius: 4px;
-    margin-bottom: 5px;
-    transition: background-color 0.2s;
+    flex-direction: column;
+    height: 100%;
 }
 
-.sidebar .menu-list a:hover {
-    background-color: #e0f2f1;
+.message-list-container {
+    flex: 1;
+    border-right: 1px solid #ddd;
+    border: 1px solid #ddd; /* Adiciona uma borda à lista de mensagens */
+    margin-top: 20px; /* Adiciona margem superior para afastar a lista do topo */
+    overflow: hidden; /* Remove a rolagem */
 }
 
-.sidebar .menu-list a.is-active {
-    background-color: #b2dfdb;
-    font-weight: bold;
+.message-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
 }
 
-.sidebar .menu-list a i {
-    margin-right: 10px;
+/* Remover efeito de hover */
+.message-item:hover {
+    background-color: #fff; /* Fundo branco quando passando o mouse */
 }
 
-.button.is-primary {
-    background-color: #00796b;
-    border-color: transparent;
-    color: white;
+.message-item.read {
+    background-color: #fff;
+    font-weight: normal; /* Texto normal quando a mensagem é lida */
 }
 
-.button.is-primary:hover {
-    background-color: #004d40;
-    border-color: transparent;
+.message-item.unread {
+    background-color: #f0f0f0;
+    font-weight: bold; /* Texto em negrito quando a mensagem não foi lida */
 }
 
-.message-list, .message-content {
+.message-detail {
+    border: 1px solid #ddd;
+    border-radius: 5px;
     padding: 20px;
-}
-
-.message-list {
-    background-color: #f9f9f9;
-    border-right: 1px solid #e0e0e0;
-}
-
-.message-content {
+    margin-top: 20px;
     background-color: #fff;
 }
 
-.modal-card-head, .modal-card-foot {
-    background-color: #00796b;
-    color: white;
+.message-detail-header {
+    border-bottom: 1px solid #ddd;
 }
 
-.modal-card-title {
-    color: white;
+.message-detail-sender {
+    margin-bottom: 10px;
 }
 
-.modal-card-foot .button {
-    margin-right: 10px;
+.message-detail-content {
+    margin-top: 20px;
 }
 
-.modal-card-foot .button.is-success {
-    background-color: #00796b;
-    border-color: transparent;
+.reply-forward-section {
+    border-top: 1px solid #ddd;
+    margin-top: 40px;
+    display: none;
 }
 
-.modal-card-foot .button.is-success:hover {
-    background-color: #004d40;
-    border-color: transparent;
+#replyForwardTitle {
+    margin-top: 20px;
+}
+
+.compose-section {
+    border-top: 1px solid #ddd;
+    display: none;
+    margin-top: 40px;
+}
+
+.field {
+    margin-bottom: 10px;
+}
+
+.compose-button-container {
+    margin-bottom: 10px;
+}
+
+.title-column {
+    margin-bottom: 10px;
+}
+
+.columns-email {
+    display: flex;
+    justify-content: space-between; /* Isso distribui o espaço entre as colunas, alinhando uma à esquerda e outra à direita */
+    align-items: center; /* Alinha os itens verticalmente no centro */
+    padding: 10px; /* Adiciona algum preenchimento ao redor */
+}
+
+.column-left {
+    display: flex;
+    align-items: center; /* Alinha o conteúdo da coluna à esquerda verticalmente */
+}
+
+.column-left img {
+    margin-right: 10px; /* Espaçamento entre a imagem e o texto */
+}
+
+.column-left #senderEmail,
+.column-left #messageDate {
+    display: block;
+    font-size: 14px; /* Ajuste o tamanho da fonte conforme necessário */
+    margin: 0;
+}
+
+.column-right {
+    display: flex;
+    align-items: center; /* Alinha os botões verticalmente no centro */
+}
+
+.column-right .button {
+    margin-left: 10px; /* Espaçamento entre os botões */
+}
+
+.button {
+    margin: 0;
+}
+
+.sidebar {
+    margin-top: 20px; /* Adiciona margem superior para afastar a coluna do topo */
+}
+
+.box {
+    border: none; /* Remove a borda da caixa */
 }
