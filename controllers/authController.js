@@ -160,7 +160,6 @@ exports.updateUserLog = async (req, res) => {
   });
 };
 
-
 exports.getUsers = async (req, res) => {
   try {
     const users = await User.findAll({
@@ -169,5 +168,25 @@ exports.getUsers = async (req, res) => {
     res.json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+exports.searchUsers = async (req, res) => {
+  try {
+    const query = req.query.query;
+    if (!query) {
+      return res.status(400).json({ error: 'Query parameter is required' });
+    }
+    const users = await User.findAll({
+      where: {
+        username: {
+          [Op.like]: `%${query}%`
+        }
+      }
+    });
+    res.json(users);
+  } catch (error) {
+    console.error('Error searching users:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };

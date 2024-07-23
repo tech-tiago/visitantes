@@ -1,20 +1,39 @@
-const { Message, User } = require('../models/Message');
+const Message = require('../models/Message');
+const User = require('../models/User');
 
 // Busca todas as mensagens não excluídas
-const getAllMessages = async (req, res) => {
+exports.getAllMessages = async (req, res) => {
   try {
-    const messages = await Message.findAll({ 
-      where: { deleted: false },
-      include: [{ model: User, as: 'sender' }, { model: User, as: 'recipient' }] // Inclui informações de remetente e destinatário
+    const { type } = req.query;
+    let whereClause = { deleted: false };
+    
+    if (type === 'received') {
+      whereClause.recipientId = req.user.id;
+    } else if (type === 'sent') {
+      whereClause.senderId = req.user.id;
+    } else if (type === 'archived') {
+      whereClause.recipientId = req.user.id;
+      whereClause.archived = true;
+    } else if (type === 'deleted') {
+      whereClause.recipientId = req.user.id;
+      whereClause.deleted = true;
+    }
+    
+    const messages = await Message.findAll({
+      where: whereClause,
+      include: [{ model: User, as: 'sender' }, { model: User, as: 'recipient' }]
     });
+
+    console.log('Fetched messages:', messages);
     res.json(messages);
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao buscar mensagens' });
+    console.error('Error fetching messages:', error);
+    res.status(500).json({ error: 'Erro ao buscar mensagens', details: error.message });
   }
 };
 
 // Busca uma mensagem pelo ID
-const getMessageById = async (req, res) => {
+exports.getMessageById = async (req, res) => {
   try {
     const message = await Message.findByPk(req.params.id, {
       include: [{ model: User, as: 'sender' }, { model: User, as: 'recipient' }] // Inclui informações de remetente e destinatário
@@ -30,7 +49,7 @@ const getMessageById = async (req, res) => {
 };
 
 // Cria uma nova mensagem
-const createMessage = async (req, res) => {
+exports.createMessage = async (req, res) => {
   try {
     const newMessage = await Message.create({
       ...req.body,
@@ -44,7 +63,7 @@ const createMessage = async (req, res) => {
 };
 
 // Atualiza uma mensagem existente
-const updateMessage = async (req, res) => {
+exports.updateMessage = async (req, res) => {
   try {
     const message = await Message.findByPk(req.params.id);
     if (message) {
@@ -59,7 +78,7 @@ const updateMessage = async (req, res) => {
 };
 
 // Move uma mensagem para a lixeira
-const deleteMessage = async (req, res) => {
+exports.deleteMessage = async (req, res) => {
   try {
     const message = await Message.findByPk(req.params.id);
     if (message) {
@@ -74,7 +93,7 @@ const deleteMessage = async (req, res) => {
 };
 
 // Arquiva uma mensagem
-const archiveMessage = async (req, res) => {
+exports.archiveMessage = async (req, res) => {
   try {
     const message = await Message.findByPk(req.params.id);
     if (message) {
@@ -89,7 +108,7 @@ const archiveMessage = async (req, res) => {
 };
 
 // Busca todas as mensagens recebidas pelo usuário logado
-const getReceivedMessages = async (req, res) => {
+exports.getReceivedMessages = async (req, res) => {
   try {
     const messages = await Message.findAll({
       where: { recipientId: req.user.id, deleted: false },
@@ -102,10 +121,10 @@ const getReceivedMessages = async (req, res) => {
 };
 
 // Busca todas as mensagens enviadas pelo usuário logado
-const getSentMessages = async (req, res) => {
+exports.getSentMessages = async (req, res) => {
   try {
     const messages = await Message.findAll({
-      where: { senderId: req.user.id },
+      where: { senderId: req.user.id, deleted: false },
       include: [{ model: User, as: 'recipient' }]
     });
     res.json(messages);
@@ -115,7 +134,7 @@ const getSentMessages = async (req, res) => {
 };
 
 // Busca todas as mensagens arquivadas pelo usuário logado
-const getArchivedMessages = async (req, res) => {
+exports.getArchivedMessages = async (req, res) => {
   try {
     const messages = await Message.findAll({
       where: { recipientId: req.user.id, archived: true, deleted: false },
@@ -128,7 +147,7 @@ const getArchivedMessages = async (req, res) => {
 };
 
 // Busca todas as mensagens excluídas pelo usuário logado
-const getDeletedMessages = async (req, res) => {
+exports.getDeletedMessages = async (req, res) => {
   try {
     const messages = await Message.findAll({
       where: { recipientId: req.user.id, deleted: true },
@@ -141,7 +160,7 @@ const getDeletedMessages = async (req, res) => {
 };
 
 // Marca uma mensagem como lida
-const markMessageAsRead = async (req, res) => {
+exports.markMessageAsRead = async (req, res) => {
   try {
     const message = await Message.findByPk(req.params.id);
     if (message && message.recipientId === req.user.id) {
@@ -156,16 +175,4 @@ const markMessageAsRead = async (req, res) => {
   }
 };
 
-module.exports = {
-  getAllMessages,
-  getMessageById,
-  createMessage,
-  updateMessage,
-  deleteMessage,
-  archiveMessage,
-  getReceivedMessages,
-  getSentMessages,
-  markMessageAsRead,
-  getArchivedMessages,
-  getDeletedMessages
-};
+

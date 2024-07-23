@@ -1,82 +1,172 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Exemplo de mensagens
-    const messages = [
-        { id: 1, subject: 'Olá', sender: 'alice@example.com', date: '2023-05-20 10:00', body: 'Olá, tudo bem?', archived: false, deleted: false, read: false },
-        { id: 2, subject: 'Reunião', sender: 'bob@example.com', date: '2023-05-21 12:30', body: 'Vamos marcar uma reunião.', archived: false, deleted: false, read: false },
-        { id: 3, subject: 'Projeto', sender: 'carol@example.com', date: '2023-05-22 15:45', body: 'O projeto está quase pronto.', archived: false, deleted: false, read: false },
-        { id: 4, subject: 'Atualização', sender: 'dave@example.com', date: '2023-05-23 09:15', body: 'Atualização importante sobre o projeto.', archived: false, deleted: false, read: false },
-        { id: 5, subject: 'Feedback', sender: 'eve@example.com', date: '2023-05-24 11:00', body: 'Seu feedback foi recebido.', archived: false, deleted: false, read: false },
-        { id: 6, subject: 'Convite', sender: 'frank@example.com', date: '2023-05-25 14:20', body: 'Você está convidado para um evento.', archived: false, deleted: false, read: false },
-        { id: 7, subject: 'Lembrete', sender: 'grace@example.com', date: '2023-05-26 16:45', body: 'Lembre-se da reunião de amanhã.', archived: false, deleted: false, read: false },
-        { id: 8, subject: 'Oferta', sender: 'heidi@example.com', date: '2023-05-27 18:30', body: 'Aproveite nossa oferta especial.', archived: false, deleted: false, read: false },
-        { id: 9, subject: 'Resumo', sender: 'ivan@example.com', date: '2023-05-28 10:05', body: 'Resumo da reunião passada.', archived: false, deleted: false, read: false },
-        { id: 10, subject: 'Confirmação', sender: 'judy@example.com', date: '2023-05-29 13:40', body: 'Sua inscrição foi confirmada.', archived: false, deleted: false, read: false }
-    ];
-
-    // Salva as mensagens no localStorage
-    if (!localStorage.getItem('messages')) {
-        localStorage.setItem('messages', JSON.stringify(messages));
-    }
-
     loadMessages();
+    initializeComposeModal();
 });
 
-function loadMessages() {
-    const messages = JSON.parse(localStorage.getItem('messages'));
+async function fetchMessages(endpoint) {
+    const response = await fetch(`/api/${endpoint}`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+    return response.json();
+}
+
+async function loadMessages(type = 'received') {
+    const messages = await fetchMessages(`messages?type=${type}`);
     const messageList = document.querySelector('.message-list');
     messageList.innerHTML = '';
 
     messages.forEach(message => {
-        if (!message.archived && !message.deleted) {
-            const messageItem = document.createElement('div');
-            messageItem.classList.add('message-item', message.read ? 'read' : 'unread');
-            messageItem.innerHTML = `
-                <div class="columns">
-                    <div class="column is-10">
-                        <span class="sender">${message.sender} - ${message.subject} -</span>
-                        <span style="color: #888; font-weight: 400;">${message.body}</span>
-                    </div>
-                    <div class="column is-2 has-text-right">
-                        <small>${message.date}</small>
-                    </div>
+        const messageItem = document.createElement('div');
+        messageItem.classList.add('message-item', message.read ? 'read' : 'unread');
+        messageItem.innerHTML = `
+            <div class="columns">
+                <div class="column is-10">
+                    <span class="sender">${message.sender.username} - ${message.subject} -</span>
+                    <span style="color: #888; font-weight: 400;">${message.body}</span>
                 </div>
-            `;
-            messageItem.addEventListener('click', () => showMessage(message));
-            messageItem.addEventListener('mouseover', () => messageItem.style.backgroundColor = '#e0e0e0');
-            messageItem.addEventListener('mouseout', () => messageItem.style.backgroundColor = message.read ? '#fff' : '#f0f0f0');
-            messageList.appendChild(messageItem);
-        }
+                <div class="column is-2 has-text-right">
+                    <small>${new Date(message.date).toLocaleString()}</small>
+                </div>
+            </div>
+        `;
+        messageItem.addEventListener('click', () => showMessage(message));
+        messageItem.addEventListener('mouseover', () => messageItem.style.backgroundColor = '#e0e0e0');
+        messageItem.addEventListener('mouseout', () => messageItem.style.backgroundColor = message.read ? '#fff' : '#f0f0f0');
+        messageList.appendChild(messageItem);
     });
 }
 
-function showMessage(message) {
+async function showMessage(message) {
     document.querySelector('.message-list-container').style.display = 'none';
     document.querySelector('.message-detail').style.display = 'block';
 
     document.getElementById('messageSubject').innerText = message.subject;
-    document.getElementById('senderEmail').innerText = message.sender;
-    document.getElementById('messageDate').innerText = message.date;
+    document.getElementById('senderEmail').innerText = message.sender.username;
+    document.getElementById('messageDate').innerText = new Date(message.date).toLocaleString();
     document.querySelector('.message-detail-content').innerText = message.body;
 
-    const senderImage = document.getElementById('senderImage');
-    if (message.sender === 'alice@example.com') {
-        senderImage.src = 'https://via.placeholder.com/32?text=A';
-    } else if (message.sender === 'bob@example.com') {
-        senderImage.src = 'https://via.placeholder.com/32?text=B';
+    await markAsRead(message.id);
+}
+
+async function markAsRead(messageId) {
+    await fetch(`/api/messages/${messageId}/read`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+}
+
+function loadInbox() {
+    loadMessages('received');
+}
+
+function loadSent() {
+    loadMessages('sent');
+}
+
+function loadArchived() {
+    loadMessages('archived');
+}
+
+function loadDeleted() {
+    loadMessages('deleted');
+}
+
+function composeMessage() {
+    document.getElementById('composeModal').classList.add('is-active');
+}
+
+function initializeComposeModal() {
+    document.querySelector('.button.is-success').addEventListener('click', () => {
+        document.getElementById('composeModal').classList.add('is-active');
+    });
+
+    document.querySelector('.modal .delete').addEventListener('click', () => {
+        document.getElementById('composeModal').classList.remove('is-active');
+    });
+
+    document.querySelector('#messageTo').addEventListener('input', function(event) {
+        const input = event.target.value;
+        if (input.includes('@')) {
+            const searchTerm = input.split('@').pop().trim();
+            if (searchTerm.length > 0) {
+                fetchUsers(searchTerm);
+            }
+        }
+    });
+
+    document.querySelector('#messageTo').addEventListener('blur', () => {
+        setTimeout(() => {
+            document.querySelector('.user-suggestions').style.display = 'none';
+        }, 200);
+    });
+}
+
+async function fetchUsers(query) {
+    try {
+        const response = await fetch(`/api/users/search?query=${encodeURIComponent(query)}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Erro HTTP ${response.status}`);
+        }
+        const data = await response.json();
+        displayUserSuggestions(data);
+    } catch (error) {
+        console.error('Erro ao buscar usuários:', error);
+    }
+}
+
+function displayUserSuggestions(users) {
+    const suggestionsContainer = document.getElementById('userSuggestions');
+    if (suggestionsContainer) {
+        suggestionsContainer.innerHTML = '';
+        users.forEach(user => {
+            const userItem = document.createElement('div');
+            userItem.textContent = user.username;
+            userItem.classList.add('suggestion-item');
+            userItem.addEventListener('click', () => selectUser(user.username));
+            suggestionsContainer.appendChild(userItem);
+        });
+        suggestionsContainer.style.display = 'block';
     } else {
-        senderImage.src = 'https://via.placeholder.com/32?text=U';
+        console.error('Elemento com ID "userSuggestions" não encontrado.');
+    }
+}
+
+function selectUser(username) {
+    const recipientField = document.querySelector('#messageTo');
+    const existingRecipients = recipientField.value.split(',').map(recipient => recipient.trim());
+    
+    if (!existingRecipients.includes(username)) {
+        existingRecipients.push(username);
+        recipientField.value = existingRecipients.join(', ');
     }
 
-    // Marcar a mensagem como lida
-    const messages = JSON.parse(localStorage.getItem('messages'));
-    const messageIndex = messages.findIndex(msg => msg.id == message.id);
-    if (!messages[messageIndex].read) {
-        messages[messageIndex].read = true;
-        localStorage.setItem('messages', JSON.stringify(messages));
-    }
+    document.querySelector('.user-suggestions').style.display = 'none';
+}
 
-    // Salvar mensagem atual em localStorage para ações futuras
-    localStorage.setItem('currentMessageId', message.id);
+async function sendMessage() {
+    const to = document.getElementById('messageTo').value.split(',').map(recipient => recipient.trim());
+    const subject = document.getElementById('messageSubjectInput').value;
+    const body = document.getElementById('messageBody').value;
+
+    await fetch('/api/messages', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ to, subject, body })
+    });
+
+    document.getElementById('composeModal').classList.remove('is-active');
+    loadMessages(); // Reload messages after sending
 }
 
 function backToInbox() {
@@ -84,93 +174,7 @@ function backToInbox() {
     document.querySelector('.message-detail').style.display = 'none';
 }
 
-function showReplyForwardSection(type) {
-    const messageId = localStorage.getItem('currentMessageId');
-    const messages = JSON.parse(localStorage.getItem('messages'));
-    const message = messages.find(msg => msg.id == messageId);
-
-    document.querySelector('.reply-forward-section').style.display = 'block';
-    document.getElementById('replyForwardTitle').innerText = type === 'reply' ? 'Responder Mensagem' : 'Encaminhar Mensagem';
-    document.getElementById('replyForwardTo').value = type === 'reply' ? message.sender : '';
-    document.getElementById('replyForwardSubject').value = type === 'reply' ? `Re: ${message.subject}` : `Fwd: ${message.subject}`;
-    document.getElementById('replyForwardBody').value = `\n\n----- Mensagem Original -----\nDe: ${message.sender}\nData: ${message.date}\nAssunto: ${message.subject}\n\n${message.body}`;
-}
-
-function sendReplyForward() {
-    const to = document.getElementById('replyForwardTo').value;
-    const subject = document.getElementById('replyForwardSubject').value;
-    const body = document.getElementById('replyForwardBody').value;
-
-    const messages = JSON.parse(localStorage.getItem('messages'));
-    const newMessage = {
-        id: messages.length + 1,
-        subject: subject,
-        sender: 'eu@example.com',
-        date: new Date().toISOString().slice(0, 16).replace('T', ' '),
-        body: body,
-        archived: false,
-        deleted: false
-    };
-
-    messages.push(newMessage);
-    localStorage.setItem('messages', JSON.stringify(messages));
-    document.querySelector('.reply-forward-section').style.display = 'none';
-    loadMessages();
-}
-
-function deleteMessage() {
-    const messageId = localStorage.getItem('currentMessageId');
-    const messages = JSON.parse(localStorage.getItem('messages'));
-    const messageIndex = messages.findIndex(msg => msg.id == messageId);
-    messages[messageIndex].deleted = true;
-    localStorage.setItem('messages', JSON.stringify(messages));
-    backToInbox();
-    loadMessages();
-}
-
-function archiveMessage() {
-    const messageId = localStorage.getItem('currentMessageId');
-    const messages = JSON.parse(localStorage.getItem('messages'));
-    const messageIndex = messages.findIndex(msg => msg.id == messageId);
-    messages[messageIndex].archived = true;
-    localStorage.setItem('messages', JSON.stringify(messages));
-    backToInbox();
-    loadMessages();
-}
-
-function composeMessage() {
-    document.getElementById('composeModalTitle').innerText = 'Nova Mensagem';
-    document.getElementById('messageTo').value = '';
-    document.getElementById('messageSubjectInput').value = '';
-    document.getElementById('messageBody').value = '';
-    
-    toggleModal('composeModal');
-}
-
 function toggleModal(modalId) {
     const modal = document.getElementById(modalId);
     modal.classList.toggle('is-active');
-}
-
-function sendMessage() {
-    const to = document.getElementById('composeTo').value;
-    const subject = document.getElementById('composeSubject').value;
-    const body = document.getElementById('composeBody').value;
-
-    const messages = JSON.parse(localStorage.getItem('messages'));
-    const newMessage = {
-        id: messages.length + 1,
-        subject: subject,
-        sender: 'eu@example.com',
-        date: new Date().toISOString().slice(0, 16).replace('T', ' '),
-        body: body,
-        archived: false,
-        deleted: false
-    };
-
-    messages.push(newMessage);
-    localStorage.setItem('messages', JSON.stringify(messages));
-    document.querySelector('.compose-section').style.display = 'none';
-    loadMessages();
-    backToInbox();
 }
