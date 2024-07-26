@@ -36,7 +36,10 @@ exports.getAllMessages = async (req, res) => {
 exports.getMessageById = async (req, res) => {
   try {
     const message = await Message.findByPk(req.params.id, {
-      include: [{ model: User, as: 'sender' }, { model: User, as: 'recipient' }] // Inclui informações de remetente e destinatário
+      include: [
+        { model: User, as: 'sender', attributes: ['id', 'username', 'foto'] }, // Inclui a foto do remetente
+        { model: User, as: 'recipient', attributes: ['id', 'username'] } // Inclui informações do destinatário
+      ]
     });
     if (message) {
       res.json(message);
@@ -44,19 +47,32 @@ exports.getMessageById = async (req, res) => {
       res.status(404).json({ error: 'Mensagem não encontrada' });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao buscar mensagem' });
+    res.status(500).json({ error: 'Erro ao buscar mensagem', details: error.message });
   }
 };
 
 // Cria uma nova mensagem
 exports.createMessage = async (req, res) => {
   try {
-    const newMessage = await Message.create({
-      ...req.body,
-      senderId: req.user.id, // Define o ID do usuário logado como remetente
-      date: new Date()
-    });
-    res.status(201).json(newMessage);
+    const { to: recipientIds, subject, body } = req.body;
+    
+    if (!Array.isArray(recipientIds)) {
+      return res.status(400).json({ error: 'O campo "to" deve ser um array de IDs de destinatários.' });
+    }
+
+    const messages = [];
+    for (const recipientId of recipientIds) {
+      const newMessage = await Message.create({
+        senderId: req.user.id,
+        recipientId,
+        subject,
+        body,
+        date: new Date()
+      });
+      messages.push(newMessage);
+    }
+
+    res.status(201).json(messages);
   } catch (error) {
     res.status(500).json({ error: 'Erro ao criar mensagem' });
   }
@@ -83,7 +99,7 @@ exports.deleteMessage = async (req, res) => {
     const message = await Message.findByPk(req.params.id);
     if (message) {
       await message.update({ deleted: true });
-      res.json({ message: 'Mensagem movida para lixeira' });
+      res.json({ success: true });
     } else {
       res.status(404).json({ error: 'Mensagem não encontrada' });
     }
@@ -98,7 +114,7 @@ exports.archiveMessage = async (req, res) => {
     const message = await Message.findByPk(req.params.id);
     if (message) {
       await message.update({ archived: true });
-      res.json({ message: 'Mensagem arquivada' });
+      res.json({ success: true });
     } else {
       res.status(404).json({ error: 'Mensagem não encontrada' });
     }
@@ -168,7 +184,7 @@ exports.markMessageAsRead = async (req, res) => {
       await message.save();
       res.sendStatus(200);
     } else {
-      res.sendStatus(404);
+      res.status(404).json({ error: 'Mensagem não encontrada ou acesso negado' });
     }
   } catch (error) {
     res.status(500).json({ error: 'Erro ao marcar mensagem como lida' });

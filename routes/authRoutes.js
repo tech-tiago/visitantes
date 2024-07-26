@@ -11,6 +11,6 @@ router.get('/user', authenticateToken, authController.getUserInfo);
 router.put('/update', authenticateToken, isAdmin, authController.updateUser);
 router.put('/update-profile', authenticateToken, authController.updateUserLog); 
 router.get('/users', authenticateToken, isAdmin, authController.getUsers);
-router.get('/search', authenticateToken, authController.searchUsers);
+router.get('/users/search', authenticateToken, authController.searchUsers);
 
 module.exports = router;

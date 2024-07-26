@@ -14,5 +14,6 @@ router.get('/received', authMiddleware, messageController.getReceivedMessages);
 router.get('/sent', authMiddleware, messageController.getSentMessages);
 router.get('/archived', authMiddleware, messageController.getArchivedMessages);
 router.get('/deleted', authMiddleware, messageController.getDeletedMessages);
+router.get('/messages', authMiddleware, messageController.getAllMessages);
 
 module.exports = router;
