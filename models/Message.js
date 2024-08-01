@@ -17,6 +17,10 @@ Message.init({
     type: DataTypes.DATE,
     allowNull: false,
   },
+  inbox: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
   deleted: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,

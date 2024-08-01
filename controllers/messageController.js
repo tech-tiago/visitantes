@@ -9,6 +9,7 @@ exports.getAllMessages = async (req, res) => {
     
     if (type === 'received') {
       whereClause.recipientId = req.user.id;
+      whereClause.inbox = true;
     } else if (type === 'sent') {
       whereClause.senderId = req.user.id;
     } else if (type === 'archived') {
@@ -67,7 +68,10 @@ exports.createMessage = async (req, res) => {
         recipientId,
         subject,
         body,
-        date: new Date()
+        date: new Date(),
+        inbox: true,
+        archived: false,
+        deleted: false
       });
       messages.push(newMessage);
     }
@@ -89,7 +93,7 @@ exports.updateMessage = async (req, res) => {
       res.status(404).json({ error: 'Mensagem não encontrada' });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao atualizar mensagem' });
+    res.status500().json({ error: 'Erro ao atualizar mensagem' });
   }
 };
 
@@ -98,7 +102,7 @@ exports.deleteMessage = async (req, res) => {
   try {
     const message = await Message.findByPk(req.params.id);
     if (message) {
-      await message.update({ deleted: true });
+      await message.update({ deleted: true, archived: false, inbox: false });
       res.json({ success: true });
     } else {
       res.status(404).json({ error: 'Mensagem não encontrada' });
@@ -113,7 +117,7 @@ exports.archiveMessage = async (req, res) => {
   try {
     const message = await Message.findByPk(req.params.id);
     if (message) {
-      await message.update({ archived: true });
+      await message.update({ archived: true, inbox: false, deleted: false });
       res.json({ success: true });
     } else {
       res.status(404).json({ error: 'Mensagem não encontrada' });
@@ -127,7 +131,7 @@ exports.archiveMessage = async (req, res) => {
 exports.getReceivedMessages = async (req, res) => {
   try {
     const messages = await Message.findAll({
-      where: { recipientId: req.user.id, deleted: false },
+      where: { recipientId: req.user.id, deleted: false, inbox: true },
       include: [{ model: User, as: 'sender' }]
     });
     res.json(messages);
@@ -190,5 +194,3 @@ exports.markMessageAsRead = async (req, res) => {
     res.status(500).json({ error: 'Erro ao marcar mensagem como lida' });
   }
 };
-
-

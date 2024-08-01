@@ -68,15 +68,15 @@
                     <div class="box">
                         <div class="compose-button-container">
                             <button class="button is-success is-fullwidth" onclick="composeMessage()">
-                                <i class="fa-solid fa-pencil"></i> Enviar
+                                <i class="fa-solid fa-pencil"></i> Escrever
                             </button>
                         </div>
                         <ul class="menu-list">
                             <li><a id="inboxLink" class="menu-item" onclick="loadInbox()"><i class="fas fa-inbox"></i> Caixa de Entrada</a></li>
-                            <li><a id="sentLink" class="menu-item message-item.read" onclick="loadSent()"><i class="fas fa-paper-plane"></i> Enviadas</a></li>
-                            <li><a id="archivedLink" class="menu-item message-item.read" onclick="loadArchived()"><i class="fas fa-archive"></i> Arquivadas</a></li>
-                            <li><a id="deletedLink" class="menu-item message-item.read" onclick="loadDeleted()"><i class="fas fa-trash"></i> Lixeira</a></li>
-                        </ul>                        
+                            <li><a id="sentLink" class="menu-item" onclick="loadSent()"><i class="fas fa-paper-plane"></i> Enviadas</a></li>
+                            <li><a id="archivedLink" class="menu-item" onclick="loadArchived()"><i class="fas fa-archive"></i> Arquivadas</a></li>
+                            <li><a id="deletedLink" class="menu-item" onclick="loadDeleted()"><i class="fas fa-trash"></i> Lixeira</a></li>
+                        </ul>
                     </div>
                 </aside>
             </div>
@@ -103,7 +103,7 @@
                             <h2 class="column-left">
                                 <img id="senderPhoto" src="" alt="Foto do remetente" class="sender-photo">
                                 <div>
-                                    <span id="senderEmail"></span>
+                                    <span id="senderEmail" data-sender-id=""></span>
                                     <small id="messageDate"></small>
                                 </div>
                             </h2>
@@ -121,28 +121,24 @@
                                 <button class="button is-danger is-small delete-button" onclick="deleteMessage(message.id)">
                                     <i class="fas fa-trash"></i> Excluir
                                 </button>
-                            </div>                            
-                            
-                        </div>                        
+                            </div>
+                        </div>
 
                         <div class="message-detail-content"></div>
 
                         <div class="reply-forward-section" style="display: none;">
-                            <h3 id="messageSubject"></h3>
-                            <p id="senderName"></p>
-                            <p id="senderEmail"></p>
-                            <p id="messageDate"></p>
                             <h3 id="replyForwardTitle"></h3>
                             <div class="field">
                                 <label class="label" for="replyForwardTo">Para</label>
                                 <div class="control">
-                                    <input class="input" type="text" id="replyForwardTo">
+                                    <input class="input" type="text" id="replyForwardTo" data-recipient-id="">
+                                    <div id="replyUserSuggestions" class="user-suggestions"></div>
                                 </div>
                             </div>
                             <div class="field">
                                 <label class="label" for="replyForwardSubject">Assunto</label>
                                 <div class="control">
-                                    <input class="input" type="text" id="replyForwardSubject">
+                                    <input class="input" type="text" id="replyForwardSubject" readonly>
                                 </div>
                             </div>
                             <div class="field">
@@ -153,13 +149,14 @@
                             </div>
                             <div class="field is-grouped">
                                 <div class="control">
-                                    <button class="button is-primary">Enviar</button>
+                                    <button class="button is-primary send-reply-button" onclick="sendReplyMessage()" style="display: none;">Enviar Resposta</button>
+                                    <button class="button is-primary send-forward-button" onclick="sendForwardMessage()" style="display: none;">Encaminhar Mensagem</button>
                                 </div>
                                 <div class="control">
-                                    <button class="button is-light" id="cancelButton">Cancelar</button>
+                                    <button class="button is-light" id="cancelButton" onclick="hideReplyForwardSection()">Cancelar</button>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
 
                     </div>
                 </div>
@@ -167,42 +164,41 @@
         </div>
     </div>
 
-<!-- Modal para compor nova mensagem -->
-<div class="modal" id="composeModal">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <p class="modal-card-title" id="composeModalTitle">Nova Mensagem</p>
-            <button class="delete" aria-label="close" onclick="toggleModal('composeModal')"></button>
-        </header>
-        <section class="modal-card-body">
-            <div class="field">
-                <label class="label">Para</label>
-                <div class="control">
-                    <input class="input" type="text" id="messageTo" data-recipient-id="" placeholder="Digite @ para buscar usuários">
-                    <div id="userSuggestions" class="user-suggestions"></div>
+    <!-- Modal para compor nova mensagem -->
+    <div class="modal" id="composeModal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title" id="composeModalTitle">Nova Mensagem</p>
+                <button class="delete" aria-label="close" onclick="toggleModal('composeModal')"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="field">
+                    <label class="label">Para</label>
+                    <div class="control">
+                        <input class="input" type="text" id="messageTo" data-recipient-id="" placeholder="Digite @ para buscar usuários">
+                        <div id="composeUserSuggestions" class="user-suggestions"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="field">
-                <label class="label">Assunto</label>
-                <div class="control">
-                    <input class="input" type="text" id="messageSubjectInput">
+                <div class="field">
+                    <label class="label">Assunto</label>
+                    <div class="control">
+                        <input class="input" type="text" id="messageSubjectInput">
+                    </div>
                 </div>
-            </div>
-            <div class="field">
-                <label class="label">Mensagem</label>
-                <div class="control">
-                    <textarea class="textarea" id="messageBody"></textarea>
+                <div class="field">
+                    <label class="label">Mensagem</label>
+                    <div class="control">
+                        <textarea class="textarea" id="messageBody"></textarea>
+                    </div>
                 </div>
-            </div>
-        </section>
-        <footer class="modal-card-foot">
-            <button class="button is-success" onclick="sendMessage()">Enviar</button>
-            <button class="button" onclick="toggleModal('composeModal')">Cancelar</button>
-        </footer>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-success" onclick="sendMessage()">Enviar</button>
+                <button class="button" onclick="toggleModal('composeModal')">Cancelar</button>
+            </footer>
+        </div>
     </div>
-</div>
-
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="../js/logoff.js"></script>
