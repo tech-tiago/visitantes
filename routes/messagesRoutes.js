@@ -10,6 +10,8 @@ router.put('/:id', authMiddleware, messageController.updateMessage);
 router.delete('/:id', authMiddleware, messageController.deleteMessage);
 router.put('/:id/archive', authMiddleware, messageController.archiveMessage);
 router.put('/:id/read', authMiddleware, messageController.markMessageAsRead);
+router.put('/:id/moveToInbox', authMiddleware, messageController.moveToInbox);
+router.delete('/:id/permanentDelete', authMiddleware, messageController.permanentDeleteMessage);
 router.get('/received', authMiddleware, messageController.getReceivedMessages);
 router.get('/sent', authMiddleware, messageController.getSentMessages);
 router.get('/archived', authMiddleware, messageController.getArchivedMessages);

@@ -1,10 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
     initializeComposeModal();
 
-    document.getElementById('inboxLink').addEventListener('click', loadInbox);
-    document.getElementById('sentLink').addEventListener('click', loadSent);
-    document.getElementById('archivedLink').addEventListener('click', loadArchived);
-    document.getElementById('deletedLink').addEventListener('click', loadDeleted);
+    document.getElementById('inboxLink').addEventListener('click', () => {
+        backToInbox();
+        loadInbox();
+    });
+    document.getElementById('sentLink').addEventListener('click', () => {
+        backToInbox();
+        loadSent();
+    });
+    document.getElementById('archivedLink').addEventListener('click', () => {
+        backToInbox();
+        loadArchived();
+    });
+    document.getElementById('deletedLink').addEventListener('click', () => {
+        backToInbox();
+        loadDeleted();
+    });
 
     loadMessages('received');
 });
@@ -51,7 +63,7 @@ function showReplyForwardSection(type) {
     }
 }
 
-async function showMessage(message) {
+async function showMessage(message, type) {
     document.querySelector('.message-list-container').style.display = 'none';
     document.querySelector('.message-detail').style.display = 'block';
 
@@ -66,9 +78,53 @@ async function showMessage(message) {
 
     await markAsRead(message.id);
 
-    document.querySelector('.archive-button').onclick = () => archiveMessage(message.id);
-    document.querySelector('.delete-button').onclick = () => deleteMessage(message.id);
+    const replyButton = document.querySelector('.reply-button');
+    const forwardButton = document.querySelector('.forward-button');
+    const archiveButton = document.querySelector('.archive-button');
+    const deleteButton = document.querySelector('.delete-button');
+    const moveToInboxButton = document.querySelector('.move-to-inbox-button');
+    const permanentlyDeleteButton = document.querySelector('.permanently-delete-button');
+
+    // Reset button visibility
+    replyButton.style.display = 'none';
+    forwardButton.style.display = 'none';
+    archiveButton.style.display = 'none';
+    deleteButton.style.display = 'none';
+    moveToInboxButton.style.display = 'none';
+    permanentlyDeleteButton.style.display = 'none';
+
+    if (type === 'received') {
+        replyButton.style.display = 'inline-block';
+        forwardButton.style.display = 'inline-block';
+        archiveButton.style.display = 'inline-block';
+        deleteButton.style.display = 'inline-block';
+    } else if (type === 'sent') {
+        permanentlyDeleteButton.style.display = 'inline-block';
+    } else if (type === 'archived') {
+        deleteButton.style.display = 'inline-block';
+        moveToInboxButton.style.display = 'inline-block';
+    } else if (type === 'deleted') {
+        moveToInboxButton.style.display = 'inline-block';
+        permanentlyDeleteButton.style.display = 'inline-block';
+    }
+
+    document.querySelector('.archive-button').onclick = () => {
+        archiveMessage(message.id);
+        backToInbox();
+    };
+    document.querySelector('.delete-button').onclick = () => {
+        deleteMessage(message.id);
+        backToInbox();
+    };
+    document.querySelector('.move-to-inbox-button').onclick = () => {
+        moveToInbox(message.id);
+        backToInbox();
+    };
+    document.querySelector('.permanently-delete-button').onclick = () => {
+        showModalConfirmDelete(message.id);
+    };
 }
+
 
 async function fetchMessages(endpoint) {
     const response = await fetch(`/api/${endpoint}`, {
@@ -87,7 +143,13 @@ function updateMenuActiveClass(activeId) {
 }
 
 async function loadMessages(type = 'received') {
-    const messages = await fetchMessages(`messages?type=${type}`);
+    let endpoint;
+    if (type === 'sent') {
+        endpoint = 'messages?type=sent';
+    } else {
+        endpoint = `messages?type=${type}`;
+    }
+    const messages = await fetchMessages(endpoint);
     const messageList = document.querySelector('.message-list');
     messageList.innerHTML = '';
 
@@ -123,28 +185,28 @@ async function loadMessages(type = 'received') {
                 </div>
             </div>
         `;
-        messageItem.addEventListener('click', () => showMessage(message));
+        messageItem.addEventListener('click', () => showMessage(message, type));
         messageItem.addEventListener('mouseover', () => messageItem.style.backgroundColor = '#e0e0e0');
         messageItem.addEventListener('mouseout', () => messageItem.style.backgroundColor = message.read ? '#fff' : '#f0f0f0');
         messageList.appendChild(messageItem);
     });
 }
 
-function loadInbox() {
+  function loadInbox() {
     loadMessages('received');
-}
-
-function loadSent() {
+  }
+  
+  function loadSent() {
     loadMessages('sent');
-}
-
-function loadArchived() {
+  }
+  
+  function loadArchived() {
     loadMessages('archived');
-}
-
-function loadDeleted() {
+  }
+  
+  function loadDeleted() {
     loadMessages('deleted');
-}
+  }  
 
 async function markAsRead(messageId) {
     const response = await fetch(`/api/messages/${messageId}/read`, {
@@ -287,66 +349,71 @@ async function sendReplyMessage() {
     const recipientId = document.querySelector('#replyForwardTo').dataset.recipientId;
     const subject = document.getElementById('replyForwardSubject').value.trim();
     const body = document.getElementById('replyForwardBody').value.trim();
-
+  
     if (!recipientId || !subject || !body) {
-        console.error('Parâmetros obrigatórios faltando.');
-        return;
+      console.error('Parâmetros obrigatórios faltando.');
+      return;
     }
-
+  
     try {
-        const response = await fetch('/api/messages', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ to: [recipientId], subject, body })
-        });
-
-        if (!response.ok) {
-            const error = await response.json();
-            console.error('Erro ao enviar mensagem:', error);
-        } else {
-            document.querySelector('.reply-forward-section').style.display = 'none';
-            loadMessages('received');
-        }
-    } catch (error) {
+      // Envia a mensagem para o destinatário
+      const response = await fetch('/api/messages', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ to: [recipientId], subject, body, isReply: true })
+      });
+  
+      if (!response.ok) {
+        const error = await response.json();
         console.error('Erro ao enviar mensagem:', error);
+        return;
+      }
+  
+      document.querySelector('.reply-forward-section').style.display = 'none';
+      loadMessages('received');
+    } catch (error) {
+      console.error('Erro ao enviar mensagem:', error);
     }
 }
-
+  
 async function sendForwardMessage() {
     const recipientIds = document.querySelector('#replyForwardTo').dataset.recipientId.split(',').map(id => id.trim());
     const subject = document.getElementById('replyForwardSubject').value.trim();
     const body = document.getElementById('replyForwardBody').value.trim();
-
+  
     if (!recipientIds.length || !subject || !body) {
-        console.error('Parâmetros obrigatórios faltando.');
-        return;
+      console.error('Parâmetros obrigatórios faltando.');
+      return;
     }
-
+  
     try {
-        const response = await fetch('/api/messages', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ to: recipientIds, subject, body })
-        });
-
-        if (!response.ok) {
-            const error = await response.json();
-            console.error('Erro ao encaminhar mensagem:', error);
-        } else {
-            document.querySelector('.reply-forward-section').style.display = 'none';
-            loadMessages('received');
-        }
-    } catch (error) {
+      // Envia a mensagem para os destinatários
+      const response = await fetch('/api/messages', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ to: recipientIds, subject, body, isForward: true })
+      });
+  
+      if (!response.ok) {
+        const error = await response.json();
         console.error('Erro ao encaminhar mensagem:', error);
+        return;
+      }
+  
+      document.querySelector('.reply-forward-section').style.display = 'none';
+      loadMessages('received');
+    } catch (error) {
+      console.error('Erro ao encaminhar mensagem:', error);
     }
 }
 
+  
 async function archiveMessage(messageId) {
     try {
         const response = await fetch(`/api/messages/${messageId}/archive`, {
@@ -383,6 +450,24 @@ async function deleteMessage(messageId) {
     }
 }
 
+async function moveToInbox(messageId) {
+    try {
+        const response = await fetch(`/api/messages/${messageId}/moveToInbox`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        if (response.ok) {
+            loadMessages('received');
+        } else {
+            console.error('Erro ao mover mensagem para a Caixa de Entrada');
+        }
+    } catch (error) {
+        console.error('Erro ao mover mensagem para a Caixa de Entrada:', error);
+    }
+}
+
 function backToInbox() {
     document.querySelector('.message-list-container').style.display = 'block';
     document.querySelector('.message-detail').style.display = 'none';
@@ -395,4 +480,36 @@ function hideReplyForwardSection() {
 function toggleModal(modalId) {
     const modal = document.getElementById(modalId);
     modal.classList.toggle('is-active');
+}
+
+function showModalConfirmDelete(messageId) {
+    const modal = document.getElementById('confirmDeleteModal');
+    modal.classList.add('is-active');
+
+    document.getElementById('confirmDeleteButton').onclick = () => {
+        permanentlyDeleteMessage(messageId);
+        modal.classList.remove('is-active');
+    };
+
+    document.getElementById('cancelDeleteButton').onclick = () => {
+        modal.classList.remove('is-active');
+    };
+}
+
+async function permanentlyDeleteMessage(messageId) {
+    try {
+        const response = await fetch(`/api/messages/${messageId}/permanentDelete`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        if (response.ok) {
+            loadMessages('deleted');
+        } else {
+            console.error('Erro ao excluir permanentemente a mensagem');
+        }
+    } catch (error) {
+        console.error('Erro ao excluir permanentemente a mensagem:', error);
+    }
 }

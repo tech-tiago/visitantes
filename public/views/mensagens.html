@@ -109,20 +109,45 @@
                             </h2>
                         
                             <div class="column-right">
-                                <button class="button is-link is-small reply-button" onclick="showReplyForwardSection('reply')">
+                                <button class="button is-link is-small reply-button" onclick="showReplyForwardSection('reply')" style="display: none;">
                                     <i class="fas fa-reply"></i> Responder
                                 </button>
-                                <button class="button is-link is-small forward-button" onclick="showReplyForwardSection('forward')">
+                                <button class="button is-link is-small forward-button" onclick="showReplyForwardSection('forward')" style="display: none;">
                                     <i class="fas fa-share"></i> Encaminhar
                                 </button>
-                                <button class="button is-warning is-small archive-button" onclick="archiveMessage(message.id)">
+                                <button class="button is-warning is-small archive-button" onclick="archiveMessage(message.id)" style="display: none;">
                                     <i class="fas fa-archive"></i> Arquivar
                                 </button>
-                                <button class="button is-danger is-small delete-button" onclick="deleteMessage(message.id)">
-                                    <i class="fas fa-trash"></i> Excluir
+                                <button class="button is-danger is-small delete-button" onclick="deleteMessage(message.id)" style="display: none;">
+                                    <i class="fas fa-trash"></i> Mover para Lixeira
+                                </button>
+                                <button class="button is-primary is-small move-to-inbox-button" onclick="moveToInbox(message.id)" style="display: none;">
+                                    <i class="fas fa-inbox"></i> Mover para Caixa de Entrada
+                                </button>
+                                <button class="button is-danger is-small permanently-delete-button" onclick="showModalConfirmDelete(message.id)" style="display: none;">
+                                    <i class="fas fa-trash"></i> Excluir Permanentemente
                                 </button>
                             </div>
                         </div>
+                        
+                        <!-- Modal de Confirmação de Exclusão -->
+                        <div class="modal" id="confirmDeleteModal">
+                            <div class="modal-background"></div>
+                            <div class="modal-card">
+                                <header class="modal-card-head">
+                                    <p class="modal-card-title">Confirmar Exclusão</p>
+                                    <button class="delete" aria-label="close" onclick="toggleModal('confirmDeleteModal')"></button>
+                                </header>
+                                <section class="modal-card-body">
+                                    Tem certeza de que deseja excluir esta mensagem permanentemente?
+                                </section>
+                                <footer class="modal-card-foot">
+                                    <button class="button is-danger" id="confirmDeleteButton">Excluir</button>
+                                    <button class="button" id="cancelDeleteButton">Cancelar</button>
+                                </footer>
+                            </div>
+                        </div>
+                        
 
                         <div class="message-detail-content"></div>
 

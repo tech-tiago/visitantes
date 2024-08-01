@@ -29,6 +29,10 @@ Message.init({
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
+  forward: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
   read: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
