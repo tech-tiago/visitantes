@@ -1,23 +1,34 @@
-// Função para exibir o alerta
-function showAlert(message, type) {
-    const alertContainer = document.getElementById('alert-container');
+function showAlert(message, type = 'is-info') {
+    const notificationContainer = document.getElementById('notificationContainer');
+    if (!notificationContainer) {
+        console.error('Contêiner de notificação não encontrado.');
+        return;
+    }
+
     const notification = document.createElement('div');
-    notification.className = `notification is-${type}`;
+    notification.className = `notification ${type}`;
     notification.innerHTML = `
         <button class="delete"></button>
-        <i class="fas fa-exclamation-circle"></i> ${message}
+        ${message}
     `;
-    alertContainer.appendChild(notification);
-    
-    // Add event listener to remove alert
+
+    notificationContainer.appendChild(notification);
+
+    // Adicionar evento para remover a notificação ao clicar no botão de fechar
     notification.querySelector('.delete').addEventListener('click', () => {
-        alertContainer.removeChild(notification);
+        notification.remove();
     });
 
-    // Automatically remove the alert after 5 seconds
+    // Mostrar notificação com animação
     setTimeout(() => {
-        if (alertContainer.contains(notification)) {
-            alertContainer.removeChild(notification);
-        }
+        notification.classList.add('show');
+    }, 10); // Timeout pequeno para garantir a transição
+
+    // Remover a notificação após 5 segundos
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 500); // Timeout para permitir a transição de saída
     }, 5000);
 }

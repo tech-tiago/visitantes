@@ -69,13 +69,13 @@ $('#closedVisits').on('click', '.delete-btn', function() {
             },
             success: function(response) {
                 console.log('Visitante deletado com sucesso:', response);
-                showAlert('Visitante deletado com sucesso!', 'success');
+                showAlert('Visitante deletado com sucesso!', 'is-success');
                 table.ajax.reload(); // Recarrega a tabela
                 $('#confirmDeleteModal').removeClass('is-active'); // Fecha o modal
             },
             error: function(err) {
                 console.error('Erro ao deletar visitante:', err);
-                showAlert('Erro ao deletar visitante. Verifique o console para mais detalhes.', 'danger');
+                showAlert('Erro ao deletar visitante. Verifique o console para mais detalhes.', 'is-danger');
                 $('#confirmDeleteModal').removeClass('is-active'); // Fecha o modal
             }
         });
@@ -150,13 +150,13 @@ $('#closedVisits').on('click', '.delete-btn', function() {
             data: JSON.stringify({ nome, documento, data_entrada, hora_entrada, motivo, data_saida, hora_saida }),
             success: function(response) {
                 console.log('Visitante atualizado com sucesso:', response);
-                showAlert('Visitante atualizado com sucesso!', 'success');
+                showAlert('Visitante atualizado com sucesso!', 'is-success');
                 table.ajax.reload(); // Recarrega a tabela
                 $('#editModal').removeClass('is-active'); // Fecha o modal
             },
             error: function(err) {
                 console.error('Erro ao atualizar visitante:', err);
-                showAlert('Erro ao atualizar visitante. Verifique o console para mais detalhes.', 'danger');
+                showAlert('Erro ao atualizar visitante. Verifique o console para mais detalhes.', 'is-danger');
             }
         });
     });
@@ -221,12 +221,12 @@ $('#closedVisits').on('click', '.delete-btn', function() {
             data: JSON.stringify({ nome, documento, data_entrada, hora_entrada, foto, motivo }),
             success: function(response) {
                 console.log('Visitante registrado com sucesso:', response);
-                showAlert('Visitante registrado com sucesso!', 'success');
+                showAlert('Visitante registrado com sucesso!', 'is-success');
                 // Pode redirecionar ou realizar outra ação necessária
             },
             error: function(err) {
                 console.error('Erro ao registrar visitante:', err);
-                showAlert('Erro ao registrar visitante. Verifique o console para mais detalhes.', 'danger');
+                showAlert('Erro ao registrar visitante. Verifique o console para mais detalhes.', 'is-danger');
             }
         });
     });

@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Recuperar o token do localStorage
         const token = localStorage.getItem('token');
         if (!token) {
-            showAlert('Token de autenticação não encontrado.', 'danger');
+            showAlert('Token de autenticação não encontrado.', 'is-danger');
             return;
         }
 
@@ -64,11 +64,11 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify({ nome, documento, data_entrada, hora_entrada, foto, motivo })
         }).then(response => response.json())
           .then(data => {
-              showAlert('Visitante registrado com sucesso!', 'success');
+              showAlert('Visitante registrado com sucesso!', 'is-success');
               window.location.reload(); // Recarregar a página após o cadastro
           }).catch(error => {
               console.error('Erro:', error);
-              showAlert('Ocorreu um erro ao registrar o visitante.', 'danger');
+              showAlert('Ocorreu um erro ao registrar o visitante.', 'is-danger');
           });
     });
 
@@ -80,11 +80,11 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(function(err) {
                 console.log("Ocorreu um erro ao acessar a câmera: " + err);
-                showAlert('Ocorreu um erro ao acessar a câmera.', 'danger');
+                showAlert('Ocorreu um erro ao acessar a câmera.', 'is-danger');
             });
     } else {
         console.error('getUserMedia is not supported on your browser!');
-        showAlert('Seu navegador não suporta acesso à câmera.', 'danger');
+        showAlert('Seu navegador não suporta acesso à câmera.', 'is-danger');
     }
 
     // Fechar modal ao clicar no fundo ou no botão de fechar

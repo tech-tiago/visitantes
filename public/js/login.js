@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = '/'; // Redirecionar para a página principal
         }).catch(error => {
             console.error('Erro:', error);
-            showAlert('Credenciais inválidas. Por favor, tente novamente.', 'danger');
+            showAlert('Credenciais inválidas. Por favor, tente novamente.', 'is-danger');
         });
     });
 });

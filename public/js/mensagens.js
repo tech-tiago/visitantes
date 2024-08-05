@@ -320,7 +320,7 @@ async function sendMessage() {
 
     if (!recipientIds.length || !subject || !body) {
         console.error('Parâmetros obrigatórios faltando.');
-        showNotification('Parâmetros obrigatórios faltando.', 'is-danger');
+        showAlert('Parâmetros obrigatórios faltando.', 'is-danger');
         return;
     }
 
@@ -337,15 +337,15 @@ async function sendMessage() {
         if (!response.ok) {
             const error = await response.json();
             console.error('Erro ao enviar mensagem:', error);
-            showNotification('Erro ao enviar mensagem.', 'is-danger');
+            showAlert('Erro ao enviar mensagem.', 'is-danger');
         } else {
             document.querySelector('.modal.is-active').classList.remove('is-active');
             loadMessages('received');
-            showNotification('Mensagem enviada com sucesso!', 'is-success');
+            showAlert('Mensagem enviada com sucesso!', 'is-success');
         }
     } catch (error) {
         console.error('Erro ao enviar mensagem:', error);
-        showNotification('Erro ao enviar mensagem.', 'is-danger');
+        showAlert('Erro ao enviar mensagem.', 'is-danger');
     }
 }
 
@@ -356,7 +356,7 @@ async function sendReplyMessage() {
 
     if (!recipientId || !subject || !body) {
         console.error('Parâmetros obrigatórios faltando.');
-        showNotification('Parâmetros obrigatórios faltando.', 'is-danger');
+        showAlert('Parâmetros obrigatórios faltando.', 'is-danger');
         return;
     }
 
@@ -373,16 +373,16 @@ async function sendReplyMessage() {
         if (!response.ok) {
             const error = await response.json();
             console.error('Erro ao enviar mensagem:', error);
-            showNotification('Erro ao enviar mensagem.', 'is-danger');
+            showAlert('Erro ao enviar mensagem.', 'is-danger');
             return;
         }
 
         document.querySelector('.reply-forward-section').style.display = 'none';
         loadMessages('received');
-        showNotification('Resposta enviada com sucesso!', 'is-success');
+        showAlert('Resposta enviada com sucesso!', 'is-success');
     } catch (error) {
         console.error('Erro ao enviar mensagem:', error);
-        showNotification('Erro ao enviar mensagem.', 'is-danger');
+        showAlert('Erro ao enviar mensagem.', 'is-danger');
     }
 }
 
@@ -393,7 +393,7 @@ async function sendForwardMessage() {
 
     if (!recipientIds.length || !subject || !body) {
         console.error('Parâmetros obrigatórios faltando.');
-        showNotification('Parâmetros obrigatórios faltando.', 'is-danger');
+        showAlert('Parâmetros obrigatórios faltando.', 'is-danger');
         return;
     }
 
@@ -410,16 +410,16 @@ async function sendForwardMessage() {
         if (!response.ok) {
             const error = await response.json();
             console.error('Erro ao encaminhar mensagem:', error);
-            showNotification('Erro ao encaminhar mensagem.', 'is-danger');
+            showAlert('Erro ao encaminhar mensagem.', 'is-danger');
             return;
         }
 
         document.querySelector('.reply-forward-section').style.display = 'none';
         loadMessages('received');
-        showNotification('Mensagem encaminhada com sucesso!', 'is-success');
+        showAlert('Mensagem encaminhada com sucesso!', 'is-success');
     } catch (error) {
         console.error('Erro ao encaminhar mensagem:', error);
-        showNotification('Erro ao encaminhar mensagem.', 'is-danger');
+        showAlert('Erro ao encaminhar mensagem.', 'is-danger');
     }
 }
 
@@ -433,14 +433,14 @@ async function archiveMessage(messageId) {
         });
         if (response.ok) {
             loadMessages('received');
-            showNotification('Mensagem arquivada com sucesso!', 'is-success');
+            showAlert('Mensagem arquivada com sucesso!', 'is-success');
         } else {
             console.error('Erro ao arquivar mensagem');
-            showNotification('Erro ao arquivar mensagem.', 'is-danger');
+            showAlert('Erro ao arquivar mensagem.', 'is-danger');
         }
     } catch (error) {
         console.error('Erro ao arquivar mensagem:', error);
-        showNotification('Erro ao arquivar mensagem.', 'is-danger');
+        showAlert('Erro ao arquivar mensagem.', 'is-danger');
     }
 }
 
@@ -454,14 +454,14 @@ async function deleteMessage(messageId) {
         });
         if (response.ok) {
             loadMessages('received');
-            showNotification('Mensagem movida para a lixeira com sucesso!', 'is-success');
+            showAlert('Mensagem movida para a lixeira com sucesso!', 'is-success');
         } else {
             console.error('Erro ao excluir mensagem');
-            showNotification('Erro ao mover a mensagem para a lixeira.', 'is-danger');
+            showAlert('Erro ao mover a mensagem para a lixeira.', 'is-danger');
         }
     } catch (error) {
         console.error('Erro ao excluir mensagem:', error);
-        showNotification('Erro ao mover a mensagem para a lixeira.', 'is-danger');
+        showAlert('Erro ao mover a mensagem para a lixeira.', 'is-danger');
     }
 }
 
@@ -475,14 +475,14 @@ async function moveToInbox(messageId) {
         });
         if (response.ok) {
             loadMessages('received');
-            showNotification('Mensagem movida para a Caixa de Entrada com sucesso!', 'is-success');
+            showAlert('Mensagem movida para a Caixa de Entrada com sucesso!', 'is-success');
         } else {
             console.error('Erro ao mover mensagem para a Caixa de Entrada');
-            showNotification('Erro ao mover a mensagem para a Caixa de Entrada.', 'is-danger');
+            showAlert('Erro ao mover a mensagem para a Caixa de Entrada.', 'is-danger');
         }
     } catch (error) {
         console.error('Erro ao mover mensagem para a Caixa de Entrada:', error);
-        showNotification('Erro ao mover a mensagem para a Caixa de Entrada.', 'is-danger');
+        showAlert('Erro ao mover a mensagem para a Caixa de Entrada.', 'is-danger');
     }
 }
 
@@ -496,14 +496,14 @@ async function permanentlyDeleteMessage(messageId) {
         });
         if (response.ok) {
             loadMessages('deleted');
-            showNotification('Mensagem excluída permanentemente com sucesso!', 'is-success');
+            showAlert('Mensagem excluída permanentemente com sucesso!', 'is-success');
         } else {
             console.error('Erro ao excluir permanentemente a mensagem');
-            showNotification('Erro ao excluir permanentemente a mensagem.', 'is-danger');
+            showAlert('Erro ao excluir permanentemente a mensagem.', 'is-danger');
         }
     } catch (error) {
         console.error('Erro ao excluir permanentemente a mensagem:', error);
-        showNotification('Erro ao excluir permanentemente a mensagem.', 'is-danger');
+        showAlert('Erro ao excluir permanentemente a mensagem.', 'is-danger');
     }
 }
 
@@ -535,8 +535,13 @@ function showModalConfirmDelete(messageId) {
     };
 }
 
-function showNotification(message, type = 'is-info') {
+function showAlert(message, type = 'is-info') {
     const notificationContainer = document.getElementById('notificationContainer');
+    if (!notificationContainer) {
+        console.error('Contêiner de notificação não encontrado.');
+        return;
+    }
+
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
     notification.innerHTML = `
@@ -551,8 +556,16 @@ function showNotification(message, type = 'is-info') {
         notification.remove();
     });
 
+    // Mostrar notificação com animação
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10); // Timeout pequeno para garantir a transição
+
     // Remover a notificação após 5 segundos
     setTimeout(() => {
-        notification.remove();
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 500); // Timeout para permitir a transição de saída
     }, 5000);
 }
