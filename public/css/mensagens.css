@@ -218,3 +218,12 @@
 .reply-forward-section .button.is-light:hover {
     background-color: #e0e0e0;
 }
+
+#notificationContainer {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: auto;
+    max-width: 300px;
+    z-index: 1050;
+}

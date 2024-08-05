@@ -320,6 +320,7 @@ async function sendMessage() {
 
     if (!recipientIds.length || !subject || !body) {
         console.error('Parâmetros obrigatórios faltando.');
+        showNotification('Parâmetros obrigatórios faltando.', 'is-danger');
         return;
     }
 
@@ -336,12 +337,15 @@ async function sendMessage() {
         if (!response.ok) {
             const error = await response.json();
             console.error('Erro ao enviar mensagem:', error);
+            showNotification('Erro ao enviar mensagem.', 'is-danger');
         } else {
             document.querySelector('.modal.is-active').classList.remove('is-active');
             loadMessages('received');
+            showNotification('Mensagem enviada com sucesso!', 'is-success');
         }
     } catch (error) {
         console.error('Erro ao enviar mensagem:', error);
+        showNotification('Erro ao enviar mensagem.', 'is-danger');
     }
 }
 
@@ -349,71 +353,76 @@ async function sendReplyMessage() {
     const recipientId = document.querySelector('#replyForwardTo').dataset.recipientId;
     const subject = document.getElementById('replyForwardSubject').value.trim();
     const body = document.getElementById('replyForwardBody').value.trim();
-  
+
     if (!recipientId || !subject || !body) {
-      console.error('Parâmetros obrigatórios faltando.');
-      return;
-    }
-  
-    try {
-      // Envia a mensagem para o destinatário
-      const response = await fetch('/api/messages', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ to: [recipientId], subject, body, isReply: true })
-      });
-  
-      if (!response.ok) {
-        const error = await response.json();
-        console.error('Erro ao enviar mensagem:', error);
+        console.error('Parâmetros obrigatórios faltando.');
+        showNotification('Parâmetros obrigatórios faltando.', 'is-danger');
         return;
-      }
-  
-      document.querySelector('.reply-forward-section').style.display = 'none';
-      loadMessages('received');
+    }
+
+    try {
+        const response = await fetch('/api/messages', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ to: [recipientId], subject, body, isReply: true })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            console.error('Erro ao enviar mensagem:', error);
+            showNotification('Erro ao enviar mensagem.', 'is-danger');
+            return;
+        }
+
+        document.querySelector('.reply-forward-section').style.display = 'none';
+        loadMessages('received');
+        showNotification('Resposta enviada com sucesso!', 'is-success');
     } catch (error) {
-      console.error('Erro ao enviar mensagem:', error);
+        console.error('Erro ao enviar mensagem:', error);
+        showNotification('Erro ao enviar mensagem.', 'is-danger');
     }
 }
-  
+
 async function sendForwardMessage() {
     const recipientIds = document.querySelector('#replyForwardTo').dataset.recipientId.split(',').map(id => id.trim());
     const subject = document.getElementById('replyForwardSubject').value.trim();
     const body = document.getElementById('replyForwardBody').value.trim();
-  
+
     if (!recipientIds.length || !subject || !body) {
-      console.error('Parâmetros obrigatórios faltando.');
-      return;
-    }
-  
-    try {
-      // Envia a mensagem para os destinatários
-      const response = await fetch('/api/messages', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ to: recipientIds, subject, body, isForward: true })
-      });
-  
-      if (!response.ok) {
-        const error = await response.json();
-        console.error('Erro ao encaminhar mensagem:', error);
+        console.error('Parâmetros obrigatórios faltando.');
+        showNotification('Parâmetros obrigatórios faltando.', 'is-danger');
         return;
-      }
-  
-      document.querySelector('.reply-forward-section').style.display = 'none';
-      loadMessages('received');
+    }
+
+    try {
+        const response = await fetch('/api/messages', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ to: recipientIds, subject, body, isForward: true })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            console.error('Erro ao encaminhar mensagem:', error);
+            showNotification('Erro ao encaminhar mensagem.', 'is-danger');
+            return;
+        }
+
+        document.querySelector('.reply-forward-section').style.display = 'none';
+        loadMessages('received');
+        showNotification('Mensagem encaminhada com sucesso!', 'is-success');
     } catch (error) {
-      console.error('Erro ao encaminhar mensagem:', error);
+        console.error('Erro ao encaminhar mensagem:', error);
+        showNotification('Erro ao encaminhar mensagem.', 'is-danger');
     }
 }
 
-  
 async function archiveMessage(messageId) {
     try {
         const response = await fetch(`/api/messages/${messageId}/archive`, {
@@ -424,11 +433,14 @@ async function archiveMessage(messageId) {
         });
         if (response.ok) {
             loadMessages('received');
+            showNotification('Mensagem arquivada com sucesso!', 'is-success');
         } else {
             console.error('Erro ao arquivar mensagem');
+            showNotification('Erro ao arquivar mensagem.', 'is-danger');
         }
     } catch (error) {
         console.error('Erro ao arquivar mensagem:', error);
+        showNotification('Erro ao arquivar mensagem.', 'is-danger');
     }
 }
 
@@ -442,11 +454,14 @@ async function deleteMessage(messageId) {
         });
         if (response.ok) {
             loadMessages('received');
+            showNotification('Mensagem movida para a lixeira com sucesso!', 'is-success');
         } else {
             console.error('Erro ao excluir mensagem');
+            showNotification('Erro ao mover a mensagem para a lixeira.', 'is-danger');
         }
     } catch (error) {
         console.error('Erro ao excluir mensagem:', error);
+        showNotification('Erro ao mover a mensagem para a lixeira.', 'is-danger');
     }
 }
 
@@ -460,11 +475,35 @@ async function moveToInbox(messageId) {
         });
         if (response.ok) {
             loadMessages('received');
+            showNotification('Mensagem movida para a Caixa de Entrada com sucesso!', 'is-success');
         } else {
             console.error('Erro ao mover mensagem para a Caixa de Entrada');
+            showNotification('Erro ao mover a mensagem para a Caixa de Entrada.', 'is-danger');
         }
     } catch (error) {
         console.error('Erro ao mover mensagem para a Caixa de Entrada:', error);
+        showNotification('Erro ao mover a mensagem para a Caixa de Entrada.', 'is-danger');
+    }
+}
+
+async function permanentlyDeleteMessage(messageId) {
+    try {
+        const response = await fetch(`/api/messages/${messageId}/permanentDelete`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        if (response.ok) {
+            loadMessages('deleted');
+            showNotification('Mensagem excluída permanentemente com sucesso!', 'is-success');
+        } else {
+            console.error('Erro ao excluir permanentemente a mensagem');
+            showNotification('Erro ao excluir permanentemente a mensagem.', 'is-danger');
+        }
+    } catch (error) {
+        console.error('Erro ao excluir permanentemente a mensagem:', error);
+        showNotification('Erro ao excluir permanentemente a mensagem.', 'is-danger');
     }
 }
 
@@ -496,20 +535,24 @@ function showModalConfirmDelete(messageId) {
     };
 }
 
-async function permanentlyDeleteMessage(messageId) {
-    try {
-        const response = await fetch(`/api/messages/${messageId}/permanentDelete`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        });
-        if (response.ok) {
-            loadMessages('deleted');
-        } else {
-            console.error('Erro ao excluir permanentemente a mensagem');
-        }
-    } catch (error) {
-        console.error('Erro ao excluir permanentemente a mensagem:', error);
-    }
+function showNotification(message, type = 'is-info') {
+    const notificationContainer = document.getElementById('notificationContainer');
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <button class="delete"></button>
+        ${message}
+    `;
+
+    notificationContainer.appendChild(notification);
+
+    // Adicionar evento para remover a notificação ao clicar no botão de fechar
+    notification.querySelector('.delete').addEventListener('click', () => {
+        notification.remove();
+    });
+
+    // Remover a notificação após 5 segundos
+    setTimeout(() => {
+        notification.remove();
+    }, 5000);
 }
