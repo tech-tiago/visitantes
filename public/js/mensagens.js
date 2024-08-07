@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     loadMessages('received');
+    // updateUnreadCount();
 });
 
 function showReplyForwardSection(type) {
@@ -125,6 +126,18 @@ async function showMessage(message, type) {
     };
 }
 
+// async function updateUnreadCount() {
+//     const messages = await fetchMessages('messages?type=received');
+//     const unreadCount = messages.filter(message => !message.read).length;
+
+//     const unreadCountElement = document.getElementById('unreadCount');
+//     if (unreadCount > 0) {
+//         unreadCountElement.textContent = unreadCount;
+//         unreadCountElement.classList.add('show');
+//     } else {
+//         unreadCountElement.classList.remove('show');
+//     }
+// }
 
 async function fetchMessages(endpoint) {
     const response = await fetch(`/api/${endpoint}`, {
@@ -190,6 +203,10 @@ async function loadMessages(type = 'received') {
         messageItem.addEventListener('mouseout', () => messageItem.style.backgroundColor = message.read ? '#fff' : '#f0f0f0');
         messageList.appendChild(messageItem);
     });
+
+    if (type === 'received') {
+        updateUnreadCount(); // Atualizar a contagem de mensagens não lidas
+    }
 }
 
   function loadInbox() {

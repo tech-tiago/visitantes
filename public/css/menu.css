@@ -36,3 +36,24 @@
         max-width: 100%;
     }
 }
+
+.navbar-item {
+    position: relative;
+}
+
+.unread-count {
+    display: none; /* Escondido inicialmente */
+    background-color: red;
+    color: white;
+    border-radius: 30%;
+    padding: 2px 6px;
+    font-size: 6px;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    z-index: 1;
+}
+
+.unread-count.show {
+    display: inline-block; /* Mostrar quando tiver mensagens não lidas */
+}

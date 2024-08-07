@@ -27,17 +27,20 @@
                 <i class="fas fa-folder-open"></i>
                 <span>Visitas em Aberto</span>
             </a>
-            <a class="navbar-item" href="/mensagens"> 
-                <i class="fa-solid fa-envelope"></i>
+            <a class="navbar-item is-active" href="/mensagens">
+                <i class="fa-solid fa-envelope" id="envelopeIcon" style="position: relative;">
+                    <span id="unreadCount" class="unread-count"></span>
+                </i>
                 <span>Mensagens</span>
             </a>
+            
             <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
             </a>
         </div>
-      
+
         <div id="navbarMenu" class="navbar-menu">
             <div class="navbar-end">
                 <div class="navbar-item has-dropdown is-hoverable">
@@ -63,6 +66,7 @@
             </div>
         </div>
     </nav>
+    
     <div class="container mt-5">
         <div class="box">
             <div id="notificationContainer"></div>
@@ -153,6 +157,7 @@
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bulma.js"></script>
     <script src="../js/register.js"></script>
     <script src="../js/logoff.js"></script>
+    <script src="../js/mensagens.js"></script>
     <script src="../js/util/alert.js"></script>
 </body>
 </html>

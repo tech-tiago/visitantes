@@ -1,3 +1,20 @@
+document.addEventListener('DOMContentLoaded', () => {
+    updateUnreadCount();
+});
+
+async function updateUnreadCount() {
+    const messages = await fetchMessages('messages?type=received');
+    const unreadCount = messages.filter(message => !message.read).length;
+
+    const unreadCountElement = document.getElementById('unreadCount');
+    if (unreadCount > 0) {
+        unreadCountElement.textContent = unreadCount;
+        unreadCountElement.classList.add('show');
+    } else {
+        unreadCountElement.classList.remove('show');
+    }
+}
+
 function showAlert(message, type = 'is-info') {
     const notificationContainer = document.getElementById('notificationContainer');
     if (!notificationContainer) {
