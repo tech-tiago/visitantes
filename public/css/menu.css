@@ -1,3 +1,6 @@
+/* Importa a fonte Varela Round */
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
 /* Layout geral */
 .layout {
     display: flex;
@@ -5,27 +8,56 @@
     height: 100vh;
     overflow: hidden;
     position: relative;
+    font-family: 'Varela Round', sans-serif; /* Aplica a fonte Varela Round */
+}
+
+.sidebar-logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
 }
 
 /* Estilos para o header do sidebar */
 .sidebar-header {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: center; /* Alinha logo, título e subtítulo na mesma linha */
     padding: 10px;
     color: white;
+    background-color: #2DAA9C; /* Cor do cabeçalho */
+    position: relative;
 }
 
-.sidebar-header i {
-    font-size: 24px; /* Tamanho do ícone */
-    margin-right: 10px; /* Espaço entre o ícone e o texto */
-    transition: margin-right 0.3s ease, font-size 0.3s ease;
+.sidebar-header::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px; /* Altura do separador */
+    background: rgba(255, 255, 255, 0.3); /* Cor do separador com transparência */
+    position: absolute;
+    bottom: -10px; /* Posição abaixo do header */
+    left: 0;
+}
+
+.sidebar-title-container {
+    display: flex;
+    flex-direction: column; /* Coloca o título e o subtítulo um abaixo do outro */
 }
 
 .sidebar-title {
     font-size: 20px; /* Tamanho da fonte do título */
     font-weight: bold;
+    margin-bottom: 2px; /* Espaço entre o título e o subtítulo */
     transition: opacity 0.3s ease;
+}
+
+.sidebar-subtitle {
+    font-size: 14px; /* Tamanho da fonte do subtítulo */
+    opacity: 0.8; /* Texto um pouco mais claro */
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-start{
+    margin-top: 20px;
 }
 
 /* Estilos quando o menu está recolhido */
@@ -34,15 +66,20 @@
     font-size: 28px; /* Ajuste o tamanho do ícone quando recolhido */
 }
 
-.sidebar-menu.collapsed .sidebar-title {
+.sidebar-menu.collapsed .sidebar-title-container .sidebar-title,
+.sidebar-menu.collapsed .sidebar-title-container .sidebar-subtitle {
     opacity: 0; /* Esconde o texto ao recolher */
 }
 
-/* Estilos gerais do sidebar */
+.sidebar-menu.collapsed .sidebar-logo {
+    margin-right: 0; /* Remove o espaço ao recolher */
+}
+
+/* Estilos para o sidebar */
 .sidebar-menu {
     width: 250px;
-    background-color: #3273dc;
-    padding-top: 20px;
+    background-color: #2DAA9C; /* Cor do menu */
+    padding: 20px 0 0; /* Remove padding superior e ajusta para iniciar após o separador */
     position: fixed;
     top: 0;
     left: 0;
@@ -52,8 +89,8 @@
     z-index: 999;
 }
 
-.sidebar-menu.collapsed {
-    width: 80px; /* Largura do menu quando recolhido */
+.sidebar-item i {
+    margin-right: 15px; /* Aumenta o espaçamento entre o ícone e o texto */
 }
 
 .sidebar-item {
@@ -65,30 +102,13 @@
     transition: background 0.3s ease, color 0.3s ease;
 }
 
-.sidebar-menu.collapsed .sidebar-item {
-    justify-content: center;
-}
-
-.sidebar-item i {
-    margin-right: 12px;
-    transition: margin-right 0.3s ease;
-}
-
-.sidebar-menu.collapsed .sidebar-item i {
-    margin-right: 0;
+.sidebar-item:hover {
+    background-color: #259586; /* Cor mais escura ao passar o mouse */
+    color: #fff;
 }
 
 .sidebar-text {
     transition: opacity 0.3s ease;
-}
-
-.sidebar-menu.collapsed .sidebar-text {
-    opacity: 0; /* Esconde o texto dos itens ao recolher */
-}
-
-.sidebar-item:hover {
-    background-color: #225bbd;
-    color: #fff;
 }
 
 /* Estilos para o contador de mensagens não lidas */
@@ -108,7 +128,6 @@
 .unread-count.show {
     display: inline-block;
 }
-
 
 /* Estilos para a parte superior direita do menu */
 .top-right-menu {
@@ -149,7 +168,7 @@
     width: 32px;
     height: 32px;
     margin-right: 8px;
-    border: 2px solid #3273dc;
+    border: 2px solid #2DAA9C;
 }
 
 .top-right-menu .user-info span {
