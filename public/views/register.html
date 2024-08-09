@@ -13,64 +13,62 @@
 </head>
 <body>
 
-    <nav class="navbar is-link" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="/">
+    <!-- Menu Lateral -->
+    <aside id="sidebarMenu" class="sidebar-menu">
+        <div class="sidebar-header">
+            <i class="fa-solid fa-user-shield"></i>
+            <span class="sidebar-title">CAD VISITAS</span>
+        </div>
+        <div class="sidebar-start">
+            <a class="sidebar-item" href="/">
                 <i class="fas fa-clipboard-list"></i>
-                <span>Registro de Visitantes</span>
+                <span class="sidebar-text">Registro de Visitantes</span>
             </a>
-            <a class="navbar-item" href="/historico-de-visitas">
+            <a class="sidebar-item" href="/historico-de-visitas">
                 <i class="fa fa-history"></i>
-                <span>Histórico de Visitas</span>
+                <span class="sidebar-text">Histórico de Visitas</span>
             </a>
-            <a class="navbar-item" href="/visitas-em-aberto">
+            <a class="sidebar-item" href="/visitas-em-aberto">
                 <i class="fas fa-folder-open"></i>
-                <span>Visitas em Aberto</span>
+                <span class="sidebar-text">Visitas em Aberto</span>
             </a>
-            <a class="navbar-item is-active" href="/mensagens">
+            <a class="sidebar-item is-active" href="/mensagens">
                 <i class="fa-solid fa-envelope" id="envelopeIcon" style="position: relative;">
                     <span id="unreadCount" class="unread-count"></span>
                 </i>
-                <span>Mensagens</span>
-            </a>
-            
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
+                <span class="sidebar-text">Mensagens</span>
             </a>
         </div>
+    </aside>        
 
-        <div id="navbarMenu" class="navbar-menu">
-            <div class="navbar-end">
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link user-info" id="loggedUserName">
-                        <img id="userImage" src="" alt="User Image" style="border-radius: 50%; width: 32px; height: 32px;">
-                        <span id="loggedName"></span>
-                    </a>
-                    <div class="navbar-dropdown is-right">
-                        <a class="navbar-item" href="editUser">
-                            <i class="fas fa-cog"></i>
-                            <span>Configurações</span>
-                        </a>
-                        <a class="navbar-item" id="registerMenuItem" href="/register">
-                            <i class="fas fa-user-plus"></i>
-                            <span>Cadastrar Usuário</span>
-                        </a>
-                        <a class="navbar-item" id="logoutButton">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Logoff</span>
-                        </a>
-                    </div>
-                </div>
+    <!-- Parte do menu no canto superior direito -->
+    <div class="top-right-menu">
+        <div class="sidebar-item has-dropdown is-hoverable">
+            <a class="nav-link user-info" id="loggedUserName">
+                <img id="userImage" src="" alt="User Image" style="border-radius: 50%; width: 32px; height: 32px;">
+                <span id="loggedName"></span>
+            </a>
+            <div class="sidebar-dropdown is-right">
+                <a class="sidebar-item" href="editUser">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+                <a class="sidebar-item" id="registerMenuItem" href="/register">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Cadastrar</span>
+                </a>
+                <a class="sidebar-item" id="logoutButton">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logoff</span>
+                </a>
             </div>
         </div>
-    </nav>
-    
-    <div class="container mt-5">
+    </div>
+
+    <main class="main-content">
         <div class="box">
             <div id="notificationContainer"></div>
-            <h1 class="title">Usuários Registrados</h1>
+            <!-- <h1 class="title">Usuários Registrados</h1> -->
             <div class="buttons">
                 <button class="button is-primary" id="addUserBtn">Adicionar Usuário</button>
             </div>
@@ -90,7 +88,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </main>
 
     <!-- Modal de cadastro de usuário -->
     <div id="userModal" class="modal">
@@ -157,7 +155,8 @@
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bulma.js"></script>
     <script src="../js/register.js"></script>
     <script src="../js/logoff.js"></script>
-    <script src="../js/mensagens.js"></script>
+
+    <script src="../js/util/menu.js"></script>
     <script src="../js/util/alert.js"></script>
 </body>
 </html>

@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('loggedName').textContent = data.nome;
         }).catch(error => {
             console.error('Erro:', error);
-            showAlert('Erro ao carregar informações do usuário', 'danger');
+            showAlert('Erro ao carregar informações do usuário', 'is-danger');
         });
     }
 
@@ -57,11 +57,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             return response.json();
         }).then(data => {
-            showAlert('Usuário atualizado com sucesso!', 'success');
+            showAlert('Usuário atualizado com sucesso!', 'is-success');
             $('#editUserModal').removeClass('is-active');
         }).catch(error => {
             console.error('Erro:', error);
-            showAlert('Erro ao atualizar usuário', 'danger');
+            showAlert('Erro ao atualizar usuário', 'is-danger');
         });
     });
 

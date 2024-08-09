@@ -94,10 +94,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Toggle do menu em dispositivos móveis
-    document.querySelector('.navbar-burger').addEventListener('click', function() {
-        document.querySelector('.navbar-burger').classList.toggle('is-active');
-        document.querySelector('.navbar-menu').classList.toggle('is-active');
-    });
 
 });

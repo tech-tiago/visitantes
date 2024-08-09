@@ -1,15 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const menuItems = document.querySelectorAll('.menu-item');
-    menuItems.forEach(menuItem => {
-        menuItem.addEventListener('click', () => {
-            menuItems.forEach(item => item.classList.remove('is-active'));
-            menuItem.classList.add('is-active');
+    const userInfo = document.querySelector('.top-right-menu .user-info');
+    const dropdown = document.querySelector('.top-right-menu .sidebar-dropdown');
+
+    // Abre o menu dropdown ao clicar no user-info
+    userInfo.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('is-active');
+    });
+
+    // Fecha o menu dropdown ao clicar fora dele
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target) && !userInfo.contains(e.target)) {
+            dropdown.classList.remove('is-active');
+        }
+    });
+
+    // Fecha o menu dropdown ao clicar em um item do menu
+    dropdown.querySelectorAll('.sidebar-item').forEach(item => {
+        item.addEventListener('click', () => {
+            dropdown.classList.remove('is-active');
         });
     });
 
-    document.getElementById('composeButton').addEventListener('click', composeMessage);
-    document.getElementById('inboxMenuItem').addEventListener('click', loadInbox);
-    document.getElementById('sentMenuItem').addEventListener('click', loadSent);
-    document.getElementById('archivedMenuItem').addEventListener('click', loadArchived);
-    document.getElementById('trashMenuItem').addEventListener('click', loadDeleted);
+    const burgerIcon = document.querySelector('.sidebar-burger');
+    const sidebarMenu = document.querySelector('#sidebarMenu');
+    const mainContent = document.querySelector('.main-content');
+
+    burgerIcon.addEventListener('click', () => {
+        sidebarMenu.classList.toggle('is-hidden');
+        burgerIcon.classList.toggle('is-active');
+        mainContent.classList.toggle('is-expanded');
+    });
+
 });

@@ -1,3 +1,21 @@
+async function fetchMessages(endpoint) {
+    try {
+        const response = await fetch(`/api/${endpoint}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao buscar mensagens:', error);
+        return [];
+    }
+}
+
+//Alerta para uma nova mensagem
 document.addEventListener('DOMContentLoaded', () => {
     updateUnreadCount();
 });
@@ -15,6 +33,7 @@ async function updateUnreadCount() {
     }
 }
 
+//Alertas de cadastro
 function showAlert(message, type = 'is-info') {
     const notificationContainer = document.getElementById('notificationContainer');
     if (!notificationContainer) {

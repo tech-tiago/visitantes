@@ -1,16 +1,107 @@
-/* Estilização personalizada para o modal */
-.modal-card {
-    max-width: 800px;
+/* Estilos para a tabela */
+.table-container {
+    margin-top: 20px;
+    background-color: #f8f9fa; /* Cor de fundo suave */
+    border-radius: 12px; /* Bordas mais arredondadas */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
+    padding: 20px;
+}
+
+.table {
     width: 100%;
+    margin-bottom: 1rem;
+    color: #495057; /* Texto em cinza escuro */
+    border-collapse: collapse;
+    font-family: 'Poppins', sans-serif; /* Fonte moderna e elegante */
 }
 
-.modal-card-body {
-    padding: 2rem;
+.table thead {
+    background-color: #ebebeb; /* Fundo azul mais intenso */
+    color: white;
+    border-radius: 12px 12px 0 0; /* Bordas arredondadas no topo */
 }
 
-#viewFoto {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.table thead th {
+    padding: 10px;
+    font-size: 14px;
+    text-align: left;
+    letter-spacing: 0.5px; /* Espaçamento entre letras */
+    font-weight: 600;
+    text-transform: uppercase; /* Letras maiúsculas */
+}
+
+.table thead th:first-child {
+    border-left: none; /* Remove a borda da primeira coluna */
+}
+
+.table tbody tr {
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Adicionado efeito de elevação */
+}
+
+.table tbody tr:hover {
+    background-color: #e9ecef;
+    transform: scale(1.02); /* Leve aumento ao passar o mouse */
+}
+
+.table tbody td {
+    padding: 10px;
+    font-size: 14px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.table tbody td:last-child {
+    text-align: center;
+    white-space: nowrap; /* Impede que o texto quebre */
+}
+
+.table tbody td a {
+    color: #007bff; /* Cor de link em azul suave */
+    text-decoration: none;
+    margin-right: 8px; /* Espaçamento entre links */
+}
+
+.table tbody td a:last-child {
+    margin-right: 0; /* Remove o espaçamento do último link */
+}
+
+.table tbody td a:hover {
+    text-decoration: underline;
+    color: #0056b3; /* Cor do link ao passar o mouse */
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Estilização dos botões de ação */
+.table tbody .button {
+    padding: 6px 10px; /* Botões ligeiramente menores */
+    font-size: 12px;
+    border-radius: 6px;
+    margin-right: 6px; /* Espaçamento entre botões */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.table tbody .button:last-child {
+    margin-right: 0; /* Remove o espaçamento do último botão */
+}
+
+.table tbody .ver-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.table tbody .edit-btn {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.table tbody .delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.table tbody .button:hover {
+    opacity: 0.8; /* Leve transparência ao passar o mouse */
+    transform: scale(1.05); /* Leve aumento ao passar o mouse */
 }

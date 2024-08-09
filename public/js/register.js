@@ -28,7 +28,7 @@ $(document).ready(function() {
             {
                 data: null,
                 className: 'dt-center',
-                defaultContent: '<button class="edit-btn button is-small is-primary"><i class="fas fa-edit"></i> Editar</button>'
+                defaultContent: '<button class="edit-btn button is-small is-warning"><i class="fas fa-edit"></i> Editar</button>'
             }
         ]
     });
