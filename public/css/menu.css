@@ -132,7 +132,7 @@
 /* Estilos para a parte superior direita do menu */
 .top-right-menu {
     position: fixed;
-    top: 15px;
+    top: 5px;
     right: 15px;
     display: flex;
     align-items: center;
