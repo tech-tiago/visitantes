@@ -33,4 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
         sidebarHeader.classList.toggle('collapsed');
         mainContent.classList.toggle('is-expanded');
     });
+
+        // Seleciona o elemento pelo ID
+        const versionElement = document.getElementById('sidebarVersion');
+
+        // Define a nova versão
+        const newVersion = '1.1.3';
+    
+        // Atualiza o texto no HTML
+        versionElement.textContent = `v${newVersion}`;
+
 });
