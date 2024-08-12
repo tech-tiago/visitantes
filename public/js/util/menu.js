@@ -24,12 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const burgerIcon = document.querySelector('.sidebar-burger');
     const sidebarMenu = document.querySelector('#sidebarMenu');
+    const sidebarHeader = document.querySelector('.sidebar-header');
     const mainContent = document.querySelector('.main-content');
 
+
     burgerIcon.addEventListener('click', () => {
-        sidebarMenu.classList.toggle('is-hidden');
-        burgerIcon.classList.toggle('is-active');
+        sidebarMenu.classList.toggle('collapsed');
+        sidebarHeader.classList.toggle('collapsed');
         mainContent.classList.toggle('is-expanded');
     });
-
 });

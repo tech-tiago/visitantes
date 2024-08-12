@@ -58,6 +58,10 @@ app.get('/mensagens', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'mensagens.html'));
 });
 
+app.get('/relatorios', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'views', 'relatorios.html'));
+});
+
 // Rotas da API
 app.use('/api/messages', messageRoutes);
 app.use('/api/visitors', visitorRoutes);

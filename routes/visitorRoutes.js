@@ -11,5 +11,6 @@ router.get('/closed', authenticateToken, visitorController.getClosedVisits);
 router.get('/:id', authenticateToken, visitorController.getVisitor);
 router.get('/photo/:id', authenticateToken, visitorController.getVisitorPhoto);
 router.delete('/:id', authenticateToken, visitorController.deleteVisitor); 
+router.get('/report', authenticateToken, visitorController.getVisitorReport);
 
 module.exports = router;

@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const saveImage = require('../utils/saveImage');
 const Visitor = require('../models/Visitor');
+const { Op } = require('sequelize');
 
 exports.updateVisitor = async (req, res) => {
     try {
@@ -148,5 +149,31 @@ exports.getVisitorPhoto = async (req, res) => {
     res.send(visitor.foto);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getVisitorReport = async (req, res) => {
+  try {
+      const { start, end } = req.query; // Verifica se os parâmetros estão sendo capturados corretamente
+      if (!start || !end) {
+          return res.status(400).json({ message: 'Datas de início e fim são necessárias' });
+      }
+
+      const visitors = await Visitor.findAll({
+          where: {
+              data_entrada: {
+                  [Op.between]: [new Date(start), new Date(end)] // Usa as datas para filtrar os registros
+              }
+          }
+      });
+
+      if (!Array.isArray(visitors)) {
+          return res.status(500).json({ message: 'Erro ao processar os dados' });
+      }
+
+      res.status(200).json(visitors);
+  } catch (error) {
+      console.error('Erro ao buscar relatório:', error);
+      res.status(500).json({ message: 'Erro ao buscar relatório', error: error.message });
   }
 };

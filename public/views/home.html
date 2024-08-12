@@ -13,18 +13,13 @@
 <body>
 
     <div class="layout">
-        <!-- Botão de toggle para o menu lateral -->
-        <a role="button" class="sidebar-burger burger" aria-label="menu" aria-expanded="false" data-target="sidebarMenu">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    
+
         <!-- Menu Lateral -->
         <aside id="sidebarMenu" class="sidebar-menu">
             <div class="sidebar-header">
                 <img src="../images/logo.png" alt="cad Logo" class="sidebar-logo">
                 <span class="sidebar-title">CAD - VISITAS</span>
+                <i class="fa-solid fa-bars sidebar-burger" aria-label="menu" aria-expanded="false"></i>
             </div>
            
             <div class="sidebar-start">
@@ -40,12 +35,17 @@
                     <i class="fas fa-folder-open"></i>
                     <span class="sidebar-text">Visitas em Aberto</span>
                 </a>
+                <a class="sidebar-item is-active" href="/relatorios">
+                    <i class="fa-solid fa-chart-bar"></i>
+                    <span class="sidebar-text">Relatórios</span>
+                </a>
                 <a class="sidebar-item is-active" href="/mensagens">
                     <i class="fa-solid fa-envelope" id="envelopeIcon" style="position: relative;">
                         <span id="unreadCount" class="unread-count"></span>
                     </i>
                     <span class="sidebar-text">Mensagens</span>
                 </a>
+                <div class="sidebar-version">v1.1.2</div>
             </div>
         </aside>        
     
