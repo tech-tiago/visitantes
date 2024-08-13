@@ -1,9 +1,10 @@
 $(document).ready(function() {
     var table = $('#openVisits').DataTable({
-        paging: false,
-        ordering: false,
-        info: false,
-        pageLength: 50,
+        "paging":   true,
+        "ordering": false,
+        "info":     true,
+        "lengthChange": false,
+        "pageLength": 10,
         language: {
             url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
         },

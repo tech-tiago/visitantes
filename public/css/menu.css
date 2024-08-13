@@ -4,10 +4,7 @@
 /* Layout geral */
 .layout {
     display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
-    position: relative;
+    height: auto; /* Permite que a altura do layout cresça conforme o conteúdo */
     font-family: 'Varela Round', sans-serif; /* Aplica a fonte Varela Round */
 }
 
@@ -20,12 +17,12 @@
 /* Estilos para o header do sidebar */
 .sidebar-header {
     display: flex;
-    align-items: center; /* Alinha logo, título e subtítulo na mesma linha */
+    align-items: center;
     padding: 10px;
     color: white;
-    background-color: #2DAA9C; /* Cor do cabeçalho */
+    background-color: #2DAA9C;
     position: relative;
-    transition: all 0.3s ease; /* Transição suave para recolhimento */
+    transition: all 0.3s ease;
 }
 
 .sidebar-start{
@@ -41,57 +38,56 @@
     content: '';
     display: block;
     width: 100%;
-    height: 2px; /* Altura do separador */
-    background: rgba(255, 255, 255, 0.3); /* Cor do separador com transparência */
+    height: 2px;
+    background: rgba(255, 255, 255, 0.3);
     position: absolute;
-    bottom: -10px; /* Posição abaixo do header */
+    bottom: -10px;
     left: 0;
 }
 
 .sidebar-header.collapsed {
-    justify-content: center; /* Centraliza o ícone quando recolhido */
-    padding: 10px 0; /* Ajusta o padding para recolhimento */
+    justify-content: center;
+    padding: 10px 0;
 }
 
 /* Recolhimento do menu */
 .sidebar-menu.collapsed {
-    width: 60px; /* Ajuste a largura do menu recolhido */
+    width: 60px;
 }
 
 .sidebar-menu.collapsed .sidebar-title {
-    display: none; /* Esconde o título quando recolhido */
+    display: none;
 }
 
 .sidebar-header.collapsed .sidebar-logo,
 .sidebar-header.collapsed .sidebar-title {
-    display: none; /* Esconde logo e título quando recolhido */
+    display: none;
 }
 
 .sidebar-menu.collapsed .sidebar-logo {
-    margin-right: 0; /* Remove o espaço ao recolher */
+    margin-right: 0;
 }
 
 .sidebar-menu.collapsed .sidebar-item i {
-    margin-right: 0; /* Remove o espaço do ícone quando recolhido */
-    text-align: center; /* Centraliza o ícone */
-    width: 100%; /* O ícone ocupa a largura total do item */
+    margin-right: 0;
+    text-align: center;
+    width: 100%;
 }
 
 .sidebar-menu.collapsed .sidebar-text {
-    display: none; /* Esconde o texto dos itens do menu quando recolhido */
+    display: none;
 }
 
 /* Estilos para o sidebar */
 .sidebar-menu {
     width: 250px;
-    background-color: #2DAA9C; /* Cor do menu */
+    background-color: #2DAA9C;
     padding: 20px 0 0;
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
     overflow-y: auto;
-    transition: transform 0.3s ease, width 0.3s ease;
     z-index: 999;
 }
 
@@ -113,20 +109,25 @@
     color: #fff;
 }
 
-/* Ajustes no main-content quando o menu está recolhido */
+/* Ajustes no main-content */
 .main-content {
     flex: 1;
     margin-left: 260px;
     padding: 20px;
+    overflow: visible;
     background-color: #f5f5f5;
-    transition: margin-left 0.3s ease;
-    margin-top: 70px;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    width: calc(100% - 260px); /* Ajuste a largura para ocupar o restante da tela */
 }
 
 .main-content.is-expanded {
-    margin-left: 70px; /* Ajuste a margem quando o menu está recolhido */
+    margin-left: 70px;
+    width: calc(100% - 70px); /* Ajusta a largura ao recolher o menu */
 }
 
+.dataTables_wrapper {
+    width: 100%; /* Garante que a tabela ocupe 100% da largura do container */
+}
 
 /* Estilos para a parte superior direita do menu */
 /* Versão do sistema no menu lateral */
@@ -135,17 +136,17 @@
     bottom: 10px;
     left: 15px;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.7); /* Cor branca com opacidade para suavidade */
+    color: rgba(255, 255, 255, 0.7);
     font-weight: bold;
 }
 
+/* Top-right menu */
 .top-right-menu {
     position: fixed;
-    top: 5px;
     right: 15px;
     display: flex;
     align-items: center;
-    z-index: 1000;
+    z-index: 998; /* Garante que o conteúdo principal fique acima */
 }
 
 .top-right-menu .sidebar-item {
@@ -158,12 +159,12 @@
 }
 
 .top-right-menu .sidebar-item i {
-    margin-right: 12px; /* Espaçamento entre o ícone e o texto */
+    margin-right: 12px;
 }
 
 .top-right-menu .sidebar-item:hover {
-    background-color: #f0f0f0; /* Leve mudança de fundo ao passar o mouse */
-    color: #000; /* Cor do texto no hover */
+    background-color: #f0f0f0;
+    color: #000;
 }
 
 .top-right-menu .user-info {
@@ -185,7 +186,7 @@
 }
 
 .top-right-menu .user-info::after {
-    content: "\f078"; /* Código Unicode da seta para baixo (Font Awesome) */
+
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     margin-left: 5px;
@@ -213,24 +214,23 @@
 
 /* Separação entre os itens do dropdown */
 .sidebar-dropdown .sidebar-item {
-    padding: 10px 20px; /* Adiciona espaçamento lateral dentro dos itens do dropdown */
+    padding: 10px 20px;
     border-bottom: 1px solid #ddd;
     transition: background 0.3s ease, color 0.3s ease;
 }
 
 .sidebar-dropdown .sidebar-item i {
-    margin-right: 12px; /* Espaçamento entre o ícone e o texto */
+    margin-right: 12px;
 }
 
 .sidebar-dropdown .sidebar-item:hover {
-    background-color: #f0f0f0; /* Leve mudança de fundo ao passar o mouse */
-    color: #000; /* Cor do texto no hover */
+    background-color: #f0f0f0;
+    color: #000;
 }
 
 .sidebar-dropdown .sidebar-item:last-child {
     border-bottom: none;
 }
-
 
 /* Estilos para o contador de mensagens não lidas */
 .unread-count {

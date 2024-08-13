@@ -1,9 +1,11 @@
 $(document).ready(function() {
     var table = $('#closedVisits').DataTable({
-        "paging":   false,
+        "paging":   true,
         "ordering": false,
-        "info":     false,
-        "pageLength": 50,
+        "info":     true,
+        "lengthChange": false,
+        "pageLength": 20,
+        "order": [[2, 'asc']],
         language: {
           url:"https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
         },

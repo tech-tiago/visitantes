@@ -2,45 +2,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const userInfo = document.querySelector('.top-right-menu .user-info');
     const dropdown = document.querySelector('.top-right-menu .sidebar-dropdown');
 
-    // Abre o menu dropdown ao clicar no user-info
-    userInfo.addEventListener('click', (e) => {
-        e.stopPropagation();
-        dropdown.classList.toggle('is-active');
-    });
-
-    // Fecha o menu dropdown ao clicar fora dele
-    document.addEventListener('click', (e) => {
-        if (!dropdown.contains(e.target) && !userInfo.contains(e.target)) {
-            dropdown.classList.remove('is-active');
-        }
-    });
-
-    // Fecha o menu dropdown ao clicar em um item do menu
-    dropdown.querySelectorAll('.sidebar-item').forEach(item => {
-        item.addEventListener('click', () => {
-            dropdown.classList.remove('is-active');
-        });
-    });
-
     const burgerIcon = document.querySelector('.sidebar-burger');
     const sidebarMenu = document.querySelector('#sidebarMenu');
     const sidebarHeader = document.querySelector('.sidebar-header');
     const mainContent = document.querySelector('.main-content');
 
-
     burgerIcon.addEventListener('click', () => {
         sidebarMenu.classList.toggle('collapsed');
         sidebarHeader.classList.toggle('collapsed');
         mainContent.classList.toggle('is-expanded');
+
+        // Recalcula o tamanho da tabela após a animação
+        setTimeout(() => {
+            table.columns.adjust().draw();
+        }, 310); // Tempo ligeiramente superior ao da transição CSS
     });
 
-        // Seleciona o elemento pelo ID
-        const versionElement = document.getElementById('sidebarVersion');
-
-        // Define a nova versão
-        const newVersion = '1.1.3';
-    
-        // Atualiza o texto no HTML
-        versionElement.textContent = `v${newVersion}`;
-
+    // Atualiza a versão do sidebar
+    const versionElement = document.getElementById('sidebarVersion');
+    const newVersion = '1.1.3';
+    versionElement.textContent = `v${newVersion}`;
 });
+
