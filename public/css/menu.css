@@ -8,6 +8,10 @@
     font-family: 'Varela Round', sans-serif; /* Aplica a fonte Varela Round */
 }
 
+.main-content{
+    margin-top: 50px;
+}
+
 .sidebar-logo {
     width: 50px;
     height: 50px;
@@ -213,6 +217,11 @@
 }
 
 /* Separação entre os itens do dropdown */
+
+.navbar-dropdown .navbar-item i {
+    margin-right: 8px; /* Adiciona um espaço de 8px entre o ícone e o texto */
+}
+
 .sidebar-dropdown .sidebar-item {
     padding: 10px 20px;
     border-bottom: 1px solid #ddd;

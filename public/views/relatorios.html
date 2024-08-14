@@ -15,64 +15,68 @@
 
     <div class="layout">
 
-        <!-- Menu Lateral -->
-        <aside id="sidebarMenu" class="sidebar-menu">
-            <div class="sidebar-header">
-                <img src="../images/logo.png" alt="cad Logo" class="sidebar-logo">
-                <span class="sidebar-title">CAD - VISITAS</span>
-                <i class="fa-solid fa-bars sidebar-burger" aria-label="menu" aria-expanded="false"></i>
-            </div>
-           
-            <div class="sidebar-start">
-                <a class="sidebar-item" href="/">
-                    <i class="fas fa-clipboard-list"></i>
-                    <span class="sidebar-text">Registro de Visitantes</span>
-                </a>
-                <a class="sidebar-item" href="/historico-de-visitas">
-                    <i class="fa fa-history"></i>
-                    <span class="sidebar-text">Histórico de Visitas</span>
-                </a>
-                <a class="sidebar-item" href="/visitas-em-aberto">
-                    <i class="fas fa-folder-open"></i>
-                    <span class="sidebar-text">Visitas em Aberto</span>
-                </a>
-                <a class="sidebar-item is-active" href="/relatorios">
-                    <i class="fa-solid fa-chart-bar"></i>
-                    <span class="sidebar-text">Relatórios</span>
-                </a>
-                <a class="sidebar-item is-active" href="/mensagens">
-                    <i class="fa-solid fa-envelope" id="envelopeIcon" style="position: relative;">
-                        <span id="unreadCount" class="unread-count"></span>
-                    </i>
-                    <span class="sidebar-text">Mensagens</span>
-                </a>
-                <div id="sidebarVersion" class="sidebar-version"></div>
-            </div>
-        </aside>        
-    
-        <!-- Parte do menu no canto superior direito -->
-        <div class="top-right-menu">
-            <div class="sidebar-item has-dropdown is-hoverable">
-                <a class="nav-link user-info" id="loggedUserName">
-                    <img id="userImage" src="" alt="User Image" style="border-radius: 50%; width: 32px; height: 32px;">
+<!-- Menu Lateral -->
+<aside id="sidebarMenu" class="sidebar-menu">
+    <div class="sidebar-header">
+        <img src="../images/logo.png" alt="cad Logo" class="sidebar-logo">
+        <span class="sidebar-title">CAD - VISITAS</span>
+        <i class="fa-solid fa-bars sidebar-burger" aria-label="menu" aria-expanded="false"></i>
+    </div>
+
+    <div class="sidebar-start">
+        <a class="sidebar-item" href="/">
+            <i class="fas fa-clipboard-list"></i>
+            <span class="sidebar-text">Registro de Visitantes</span>
+        </a>
+        <a class="sidebar-item" href="/historico-de-visitas">
+            <i class="fa fa-history"></i>
+            <span class="sidebar-text">Histórico de Visitas</span>
+        </a>
+        <a class="sidebar-item" href="/visitas-em-aberto">
+            <i class="fas fa-folder-open"></i>
+            <span class="sidebar-text">Visitas em Aberto</span>
+        </a>
+        <a class="sidebar-item is-active" href="/relatorios">
+            <i class="fa-solid fa-chart-bar"></i>
+            <span class="sidebar-text">Relatórios</span>
+        </a>
+        <a class="sidebar-item is-active" href="/mensagens">
+            <i class="fa-solid fa-envelope" id="envelopeIcon" style="position: relative;">
+                <span id="unreadCount" class="unread-count"></span>
+            </i>
+            <span class="sidebar-text">Mensagens</span>
+        </a>
+        <div id="sidebarVersion" class="sidebar-version"></div>
+    </div>
+</aside>
+
+<!-- Navbar Superior -->
+<nav class="navbar is-fixed-top has-shadow is-fullwidth top-right-menu" role="navigation" aria-label="main navigation">
+    <div class="container is-fluid">
+        <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link user-info" id="loggedUserName">
+                    <img id="userImage" src="" alt="User Image">
                     <span id="loggedName"></span>
                 </a>
-                <div class="sidebar-dropdown is-right">
-                    <a class="sidebar-item" href="editUser">
+                <div class="navbar-dropdown is-right">
+                    <a class="navbar-item" href="editUser">
                         <i class="fas fa-cog"></i>
                         <span>Configurações</span>
                     </a>
-                    <a class="sidebar-item" id="registerMenuItem" href="/register">
+                    <a class="navbar-item" id="registerMenuItem" href="/register">
                         <i class="fas fa-user-plus"></i>
                         <span>Cadastrar</span>
                     </a>
-                    <a class="sidebar-item" id="logoutButton">
+                    <a class="navbar-item" id="logoutButton">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logoff</span>
                     </a>
                 </div>
             </div>
         </div>
+    </div>
+</nav>
     
         <main class="main-content">
             <div class="box">
