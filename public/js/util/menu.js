@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Atualiza a versão do sidebar
     const versionElement = document.getElementById('sidebarVersion');
-    const newVersion = '1.1.3';
+    const newVersion = '1.1.4';
     versionElement.textContent = `v${newVersion}`;
 });
 

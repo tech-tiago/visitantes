@@ -167,9 +167,16 @@ exports.getVisitorReport = async (req, res) => {
 
       // Consulta ao banco de dados usando Sequelize
       const visitors = await Visitor.findAll({
-          attributes: ['nome', 'data_entrada'],
+        attributes: [
+          'nome', 
+          'data_entrada', 
+          'hora_entrada', 
+          'data_saida', 
+          'hora_saida', 
+          'motivo'
+      ],
           where: {
-              status: 'encerrado',
+              //status: 'encerrado',
               data_entrada: {
                   [Op.between]: [startDate, endDate]
               }

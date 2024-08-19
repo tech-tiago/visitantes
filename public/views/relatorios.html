@@ -90,16 +90,22 @@
                         <div class="column">
                             <div class="field">
                                 <label class="label">Data Início</label>
-                                <div class="control">
+                                <div class="control has-icons-left">
                                     <input class="input" type="date" id="startDate" required>
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </span>
                                 </div>
                             </div>
                         </div>
                         <div class="column">
                             <div class="field">
                                 <label class="label">Data Fim</label>
-                                <div class="control">
+                                <div class="control has-icons-left">
                                     <input class="input" type="date" id="endDate" required>
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -118,6 +124,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="field has-text-centered">
                         <div class="control">
                             <button type="button" id="generateReport" class="button is-primary is-fullwidth">Gerar Relatório</button>
@@ -126,26 +133,25 @@
                 </form>
 
                 <div id="reportContainer" style="display:none; margin-top: 20px;">
-                    <h2 class="subtitle has-text-centered">Relatório Gerado</h2>
-                    <div class="columns">
-                        <div class="column is-8">
+                    <div class="columns is-vcentered">
+                        <div class="column is-9">
                             <div class="chart-container">
                                 <canvas id="reportChart"></canvas>
                             </div>
                         </div>
-                        <div class="column is-4">
-                            <div class="buttons is-flex is-justify-content-center is-align-items-center is-flex-direction-column">
-                                <button class="button is-info is-fullwidth" id="downloadWithGraph">
+                        <div class="column is-3">
+                            <div class="buttons">
+                                <button id="downloadWithChart" class="button is-link is-fullwidth">
                                     <span class="icon is-small">
                                         <i class="fas fa-download"></i>
                                     </span>
-                                    <span>Baixar relatório com gráfico</span>
+                                    <span>Baixar gráfico</span>
                                 </button>
-                                <button class="button is-warning is-fullwidth" id="downloadWithoutGraph" style="margin-top: 10px;">
+                                <button id="downloadWithoutChart" class="button is-info is-fullwidth" style="margin-top: 10px;">
                                     <span class="icon is-small">
-                                        <i class="fas fa-download"></i>
+                                        <i class="fas fa-file-alt"></i>
                                     </span>
-                                    <span>Baixar relatório sem gráfico</span>
+                                    <span>Baixar relatório completo</span>
                                 </button>
                             </div>
                         </div>
@@ -158,6 +164,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="../js/relatorios.js"></script>
     <script src="../js/logoff.js"></script>
+
+    <script src="../js/util/visitorRelarorio.js"></script>
     <script src="../js/util/menu.js"></script>
     <script src="../js/util/alert.js"></script>
 
