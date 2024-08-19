@@ -154,21 +154,31 @@ exports.getVisitorPhoto = async (req, res) => {
 
 exports.getVisitorReport = async (req, res) => {
   try {
-      const { start, end } = req.query; // Verifica se os parâmetros estão sendo capturados corretamente
+      const { start, end } = req.query;
+      console.log('Datas recebidas:', start, end);
+
       if (!start || !end) {
           return res.status(400).json({ message: 'Datas de início e fim são necessárias' });
       }
 
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+      console.log('Intervalo de busca:', startDate, endDate);
+
+      // Consulta ao banco de dados usando Sequelize
       const visitors = await Visitor.findAll({
+          attributes: ['nome', 'data_entrada'],
           where: {
+              status: 'encerrado',
               data_entrada: {
-                  [Op.between]: [new Date(start), new Date(end)] // Usa as datas para filtrar os registros
+                  [Op.between]: [startDate, endDate]
               }
-          }
+          },
+          order: [['data_entrada', 'ASC']]
       });
 
-      if (!Array.isArray(visitors)) {
-          return res.status(500).json({ message: 'Erro ao processar os dados' });
+      if (!Array.isArray(visitors) || visitors.length === 0) {
+          return res.status(404).json({ message: 'Nenhum visitante encontrado no intervalo de datas fornecido.' });
       }
 
       res.status(200).json(visitors);

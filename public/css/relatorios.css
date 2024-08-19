@@ -1,0 +1,68 @@
+/* relatorios.css */
+
+/* Estilo para o título da página */
+.title {
+    color: #2a9d8f;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+/* Estilo para o formulário */
+.field .label {
+    color: #264653;
+}
+
+.input, .select select {
+    border-color: #2a9d8f;
+}
+
+.button.is-primary {
+    background-color: #2a9d8f;
+    border-color: #2a9d8f;
+}
+
+/* Estilo do container do gráfico */
+.chart-container {
+    position: relative;
+    margin: 0 auto;
+    height: 400px;
+    width: 100%;
+}
+
+/* Estilo do box */
+.box {
+    background-color: #f4f4f9;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajuste do layout da sidebar */
+.sidebar-menu {
+    background-color: #2a9d8f;
+}
+
+.sidebar-item.is-active {
+    background-color: #1e776d;
+    color: #fff;
+}
+
+.sidebar-item:hover {
+    background-color: #21766d;
+    color: #fff;
+}
+
+/* Ajuste do layout da navbar */
+.navbar {
+    background-color: #264653;
+}
+
+.navbar-item.has-dropdown:hover .navbar-link {
+    background-color: #2a9d8f;
+}
+
+/* Ajuste do layout do botão */
+.button {
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
