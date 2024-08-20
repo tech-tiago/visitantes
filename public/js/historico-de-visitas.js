@@ -248,12 +248,16 @@ $('#closedVisits').on('click', '.delete-btn', function() {
 
 function formatDatePTBR(dateStr) {
     if (!dateStr) return '';
-    
-    //const date = new Date(dateStr + 'T00:00:00');
+
+    // Cria um objeto Date a partir da string da data
     const date = new Date(dateStr);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Mês começa em 0
-    const year = date.getFullYear();
+
+    // Ajusta para o fuso horário local para evitar discrepâncias
+    const localDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+
+    const day = localDate.getDate().toString().padStart(2, '0');
+    const month = (localDate.getMonth() + 1).toString().padStart(2, '0'); // Mês começa em 0
+    const year = localDate.getFullYear();
 
     return `${day}/${month}/${year}`;
 }

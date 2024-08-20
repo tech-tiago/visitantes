@@ -62,12 +62,12 @@ $(document).ready(function() {
                 body: JSON.stringify({ data_saida, hora_saida })
             }).then(response => response.json())
               .then(data => {
-                showAlert('Visita encerrada com sucesso!', 'success');
+                showAlert('Visita encerrada com sucesso!', 'is-success');
                   table.ajax.reload();
                   $('#finalizeModal').removeClass('is-active');
               }).catch(error => {
                   console.error('Error:', error);
-                  showAlert('Erro ao encerrar a visita. Por favor, tente novamente.', 'danger');
+                  showAlert('Erro ao encerrar a visita. Por favor, tente novamente.', 'is-danger');
               });
         });
     });
@@ -77,17 +77,22 @@ $(document).ready(function() {
     });
     });
 
-function formatDatePTBR(dateStr) {
-    if (!dateStr) return '';
-
-    //const date = new Date(dateStr + 'T00:00:00');
-    const date = new Date(dateStr);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Mês começa em 0
-    const year = date.getFullYear();
-
-    return `${day}/${month}/${year}`;
-}
+    function formatDatePTBR(dateStr) {
+        if (!dateStr) return '';
+    
+        // Cria um objeto Date a partir da string da data
+        const date = new Date(dateStr);
+    
+        // Ajusta para o fuso horário local para evitar discrepâncias
+        const localDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+    
+        const day = localDate.getDate().toString().padStart(2, '0');
+        const month = (localDate.getMonth() + 1).toString().padStart(2, '0'); // Mês começa em 0
+        const year = localDate.getFullYear();
+    
+        return `${day}/${month}/${year}`;
+    }
+    
 
 function formatTimeWithoutSeconds(timeStr) {
     if (!timeStr) return '';
